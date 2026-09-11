@@ -1,0 +1,39 @@
+@use '../abstracts' as *;
+
+.hero {
+  display: grid;
+  min-height: calc(100vh - 73px);
+  align-items: center;
+  padding-block: var(--section-spacing);
+  background-color: var(--color-background-muted);
+}
+
+.hero__container {
+  display: grid;
+  justify-items: start;
+  gap: fluid(18px, 32px);
+}
+
+.hero__eyebrow {
+  color: var(--color-accent);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero__title {
+  max-width: 12ch;
+}
+
+.hero__description {
+  max-width: 680px;
+  color: var(--color-text-muted);
+  font-size: fluid(18px, 24px);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}

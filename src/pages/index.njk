@@ -1,0 +1,26 @@
+{% extends "templates/layouts/base.njk" %}
+{% from "templates/components/ui/button.njk" import button %}
+
+{% block content %}
+  <section class="hero">
+    <div class="container hero__container">
+      <p class="hero__eyebrow">
+        Проект подготовлен
+      </p>
+
+      <h1 class="hero__title">
+        Красный якорь
+      </h1>
+
+      <p class="hero__description">
+        Базовая архитектура многостраничного сайта работает.
+        Следующим этапом станет создание UI-kit по макетам.
+      </p>
+
+      <div class="hero__actions">
+        {{ button("Открыть UI-kit", "/ui-kit/") }}
+        {{ button("Открыть каталог", "/catalog/", "secondary") }}
+      </div>
+    </div>
+  </section>
+{% endblock %}

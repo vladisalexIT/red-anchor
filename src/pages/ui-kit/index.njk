@@ -1,0 +1,39 @@
+{% extends "templates/layouts/base.njk" %}
+{% from "templates/components/ui/button.njk" import button %}
+
+{% block content %}
+  <section class="ui-kit">
+    <div class="container">
+      <header class="ui-kit__header">
+        <p class="ui-kit__label">Служебная страница</p>
+        <h1>UI-kit проекта</h1>
+        <p>
+          Здесь будут собираться типографика, цвета, кнопки,
+          поля форм, карточки и остальные повторяемые компоненты.
+        </p>
+      </header>
+
+      <section class="ui-kit__section">
+        <h2>Заголовки</h2>
+
+        <div class="ui-kit__preview">
+          <h1>Заголовок первого уровня</h1>
+          <h2>Заголовок второго уровня</h2>
+          <h3>Заголовок третьего уровня</h3>
+          <p>
+            Пример основного текста страницы.
+          </p>
+        </div>
+      </section>
+
+      <section class="ui-kit__section">
+        <h2>Кнопки</h2>
+
+        <div class="ui-kit__row">
+          {{ button("Основная кнопка", "#") }}
+          {{ button("Вторичная кнопка", "#", "secondary") }}
+        </div>
+      </section>
+    </div>
+  </section>
+{% endblock %}

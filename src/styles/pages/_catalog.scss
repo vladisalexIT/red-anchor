@@ -1,0 +1,20 @@
+.catalog-page {
+  padding-block: var(--section-spacing);
+}
+
+.catalog-page__eyebrow {
+  margin-bottom: 12px;
+  color: var(--color-accent);
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.catalog-page__title {
+  margin-bottom: fluid(20px, 32px);
+}
+
+.catalog-page__description {
+  max-width: 680px;
+  color: var(--color-text-muted);
+}

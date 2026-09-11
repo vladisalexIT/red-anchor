@@ -1,0 +1,5 @@
+{% macro button(text, href = "#", variant = "primary") %}
+  <a class="button button--{{ variant }}" href="{{ href }}">
+    <span class="button__text">{{ text }}</span>
+  </a>
+{% endmacro %}

@@ -1,0 +1,19 @@
+@use '../abstracts' as *;
+
+.visually-hidden {
+  @include visually-hidden;
+}
+
+.only-mobile {
+  @include media-up(desktop) {
+    display: none !important;
+  }
+}
+
+.only-desktop {
+  display: none !important;
+
+  @include media-up(desktop) {
+    display: initial !important;
+  }
+}

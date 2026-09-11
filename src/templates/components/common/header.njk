@@ -1,0 +1,38 @@
+<header class="site-header" data-header>
+  <div class="container site-header__container">
+    <a class="site-header__logo" href="/" aria-label="{{ site.name }} — главная">
+      {{ site.name }}
+    </a>
+
+    <button
+      class="site-header__menu-button"
+      type="button"
+      aria-expanded="false"
+      aria-controls="main-navigation"
+      data-menu-toggle
+    >
+      <span class="site-header__menu-button-text">Меню</span>
+    </button>
+
+    <nav
+      class="site-header__nav"
+      id="main-navigation"
+      aria-label="Основная навигация"
+      data-menu
+    >
+      <ul class="site-header__nav-list">
+        <li>
+          <a class="site-header__nav-link" href="/">Главная</a>
+        </li>
+
+        <li>
+          <a class="site-header__nav-link" href="/catalog/">Каталог</a>
+        </li>
+
+        <li>
+          <a class="site-header__nav-link" href="/ui-kit/">UI-kit</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>

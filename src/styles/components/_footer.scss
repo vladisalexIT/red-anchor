@@ -1,0 +1,16 @@
+.site-footer {
+  padding-block: 28px;
+  color: var(--color-white);
+  background-color: var(--color-black);
+}
+
+.site-footer__container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px 24px;
+}
+
+.site-footer__note {
+  color: #bdbdbd;
+}

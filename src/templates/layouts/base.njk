@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="{{ site.lang | default('ru') }}">
+  <head>
+    <meta charset="UTF-8">
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+      {% block title %}
+        {{ page.title | default(site.defaultTitle) }} — {{ site.name }}
+      {% endblock %}
+    </title>
+
+    <meta
+      name="description"
+      content="{{ page.description | default(site.defaultDescription) }}"
+    >
+  </head>
+
+  <body class="{{ page.bodyClass | default('') }}">
+    <a class="skip-link" href="#main-content">
+      Перейти к содержимому
+    </a>
+
+    <div class="site">
+      {% include "templates/components/common/header.njk" %}
+
+      <main id="main-content" class="site__main">
+        {% block content %}{% endblock %}
+      </main>
+
+      {% include "templates/components/common/footer.njk" %}
+    </div>
+
+    <script type="module" src="/src/scripts/main.ts"></script>
+  </body>
+</html>

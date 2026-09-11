@@ -1,0 +1,31 @@
+@use '../abstracts' as *;
+
+:root {
+  --font-family-base: #{$font-family-base};
+  --font-family-heading: #{$font-family-heading};
+  --color-white: #{$color-white};
+  --color-black: #{$color-black};
+  --color-text: #{$color-text};
+  --color-text-muted: #{$color-text-muted};
+  --color-background: #{$color-background};
+  --color-background-muted: #{$color-background-muted};
+  --color-border: #{$color-border};
+  --color-accent: #{$color-accent};
+  --color-accent-hover: #{$color-accent-hover};
+  --color-focus: #{$color-focus};
+  --container-max-width: #{$container-max-width};
+  --container-padding: #{fluid(16px, 40px)};
+  --section-spacing: #{fluid(48px, 112px)};
+  --block-spacing: #{fluid(24px, 48px)};
+  --font-size-body: #{fluid(16px, 18px)};
+  --font-size-h1: #{fluid(40px, 80px)};
+  --font-size-h2: #{fluid(30px, 52px)};
+  --font-size-h3: #{fluid(22px, 32px)};
+  --line-height-body: 1.5;
+  --line-height-heading: 1.08;
+  --transition-duration: #{$transition-duration};
+  --transition-timing-function: #{$transition-timing-function};
+  --z-index-header: #{$z-index-header};
+  --z-index-overlay: #{$z-index-overlay};
+  --z-index-modal: #{$z-index-modal};
+}
