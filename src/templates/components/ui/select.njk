@@ -1,0 +1,33 @@
+{% from "templates/components/ui/field.njk" import field %}
+
+{% macro select(
+  label,
+  id,
+  name,
+  options,
+  required = false,
+  selectedValue = "",
+  hint = "",
+  error = ""
+) %}
+  {% call field(label, id, required, hint, error) %}
+    <div class="select">
+      <select
+        class="field__control"
+        id="{{ id }}"
+        name="{{ name }}"
+        {% if required %}required{% endif %}
+        {% if error %}aria-invalid="true"{% endif %}
+      >
+        {% for option in options %}
+          <option
+            value="{{ option.value }}"
+            {% if option.value == selectedValue %}selected{% endif %}
+          >
+            {{ option.label }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+  {% endcall %}
+{% endmacro %}

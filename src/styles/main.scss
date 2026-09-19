@@ -3,13 +3,31 @@
 @use 'base/fonts';
 @use 'base/global';
 @use 'base/typography';
+
 @use 'layout/container';
 @use 'layout/grid';
 @use 'layout/site';
+
 @use 'components/button';
+@use 'components/link';
+@use 'components/field';
+@use 'components/date-field';
+@use 'components/input';
+@use 'components/select';
+@use 'components/textarea';
+@use 'components/file-upload';
+@use 'components/checkbox';
+@use 'components/radio';
+@use 'components/badge';
+@use 'components/filter';
+@use 'components/product-card';
+@use 'components/breadcrumb';
+@use 'components/pagination';
 @use 'components/header';
 @use 'components/footer';
+
 @use 'pages/home';
 @use 'pages/catalog';
 @use 'pages/ui-kit';
+
 @use 'utilities/helpers';

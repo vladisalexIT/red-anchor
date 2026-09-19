@@ -1,0 +1,26 @@
+{% macro radio(
+  id,
+  name,
+  label,
+  value,
+  checked = false,
+  disabled = false
+) %}
+  <label class="radio">
+    <input
+      class="radio__input"
+      id="{{ id }}"
+      name="{{ name }}"
+      type="radio"
+      value="{{ value }}"
+      {% if checked %}checked{% endif %}
+      {% if disabled %}disabled{% endif %}
+    >
+
+    <span class="radio__circle" aria-hidden="true"></span>
+
+    <span class="radio__text">
+      {{ label }}
+    </span>
+  </label>
+{% endmacro %}

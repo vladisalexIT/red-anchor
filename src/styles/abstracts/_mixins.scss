@@ -5,7 +5,7 @@
   $breakpoint: map.get($breakpoints, $name);
 
   @if not $breakpoint {
-    @error "Брейкпоинт `#{$name}` не найден";
+    @error 'Брейкпоинт `#{$name}` не найден';
   }
 
   @media (min-width: $breakpoint) {

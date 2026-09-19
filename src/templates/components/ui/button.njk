@@ -1,5 +1,26 @@
-{% macro button(text, href = "#", variant = "primary") %}
-  <a class="button button--{{ variant }}" href="{{ href }}">
-    <span class="button__text">{{ text }}</span>
-  </a>
+{% macro button(
+  text,
+  href = null,
+  variant = "primary",
+  type = "button",
+  modifier = "",
+  ariaLabel = ""
+) %}
+  {% if href %}
+    <a
+      class="button button--{{ variant }}{% if modifier %} {{ modifier }}{% endif %}"
+      href="{{ href }}"
+      {% if ariaLabel %}aria-label="{{ ariaLabel }}"{% endif %}
+    >
+      <span class="button__text">{{ text }}</span>
+    </a>
+  {% else %}
+    <button
+      class="button button--{{ variant }}{% if modifier %} {{ modifier }}{% endif %}"
+      type="{{ type }}"
+      {% if ariaLabel %}aria-label="{{ ariaLabel }}"{% endif %}
+    >
+      <span class="button__text">{{ text }}</span>
+    </button>
+  {% endif %}
 {% endmacro %}

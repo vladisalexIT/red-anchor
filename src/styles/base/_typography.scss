@@ -1,22 +1,162 @@
 h1,
 h2,
 h3,
-h4 {
+h4,
+h5,
+.type-display,
+.type-h1,
+.type-h2,
+.type-h3,
+.type-h4,
+.type-h5 {
   font-family: var(--font-family-heading);
-  line-height: var(--line-height-heading);
-  text-wrap: balance;
+  font-weight: 700;
+  font-style: normal;
+  text-transform: uppercase;
 }
 
-h1 {
-  font-size: var(--font-size-h1);
+@supports (text-wrap: balance) {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  .type-display,
+  .type-h1,
+  .type-h2,
+  .type-h3,
+  .type-h4,
+  .type-h5 {
+    text-wrap: balance;
+  }
 }
 
-h2 {
-  font-size: var(--font-size-h2);
+@supports (text-wrap: pretty) {
+  p,
+  .type-p1,
+  .type-p2,
+  .type-p3,
+  .type-p4 {
+    text-wrap: pretty;
+  }
 }
 
-h3 {
-  font-size: var(--font-size-h3);
+.type-display {
+  font-size: var(--type-display-size);
+  line-height: var(--type-display-line-height);
+  letter-spacing: var(--type-display-letter-spacing);
+}
+
+h1,
+.type-h1 {
+  font-size: var(--type-h1-size);
+  line-height: var(--type-h1-line-height);
+  letter-spacing: var(--type-h1-letter-spacing);
+}
+
+h2,
+.type-h2 {
+  font-size: var(--type-h2-size);
+  line-height: var(--type-h2-line-height);
+  letter-spacing: var(--type-h2-letter-spacing);
+}
+
+h3,
+.type-h3 {
+  font-size: var(--type-h3-size);
+  line-height: var(--type-h3-line-height);
+  letter-spacing: var(--type-h3-letter-spacing);
+}
+
+h4,
+.type-h4 {
+  font-size: var(--type-h4-size);
+  line-height: var(--type-h4-line-height);
+  letter-spacing: var(--type-h4-letter-spacing);
+}
+
+h5,
+.type-h5 {
+  font-size: var(--type-h5-size);
+  line-height: var(--type-h5-line-height);
+  letter-spacing: var(--type-h5-letter-spacing);
+}
+
+.type-p1,
+.type-p2,
+.type-p3,
+.type-p4,
+.type-s1,
+.type-s2,
+.type-s3,
+.type-s4 {
+  font-family: var(--font-family-base);
+  font-weight: 300;
+  font-style: normal;
+  text-transform: none;
+}
+
+.type-p1,
+.type-p2,
+.type-p3,
+.type-p4 {
+  text-wrap: pretty;
+}
+
+.type-p1 {
+  font-size: var(--type-p1-size);
+  line-height: var(--type-p1-line-height);
+  letter-spacing: var(--type-p1-letter-spacing);
+}
+
+.type-p2 {
+  font-size: var(--type-p2-size);
+  line-height: var(--type-p2-line-height);
+  letter-spacing: var(--type-p2-letter-spacing);
+}
+
+.type-p3 {
+  font-size: var(--type-p3-size);
+  line-height: var(--type-p3-line-height);
+  letter-spacing: var(--type-p3-letter-spacing);
+}
+
+.type-p4 {
+  font-size: var(--type-p4-size);
+  line-height: var(--type-p4-line-height);
+  letter-spacing: var(--type-p4-letter-spacing);
+}
+
+.type-s1 {
+  font-size: var(--type-s1-size);
+  line-height: var(--type-s1-line-height);
+  letter-spacing: var(--type-s1-letter-spacing);
+}
+
+.type-s2 {
+  font-size: var(--type-s2-size);
+  line-height: var(--type-s2-line-height);
+  letter-spacing: var(--type-s2-letter-spacing);
+}
+
+.type-s3 {
+  font-size: var(--type-s3-size);
+  line-height: var(--type-s3-line-height);
+  letter-spacing: var(--type-s3-letter-spacing);
+}
+
+.type-s4 {
+  font-size: var(--type-s4-size);
+  line-height: var(--type-s4-line-height);
+  letter-spacing: var(--type-s4-letter-spacing);
+}
+
+:is(.type-p1, .type-p2, .type-p3, .type-p4, .type-s1, .type-s2, .type-s3, .type-s4).type--medium {
+  font-weight: 500;
+}
+
+.type-p2.type--medium {
+  font-size: var(--type-p2-medium-size);
 }
 
 p {

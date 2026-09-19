@@ -1,0 +1,17 @@
+input.field__control {
+  appearance: none;
+}
+
+input.field__control[type='date'] {
+  min-width: 0;
+}
+
+input.field__control[type='number'] {
+  appearance: textfield;
+}
+
+input.field__control[type='number']::-webkit-inner-spin-button,
+input.field__control[type='number']::-webkit-outer-spin-button {
+  margin: 0;
+  appearance: none;
+}

@@ -1,0 +1,8 @@
+textarea.field__control {
+  min-height: 144px;
+  resize: vertical;
+}
+
+textarea.field__control::placeholder {
+  color: var(--color-text-muted);
+}

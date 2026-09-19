@@ -1,0 +1,22 @@
+{% from "templates/components/ui/field.njk" import field %}
+
+{% macro textarea(
+  label,
+  id,
+  name,
+  placeholder = "",
+  required = false,
+  hint = "",
+  error = ""
+) %}
+  {% call field(label, id, required, hint, error) %}
+    <textarea
+      class="field__control"
+      id="{{ id }}"
+      name="{{ name }}"
+      {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}
+      {% if required %}required{% endif %}
+      {% if error %}aria-invalid="true"{% endif %}
+    ></textarea>
+  {% endcall %}
+{% endmacro %}

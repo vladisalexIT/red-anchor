@@ -1,5 +1,59 @@
 <footer class="site-footer">
   <div class="container site-footer__container">
+    <div class="site-footer__brand">
+      <a class="site-footer__logo" href="/" aria-label="{{ site.name }} — главная">
+        {{ site.name }}
+      </a>
+
+      <p class="site-footer__description">
+        Якорные цепи, комплектующие и решения для профессионального применения.
+      </p>
+    </div>
+
+    <nav class="site-footer__nav" aria-label="Навигация в подвале">
+      <p class="site-footer__title">
+        Разделы
+      </p>
+
+      <ul class="site-footer__list">
+        <li>
+          <a class="site-footer__link" href="/">
+            Главная
+          </a>
+        </li>
+
+        <li>
+          <a class="site-footer__link" href="/catalog/">
+            Каталог
+          </a>
+        </li>
+
+        <li>
+          <a class="site-footer__link" href="/about/">
+            О компании
+          </a>
+        </li>
+
+        <li>
+          <a class="site-footer__link" href="/contacts/">
+            Контакты
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="site-footer__action">
+      <p class="site-footer__title">
+        Для поставщиков
+      </p>
+
+      <a class="site-footer__link site-footer__link--accent" href="/contacts/">
+        Стать поставщиком
+      </a>
+    </div>
+  </div>
+
+  <div class="container site-footer__bottom">
     <p class="site-footer__copyright">
       © {{ site.name }}
     </p>

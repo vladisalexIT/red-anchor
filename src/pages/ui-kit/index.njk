@@ -1,5 +1,15 @@
 {% extends "templates/layouts/base.njk" %}
 {% from "templates/components/ui/button.njk" import button %}
+{% from "templates/components/ui/checkbox.njk" import checkbox %}
+{% from "templates/components/ui/radio.njk" import radio %}
+{% from "templates/components/ui/badge.njk" import badge %}
+{% from "templates/components/ui/date-field.njk" import dateField %}
+{% from "templates/components/ui/file-upload.njk" import fileUpload %}
+{% from "templates/components/ui/input.njk" import input %}
+{% from "templates/components/ui/select.njk" import select %}
+{% from "templates/components/ui/textarea.njk" import textarea %}
+{% from "templates/components/ui/breadcrumb.njk" import breadcrumb %}
+{% from "templates/components/ui/pagination.njk" import pagination %}
 
 {% block content %}
   <section class="ui-kit">
@@ -32,6 +42,166 @@
         <div class="ui-kit__row">
           {{ button("Основная кнопка", "#") }}
           {{ button("Вторичная кнопка", "#", "secondary") }}
+        </div>
+      </section>
+      <section class="ui-kit__section">
+        <h2 class="type-h4 ui-kit__section-title">
+          Поля формы
+        </h2>
+
+        <div class="ui-kit__form-preview">
+          {{ input(
+            "Ваше ФИО",
+            "demo-name",
+            "name",
+            "text",
+            "Иванов Иван Иванович",
+            "",
+            true
+          ) }}
+
+          {{ input(
+            "Желаемый срок",
+            "demo-date",
+            "date",
+            "date",
+            "",
+            "",
+            true
+          ) }}
+
+          {{ select(
+            "Материал",
+            "demo-material",
+            "material",
+            [
+              { value: "", label: "Выберите материал" },
+              { value: "category-1", label: "Категория 1" },
+              { value: "category-2", label: "Категория 2" },
+              { value: "category-3", label: "Категория 3" },
+              { value: "category-4", label: "Категория 4" }
+            ]
+          ) }}
+
+          {{ textarea(
+            "Ваш комментарий",
+            "demo-comment",
+            "comment",
+            "Текст комментария"
+          ) }}
+        </div>
+      </section>
+
+      <section class="ui-kit__section">
+        <h2 class="type-h4 ui-kit__section-title">
+          Хлебные крошки
+        </h2>
+
+        {{ breadcrumb([
+          { label: "Продукция", href: "/catalog/" },
+          { label: "Якорные цепи и комплектующие", href: "#" },
+          { label: "Якорные смычки", current: true }
+        ]) }}
+      </section>
+
+      <section class="ui-kit__section">
+        <h2 class="type-h4 ui-kit__section-title">
+          Пагинация
+        </h2>
+
+        {{ pagination(3, 8) }}
+      </section>
+      <section class="ui-kit__section">
+        <h2 class="type-h4 ui-kit__section-title">
+          Дата
+        </h2>
+
+        <div class="ui-kit__form-preview">
+          {{ dateField(
+            "Желаемая дата поставки",
+            "demo-delivery-date",
+            "deliveryDate",
+            "",
+            true
+          ) }}
+        </div>
+      </section>
+
+      <section class="ui-kit__section">
+        <h2 class="type-h4 ui-kit__section-title">
+          Checkbox и radio
+        </h2>
+
+        <div class="ui-kit__component-group">
+          {{ checkbox(
+            "demo-agreement",
+            "agreement",
+            "Я согласен на обработку данных",
+            "yes",
+            true
+          ) }}
+
+          {{ checkbox(
+            "demo-disabled-checkbox",
+            "disabledAgreement",
+            "Недоступный checkbox",
+            "disabled",
+            false,
+            true
+          ) }}
+        </div>
+
+        <div class="ui-kit__component-group">
+          {{ radio(
+            "demo-delivery-warehouse",
+            "deliveryType",
+            "Доставка на склад",
+            "warehouse",
+            true
+          ) }}
+
+          {{ radio(
+            "demo-delivery-address",
+            "deliveryType",
+            "Доставка по адресу",
+            "address"
+          ) }}
+
+          {{ radio(
+            "demo-disabled-radio",
+            "disabledDeliveryType",
+            "Недоступный radio",
+            "disabled",
+            false,
+            true
+          ) }}
+        </div>
+      </section>
+
+      <section class="ui-kit__section">
+        <h2 class="type-h4 ui-kit__section-title">
+          Badge
+        </h2>
+
+        <div class="ui-kit__component-group">
+          {{ badge("Каталог") }}
+          {{ badge("Новинка", "accent") }}
+          {{ badge("Архив", "dark") }}
+          {{ badge("Подробнее", "outline") }}
+          {{ badge("Служебный", "muted") }}
+        </div>
+      </section>
+
+      <section class="ui-kit__section">
+        <h2 class="type-h4 ui-kit__section-title">
+          Загрузка файла
+        </h2>
+
+        <div class="ui-kit__file-preview">
+          {{ fileUpload(
+            "demo-attachment",
+            "attachment"
+          ) }}
         </div>
       </section>
     </div>

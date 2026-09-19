@@ -1,18 +1,28 @@
-$font-family-base: arial, helvetica, sans-serif;
-$font-family-heading: arial, helvetica, sans-serif;
+$font-family-base: 'PF DIN Text Cond Pro', arial, helvetica, sans-serif;
+$font-family-heading: 'TT Bluescreens', impact, sans-serif;
+
 $color-white: #fff;
-$color-black: #111;
-$color-text: #252525;
-$color-text-muted: #6d6d6d;
+$color-black: #110101;
+
+$color-text: #150f0f;
+$color-text-muted: #50575a;
+
 $color-background: #fff;
-$color-background-muted: #f4f4f4;
-$color-border: #d9d9d9;
-$color-accent: #c62127;
+$color-background-muted: #f5f5f5;
+
+$color-border: rgba(79, 86, 89, 0.2);
+
+$color-accent: #dd2b1c;
+
 $color-accent-hover: #a9181e;
+
 $color-focus: #2357d9;
+
 $container-max-width: 1440px;
+
 $transition-duration: 200ms;
 $transition-timing-function: ease;
+
 $z-index-header: 100;
 $z-index-overlay: 200;
 $z-index-modal: 300;

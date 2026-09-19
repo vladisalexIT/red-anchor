@@ -1,26 +1,207 @@
 {% extends "templates/layouts/base.njk" %}
 {% from "templates/components/ui/button.njk" import button %}
 
+{% macro typeSample(label, className, text) %}
+  <article class="ui-kit__type-sample">
+    <p class="ui-kit__type-label">{{ label }}</p>
+    <p class="{{ className }}">{{ text }}</p>
+  </article>
+{% endmacro %}
+
+{% set paragraphText %}
+  Формирование имиджа создаёт межличностный баинг и селлинг.
+  Согласно ставшей уже классической работе Филипа Котлера,
+  организация практического взаимодействия директивно
+  специфицирует конвергентный диктат потребителя.
+{% endset %}
+
+{% set shortText %}
+  Для короткого текста, состоящего из 1–3 строчек.
+  Формирование имиджа создаёт.
+{% endset %}
+
 {% block content %}
-  <section class="hero">
-    <div class="container hero__container">
-      <p class="hero__eyebrow">
-        Проект подготовлен
-      </p>
+  <section class="ui-kit">
+    <div class="container">
+      <header class="ui-kit__header">
+        <p class="ui-kit__label">Служебная страница</p>
 
-      <h1 class="hero__title">
-        Красный якорь
-      </h1>
+        <h1 class="type-h1">
+          UI-kit проекта
+        </h1>
 
-      <p class="hero__description">
-        Базовая архитектура многостраничного сайта работает.
-        Следующим этапом станет создание UI-kit по макетам.
-      </p>
+        <p class="type-p2">
+          Типографические стили, цвета, кнопки, поля форм,
+          карточки и остальные повторяемые компоненты проекта.
+        </p>
+      </header>
 
-      <div class="hero__actions">
-        {{ button("Открыть UI-kit", "/ui-kit/") }}
-        {{ button("Открыть каталог", "/catalog/", "secondary") }}
-      </div>
+      <section class="ui-kit__section">
+        <h2 class="type-h4 ui-kit__section-title">
+          Заголовки
+        </h2>
+
+        <div class="ui-kit__preview">
+          {{ typeSample(
+            "H1 большой · TT Bluescreens Bold 700",
+            "type-display",
+            "Большой заголовок первого уровня"
+          ) }}
+
+          {{ typeSample(
+            "H1 средний · TT Bluescreens Bold 700",
+            "type-h1",
+            "Заголовок первого уровня"
+          ) }}
+
+          {{ typeSample(
+            "H2 · TT Bluescreens Bold 700",
+            "type-h2",
+            "Заголовок второго уровня"
+          ) }}
+
+          {{ typeSample(
+            "H3 · TT Bluescreens Bold 700",
+            "type-h3",
+            "Заголовок третьего уровня"
+          ) }}
+
+          {{ typeSample(
+            "H4 · TT Bluescreens Bold 700",
+            "type-h4",
+            "Заголовок четвёртого уровня"
+          ) }}
+
+          {{ typeSample(
+            "H5 · TT Bluescreens Bold 700",
+            "type-h5",
+            "Заголовок пятого уровня"
+          ) }}
+        </div>
+      </section>
+
+      <section class="ui-kit__section">
+        <h2 class="type-h4 ui-kit__section-title">
+          Основной текст
+        </h2>
+
+        <div class="ui-kit__preview">
+          {{ typeSample(
+            "P1 Light · PF DIN Text Cond Pro 300",
+            "type-p1",
+            paragraphText
+          ) }}
+
+          {{ typeSample(
+            "P1 Medium · PF DIN Text Cond Pro 500",
+            "type-p1 type--medium",
+            paragraphText
+          ) }}
+
+          {{ typeSample(
+            "P2 Light · PF DIN Text Cond Pro 300",
+            "type-p2",
+            paragraphText
+          ) }}
+
+          {{ typeSample(
+            "P2 Medium · PF DIN Text Cond Pro 500",
+            "type-p2 type--medium",
+            paragraphText
+          ) }}
+
+          {{ typeSample(
+            "P3 Light · PF DIN Text Cond Pro 300",
+            "type-p3",
+            paragraphText
+          ) }}
+
+          {{ typeSample(
+            "P3 Medium · PF DIN Text Cond Pro 500",
+            "type-p3 type--medium",
+            paragraphText
+          ) }}
+
+          {{ typeSample(
+            "P4 Light · PF DIN Text Cond Pro 300",
+            "type-p4",
+            paragraphText
+          ) }}
+
+          {{ typeSample(
+            "P4 Medium · PF DIN Text Cond Pro 500",
+            "type-p4 type--medium",
+            paragraphText
+          ) }}
+        </div>
+      </section>
+
+      <section class="ui-kit__section">
+        <h2 class="type-h4 ui-kit__section-title">
+          Короткий текст
+        </h2>
+
+        <div class="ui-kit__preview ui-kit__preview--short">
+          {{ typeSample(
+            "S1 Light · PF DIN Text Cond Pro 300",
+            "type-s1",
+            shortText
+          ) }}
+
+          {{ typeSample(
+            "S1 Medium · PF DIN Text Cond Pro 500",
+            "type-s1 type--medium",
+            shortText
+          ) }}
+
+          {{ typeSample(
+            "S2 Light · PF DIN Text Cond Pro 300",
+            "type-s2",
+            shortText
+          ) }}
+
+          {{ typeSample(
+            "S2 Medium · PF DIN Text Cond Pro 500",
+            "type-s2 type--medium",
+            shortText
+          ) }}
+
+          {{ typeSample(
+            "S3 Light · PF DIN Text Cond Pro 300",
+            "type-s3",
+            shortText
+          ) }}
+
+          {{ typeSample(
+            "S3 Medium · PF DIN Text Cond Pro 500",
+            "type-s3 type--medium",
+            shortText
+          ) }}
+
+          {{ typeSample(
+            "S4 Light · PF DIN Text Cond Pro 300",
+            "type-s4",
+            shortText
+          ) }}
+
+          {{ typeSample(
+            "S4 Medium · PF DIN Text Cond Pro 500",
+            "type-s4 type--medium",
+            shortText
+          ) }}
+        </div>
+      </section>
+
+      <section class="ui-kit__section">
+        <h2 class="type-h4 ui-kit__section-title">
+          Кнопки
+        </h2>
+
+        <div class="ui-kit__row">
+          {{ button("Основная кнопка", "#") }}
+          {{ button("Вторичная кнопка", "#", "secondary") }}
+        </div>
+      </section>
     </div>
   </section>
 {% endblock %}

@@ -6,11 +6,11 @@
 
 @function fluid($min-size, $max-size, $min-viewport: 360px, $max-viewport: 1440px) {
   @if $max-viewport <= $min-viewport {
-    @error "$max-viewport должен быть больше $min-viewport";
+    @error '$max-viewport должен быть больше $min-viewport';
   }
 
   @if $max-size < $min-size {
-    @error "$max-size должен быть не меньше $min-size";
+    @error '$max-size должен быть не меньше $min-size';
   }
 
   $slope: math.div($max-size - $min-size, $max-viewport - $min-viewport);

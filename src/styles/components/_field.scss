@@ -1,0 +1,78 @@
+@use '../abstracts' as *;
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.field__label {
+  color: var(--color-text);
+  font-family: var(--font-family-base);
+  font-size: var(--type-p3-size);
+  font-weight: 500;
+  line-height: var(--type-p3-line-height);
+  letter-spacing: var(--type-p3-letter-spacing);
+}
+
+.field__required {
+  color: var(--color-accent);
+}
+
+.field__control {
+  display: block;
+  width: 100%;
+  min-height: 56px;
+  padding: 14px 16px;
+  color: var(--color-text);
+  font-family: var(--font-family-base);
+  font-size: var(--type-p2-size);
+  font-weight: 300;
+  line-height: var(--type-p2-line-height);
+  letter-spacing: var(--type-p2-letter-spacing);
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: 0;
+  outline: none;
+  transition:
+    border-color var(--transition-duration) var(--transition-timing-function),
+    background-color var(--transition-duration) var(--transition-timing-function);
+}
+
+.field__control::placeholder {
+  color: var(--color-text-muted);
+  opacity: 1;
+}
+
+.field__control:hover {
+  border-color: var(--color-text-muted);
+}
+
+.field__control:focus {
+  border-color: var(--color-accent);
+}
+
+.field__hint,
+.field__error {
+  font-family: var(--font-family-base);
+  font-size: var(--type-p4-size);
+  font-weight: 300;
+  line-height: var(--type-p4-line-height);
+  letter-spacing: var(--type-p4-letter-spacing);
+}
+
+.field__hint {
+  color: var(--color-text-muted);
+}
+
+.field__error {
+  display: none;
+  color: var(--color-accent);
+}
+
+.field.is-invalid .field__control {
+  border-color: var(--color-accent);
+}
+
+.field.is-invalid .field__error {
+  display: block;
+}

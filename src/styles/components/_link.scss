@@ -1,0 +1,25 @@
+@use '../abstracts' as *;
+
+.link {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: color var(--transition-duration) var(--transition-timing-function);
+
+  @include hover {
+    color: var(--color-accent);
+  }
+}
+
+.link--accent {
+  color: var(--color-accent);
+}
+
+.link--muted {
+  color: var(--color-text-muted);
+}
+
+.link--plain {
+  text-decoration: none;
+}

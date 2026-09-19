@@ -1,0 +1,28 @@
+.select {
+  position: relative;
+}
+
+.select::after {
+  position: absolute;
+  right: 18px;
+  bottom: 23px;
+  width: 8px;
+  height: 8px;
+  content: '';
+  border-right: 1px solid var(--color-text);
+  border-bottom: 1px solid var(--color-text);
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+
+select.field__control {
+  padding-right: 48px;
+  appearance: none;
+  cursor: pointer;
+}
+
+select.field__control:disabled {
+  color: var(--color-text-muted);
+  background-color: var(--color-background-muted);
+  cursor: not-allowed;
+}

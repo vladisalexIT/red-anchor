@@ -1,19 +1,177 @@
 {% extends "templates/layouts/base.njk" %}
 
+{% from "templates/components/ui/filter.njk" import filter %}
+{% from "templates/components/ui/product-card.njk" import productCard %}
+{% from "templates/components/ui/breadcrumb.njk" import breadcrumb %}
+{% from "templates/components/ui/pagination.njk" import pagination %}
+
+{% set products = [
+  {
+    id: "chain-1",
+    title: "Цепь якорная калибра 11 мм",
+    url: "#product-chain-1",
+    category: "Якорные цепи",
+    categoryCode: "anchor-chains",
+    caliber: 11,
+    unit: "метр",
+    quantity: "от 10 м",
+    image: "",
+    imageAlt: "",
+    canOrder: true
+  },
+  {
+    id: "chain-2",
+    title: "Цепь якорная калибра 16 мм",
+    url: "#product-chain-2",
+    category: "Якорные цепи",
+    categoryCode: "anchor-chains",
+    caliber: 16,
+    unit: "метр",
+    quantity: "от 10 м",
+    image: "",
+    imageAlt: "",
+    canOrder: true
+  },
+  {
+    id: "chain-3",
+    title: "Цепь якорная калибра 20 мм",
+    url: "#product-chain-3",
+    category: "Якорные цепи",
+    categoryCode: "anchor-chains",
+    caliber: 20,
+    unit: "метр",
+    quantity: "от 5 м",
+    image: "",
+    imageAlt: "",
+    canOrder: true
+  },
+  {
+    id: "component-1",
+    title: "Скоба соединительная",
+    url: "#product-component-1",
+    category: "Комплектующие",
+    categoryCode: "components",
+    caliber: 32,
+    unit: "штука",
+    quantity: "от 1 шт.",
+    image: "",
+    imageAlt: "",
+    canOrder: true
+  },
+  {
+    id: "component-2",
+    title: "Вертлюг якорный",
+    url: "#product-component-2",
+    category: "Комплектующие",
+    categoryCode: "components",
+    caliber: 44,
+    unit: "штука",
+    quantity: "от 1 шт.",
+    image: "",
+    imageAlt: "",
+    canOrder: true
+  },
+  {
+    id: "accessory-1",
+    title: "Комплект якорной оснастки",
+    url: "#product-accessory-1",
+    category: "Оснастка",
+    categoryCode: "accessories",
+    caliber: 60,
+    unit: "комплект",
+    quantity: "от 1 компл.",
+    image: "",
+    imageAlt: "",
+    canOrder: false
+  }
+] %}
+
 {% block content %}
   <section class="catalog-page">
     <div class="container">
-      <p class="catalog-page__eyebrow">
-        Страница-заготовка
-      </p>
+      <div class="catalog-page__breadcrumbs">
+        {{ breadcrumb([
+          { label: "Главная", href: "/" },
+          { label: "Каталог", current: true }
+        ]) }}
+      </div>
 
-      <h1 class="catalog-page__title">
-        Каталог
-      </h1>
+      <header class="catalog-page__header">
+        <p class="catalog-page__eyebrow">
+          Продукция
+        </p>
 
-      <p class="catalog-page__description">
-        Здесь будет реализована структура каталога по макетам и техническому заданию.
-      </p>
+        <h1 class="catalog-page__title">
+          Каталог
+        </h1>
+
+        <p class="catalog-page__description">
+          Якорные цепи, комплектующие и оснастка
+          для профессионального применения.
+        </p>
+      </header>
+
+      <div class="catalog-page__layout">
+        <aside class="catalog-page__sidebar">
+          {{ filter() }}
+        </aside>
+
+        <div class="catalog-page__content">
+          <div class="catalog-page__content-header">
+            <p
+              class="catalog-page__result-count"
+              data-catalog-result-count
+            >
+              Найдено товаров: {{ products | length }}
+            </p>
+
+            <p
+              class="catalog-page__order-summary"
+              aria-live="polite"
+            >
+              Ваш заказ:
+              <strong data-order-count>0</strong>
+            </p>
+          </div>
+
+          <div
+            class="catalog-page__grid"
+            id="catalog-products"
+          >
+            {% for product in products %}
+              {{ productCard(
+                product.id,
+                product.title,
+                product.url,
+                product.category,
+                product.unit,
+                product.quantity,
+                product.image,
+                product.imageAlt,
+                product.canOrder,
+                product.categoryCode,
+                product.caliber
+              ) }}
+            {% endfor %}
+          </div>
+
+          <p
+            class="catalog-page__empty"
+            data-catalog-empty
+            hidden
+          >
+            По заданным параметрам товары не найдены.
+            Измените условия фильтра или сбросьте их.
+          </p>
+
+          <div
+            class="catalog-page__pagination"
+            data-catalog-pagination
+          >
+            {{ pagination(1, 3) }}
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 {% endblock %}

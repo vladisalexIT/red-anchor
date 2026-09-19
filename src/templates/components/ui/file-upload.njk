@@ -1,0 +1,38 @@
+{% macro fileUpload(
+  id,
+  name,
+  title = "Выберите файл или перетащите его сюда",
+  hint = "Максимальный размер файла: 10 МБ",
+  accept = ".gif,.jpg,.jpeg,.png,.bmp,.tif,.txt,.rtf,.html,.pdf,.doc,.docx,.odt,.ppt,.pptx",
+  maxSize = 10485760,
+  multiple = false
+) %}
+  <div
+    class="file-upload"
+    data-file-upload
+    data-max-size="{{ maxSize }}"
+  >
+    <input
+      class="file-upload__input"
+      id="{{ id }}"
+      name="{{ name }}"
+      type="file"
+      accept="{{ accept }}"
+      {% if multiple %}multiple{% endif %}
+    >
+
+    <label class="file-upload__dropzone" for="{{ id }}">
+      <span class="file-upload__title">
+        {{ title }}
+      </span>
+
+      <span class="file-upload__hint">
+        {{ hint }}
+      </span>
+    </label>
+
+    <div class="file-upload__files" data-file-list></div>
+
+    <p class="file-upload__error" data-file-error role="alert"></p>
+  </div>
+{% endmacro %}

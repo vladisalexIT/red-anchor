@@ -1,7 +1,13 @@
 <header class="site-header" data-header>
   <div class="container site-header__container">
-    <a class="site-header__logo" href="/" aria-label="{{ site.name }} — главная">
-      {{ site.name }}
+    <a
+      class="site-header__logo"
+      href="/"
+      aria-label="{{ site.name }} — главная"
+    >
+      <span class="site-header__logo-text">
+        {{ site.name }}
+      </span>
     </a>
 
     <button
@@ -11,7 +17,9 @@
       aria-controls="main-navigation"
       data-menu-toggle
     >
-      <span class="site-header__menu-button-text">Меню</span>
+      <span class="site-header__menu-button-text">
+        Меню
+      </span>
     </button>
 
     <nav
@@ -21,16 +29,34 @@
       data-menu
     >
       <ul class="site-header__nav-list">
-        <li>
-          <a class="site-header__nav-link" href="/">Главная</a>
+        <li class="site-header__nav-item">
+          <a class="site-header__nav-link" href="/">
+            Главная
+          </a>
         </li>
 
-        <li>
-          <a class="site-header__nav-link" href="/catalog/">Каталог</a>
+        <li class="site-header__nav-item">
+          <a class="site-header__nav-link" href="/catalog/">
+            Каталог
+          </a>
         </li>
 
-        <li>
-          <a class="site-header__nav-link" href="/ui-kit/">UI-kit</a>
+        <li class="site-header__nav-item">
+          <a class="site-header__nav-link" href="/about/">
+            О компании
+          </a>
+        </li>
+
+        <li class="site-header__nav-item">
+          <a class="site-header__nav-link" href="/contacts/">
+            Контакты
+          </a>
+        </li>
+
+        <li class="site-header__nav-item site-header__nav-item--action">
+          <a class="button button--secondary" href="/contacts/">
+            Стать поставщиком
+          </a>
         </li>
       </ul>
     </nav>

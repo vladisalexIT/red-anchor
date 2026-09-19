@@ -3,11 +3,16 @@
 body {
   color: var(--color-text);
   font-family: var(--font-family-base);
-  font-size: var(--font-size-body);
-  line-height: var(--line-height-body);
+  font-size: var(--type-p2-size);
+  font-weight: 300;
+  font-style: normal;
+  line-height: var(--type-p2-line-height);
+  letter-spacing: var(--type-p2-letter-spacing);
   background-color: var(--color-background);
+  font-synthesis: none;
   text-rendering: optimizelegibility;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body.is-scroll-locked {

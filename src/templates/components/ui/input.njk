@@ -1,0 +1,26 @@
+{% from "templates/components/ui/field.njk" import field %}
+
+{% macro input(
+  label,
+  id,
+  name,
+  type = "text",
+  placeholder = "",
+  value = "",
+  required = false,
+  hint = "",
+  error = ""
+) %}
+  {% call field(label, id, required, hint, error) %}
+    <input
+      class="field__control"
+      id="{{ id }}"
+      name="{{ name }}"
+      type="{{ type }}"
+      {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}
+      {% if value %}value="{{ value }}"{% endif %}
+      {% if required %}required{% endif %}
+      {% if error %}aria-invalid="true"{% endif %}
+    >
+  {% endcall %}
+{% endmacro %}
