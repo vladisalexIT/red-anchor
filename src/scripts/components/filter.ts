@@ -1,7 +1,4 @@
-import {
-  DemoCatalogAdapter,
-  type CatalogFilters,
-} from '../adapters/demo-catalog-adapter';
+import { DemoCatalogAdapter, type CatalogFilters } from '../adapters/demo-catalog-adapter';
 
 function parseNumber(value: FormDataEntryValue | null): number | null {
   if (typeof value !== 'string' || value.trim() === '') {
@@ -10,9 +7,7 @@ function parseNumber(value: FormDataEntryValue | null): number | null {
 
   const parsedValue = Number(value);
 
-  return Number.isFinite(parsedValue)
-    ? parsedValue
-    : null;
+  return Number.isFinite(parsedValue) ? parsedValue : null;
 }
 
 function readFilters(form: HTMLFormElement): CatalogFilters {
@@ -25,17 +20,10 @@ function readFilters(form: HTMLFormElement): CatalogFilters {
   };
 }
 
-function setControlValue(
-  form: HTMLFormElement,
-  name: string,
-  value: string,
-): void {
+function setControlValue(form: HTMLFormElement, name: string, value: string): void {
   const control = form.elements.namedItem(name);
 
-  if (
-    control instanceof HTMLInputElement ||
-    control instanceof HTMLSelectElement
-  ) {
+  if (control instanceof HTMLInputElement || control instanceof HTMLSelectElement) {
     control.value = value;
   }
 }
@@ -43,23 +31,11 @@ function setControlValue(
 function restoreFiltersFromUrl(form: HTMLFormElement): void {
   const searchParams = new URLSearchParams(window.location.search);
 
-  setControlValue(
-    form,
-    'caliberFrom',
-    searchParams.get('caliberFrom') ?? '',
-  );
+  setControlValue(form, 'caliberFrom', searchParams.get('caliberFrom') ?? '');
 
-  setControlValue(
-    form,
-    'caliberTo',
-    searchParams.get('caliberTo') ?? '',
-  );
+  setControlValue(form, 'caliberTo', searchParams.get('caliberTo') ?? '');
 
-  setControlValue(
-    form,
-    'category',
-    searchParams.get('category') ?? '',
-  );
+  setControlValue(form, 'category', searchParams.get('category') ?? '');
 }
 
 function setSearchParameter(
@@ -78,39 +54,19 @@ function setSearchParameter(
 function updateUrl(filters: CatalogFilters): void {
   const url = new URL(window.location.href);
 
-  setSearchParameter(
-    url.searchParams,
-    'caliberFrom',
-    filters.caliberFrom,
-  );
+  setSearchParameter(url.searchParams, 'caliberFrom', filters.caliberFrom);
 
-  setSearchParameter(
-    url.searchParams,
-    'caliberTo',
-    filters.caliberTo,
-  );
+  setSearchParameter(url.searchParams, 'caliberTo', filters.caliberTo);
 
-  setSearchParameter(
-    url.searchParams,
-    'category',
-    filters.category,
-  );
+  setSearchParameter(url.searchParams, 'category', filters.category);
 
   url.searchParams.delete('page');
 
-  window.history.replaceState(
-    {},
-    '',
-    `${url.pathname}${url.search}${url.hash}`,
-  );
+  window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`);
 }
 
-function validateRange(
-  form: HTMLFormElement,
-  filters: CatalogFilters,
-): boolean {
-  const caliberToInput =
-    form.elements.namedItem('caliberTo');
+function validateRange(form: HTMLFormElement, filters: CatalogFilters): boolean {
+  const caliberToInput = form.elements.namedItem('caliberTo');
 
   if (!(caliberToInput instanceof HTMLInputElement)) {
     return true;
@@ -123,9 +79,7 @@ function validateRange(
     filters.caliberTo !== null &&
     filters.caliberFrom > filters.caliberTo
   ) {
-    caliberToInput.setCustomValidity(
-      'Значение «До» не может быть меньше значения «От».',
-    );
+    caliberToInput.setCustomValidity('Значение «До» не может быть меньше значения «От».');
 
     caliberToInput.reportValidity();
 
@@ -135,25 +89,15 @@ function validateRange(
   return true;
 }
 
-function updateCatalogState(
-  root: HTMLElement,
-  visibleCount: number,
-): void {
-  const resultCount = root.querySelector<HTMLElement>(
-    '[data-catalog-result-count]',
-  );
+function updateCatalogState(root: HTMLElement, visibleCount: number): void {
+  const resultCount = root.querySelector<HTMLElement>('[data-catalog-result-count]');
 
-  const emptyState = root.querySelector<HTMLElement>(
-    '[data-catalog-empty]',
-  );
+  const emptyState = root.querySelector<HTMLElement>('[data-catalog-empty]');
 
-  const pagination = root.querySelector<HTMLElement>(
-    '[data-catalog-pagination]',
-  );
+  const pagination = root.querySelector<HTMLElement>('[data-catalog-pagination]');
 
   if (resultCount) {
-    resultCount.textContent =
-      `Найдено товаров: ${visibleCount}`;
+    resultCount.textContent = `Найдено товаров: ${visibleCount}`;
   }
 
   if (emptyState) {
@@ -187,8 +131,7 @@ function applyFilters(
 }
 
 export function initFilters(): void {
-  const forms =
-    document.querySelectorAll<HTMLFormElement>('[data-filter]');
+  const forms = document.querySelectorAll<HTMLFormElement>('[data-filter]');
 
   forms.forEach((form) => {
     const root = form.closest<HTMLElement>('.catalog-page');

@@ -1,0 +1,4580 @@
+﻿
+
+=== C:\Projects\red-anchor\src\pages\catalog\index.njk ===
+
+{% extends "templates/layouts/base.njk" %}
+
+{% from "templates/components/ui/filter.njk" import filter %}
+{% from "templates/components/ui/product-card.njk" import productCard %}
+{% from "templates/components/ui/breadcrumb.njk" import breadcrumb %}
+{% from "templates/components/ui/pagination.njk" import pagination %}
+
+{% set products = [
+  {
+    id: "chain-1",
+    title: "Р¦РµРїСЊ СЏРєРѕСЂРЅР°СЏ РєР°Р»РёР±СЂР° 11 РјРј",
+    url: "#product-chain-1",
+    category: "РЇРєРѕСЂРЅС‹Рµ С†РµРїРё",
+    categoryCode: "anchor-chains",
+    caliber: 11,
+    unit: "РјРµС‚СЂ",
+    quantity: "РѕС‚ 10 Рј",
+    image: "",
+    imageAlt: "",
+    canOrder: true
+  },
+  {
+    id: "chain-2",
+    title: "Р¦РµРїСЊ СЏРєРѕСЂРЅР°СЏ РєР°Р»РёР±СЂР° 16 РјРј",
+    url: "#product-chain-2",
+    category: "РЇРєРѕСЂРЅС‹Рµ С†РµРїРё",
+    categoryCode: "anchor-chains",
+    caliber: 16,
+    unit: "РјРµС‚СЂ",
+    quantity: "РѕС‚ 10 Рј",
+    image: "",
+    imageAlt: "",
+    canOrder: true
+  },
+  {
+    id: "chain-3",
+    title: "Р¦РµРїСЊ СЏРєРѕСЂРЅР°СЏ РєР°Р»РёР±СЂР° 20 РјРј",
+    url: "#product-chain-3",
+    category: "РЇРєРѕСЂРЅС‹Рµ С†РµРїРё",
+    categoryCode: "anchor-chains",
+    caliber: 20,
+    unit: "РјРµС‚СЂ",
+    quantity: "РѕС‚ 5 Рј",
+    image: "",
+    imageAlt: "",
+    canOrder: true
+  },
+  {
+    id: "component-1",
+    title: "РЎРєРѕР±Р° СЃРѕРµРґРёРЅРёС‚РµР»СЊРЅР°СЏ",
+    url: "#product-component-1",
+    category: "РљРѕРјРїР»РµРєС‚СѓСЋС‰РёРµ",
+    categoryCode: "components",
+    caliber: 32,
+    unit: "С€С‚СѓРєР°",
+    quantity: "РѕС‚ 1 С€С‚.",
+    image: "",
+    imageAlt: "",
+    canOrder: true
+  },
+  {
+    id: "component-2",
+    title: "Р’РµСЂС‚Р»СЋРі СЏРєРѕСЂРЅС‹Р№",
+    url: "#product-component-2",
+    category: "РљРѕРјРїР»РµРєС‚СѓСЋС‰РёРµ",
+    categoryCode: "components",
+    caliber: 44,
+    unit: "С€С‚СѓРєР°",
+    quantity: "РѕС‚ 1 С€С‚.",
+    image: "",
+    imageAlt: "",
+    canOrder: true
+  },
+  {
+    id: "accessory-1",
+    title: "РљРѕРјРїР»РµРєС‚ СЏРєРѕСЂРЅРѕР№ РѕСЃРЅР°СЃС‚РєРё",
+    url: "#product-accessory-1",
+    category: "РћСЃРЅР°СЃС‚РєР°",
+    categoryCode: "accessories",
+    caliber: 60,
+    unit: "РєРѕРјРїР»РµРєС‚",
+    quantity: "РѕС‚ 1 РєРѕРјРїР».",
+    image: "",
+    imageAlt: "",
+    canOrder: false
+  }
+] %}
+
+{% block content %}
+  <section class="catalog-page">
+    <div class="container">
+      <div class="catalog-page__breadcrumbs">
+        {{ breadcrumb([
+          { label: "Р“Р»Р°РІРЅР°СЏ", href: "/" },
+          { label: "РљР°С‚Р°Р»РѕРі", current: true }
+        ]) }}
+      </div>
+
+      <header class="catalog-page__header">
+        <p class="catalog-page__eyebrow">
+          РџСЂРѕРґСѓРєС†РёСЏ
+        </p>
+
+        <h1 class="catalog-page__title">
+          РљР°С‚Р°Р»РѕРі
+        </h1>
+
+        <p class="catalog-page__description">
+          РЇРєРѕСЂРЅС‹Рµ С†РµРїРё, РєРѕРјРїР»РµРєС‚СѓСЋС‰РёРµ Рё РѕСЃРЅР°СЃС‚РєР°
+          РґР»СЏ РїСЂРѕС„РµСЃСЃРёРѕРЅР°Р»СЊРЅРѕРіРѕ РїСЂРёРјРµРЅРµРЅРёСЏ.
+        </p>
+      </header>
+
+      <div class="catalog-page__layout">
+        <aside class="catalog-page__sidebar">
+          {{ filter() }}
+        </aside>
+
+        <div class="catalog-page__content">
+          <div class="catalog-page__content-header">
+            <p
+              class="catalog-page__result-count"
+              data-catalog-result-count
+            >
+              РќР°Р№РґРµРЅРѕ С‚РѕРІР°СЂРѕРІ: {{ products | length }}
+            </p>
+
+            <p
+              class="catalog-page__order-summary"
+              aria-live="polite"
+            >
+              Р’Р°С€ Р·Р°РєР°Р·:
+              <strong data-order-count>0</strong>
+            </p>
+          </div>
+
+          <div
+            class="catalog-page__grid"
+            id="catalog-products"
+          >
+            {% for product in products %}
+              {{ productCard(
+                product.id,
+                product.title,
+                product.url,
+                product.category,
+                product.unit,
+                product.quantity,
+                product.image,
+                product.imageAlt,
+                product.canOrder,
+                product.categoryCode,
+                product.caliber
+              ) }}
+            {% endfor %}
+          </div>
+
+          <p
+            class="catalog-page__empty"
+            data-catalog-empty
+            hidden
+          >
+            РџРѕ Р·Р°РґР°РЅРЅС‹Рј РїР°СЂР°РјРµС‚СЂР°Рј С‚РѕРІР°СЂС‹ РЅРµ РЅР°Р№РґРµРЅС‹.
+            РР·РјРµРЅРёС‚Рµ СѓСЃР»РѕРІРёСЏ С„РёР»СЊС‚СЂР° РёР»Рё СЃР±СЂРѕСЃСЊС‚Рµ РёС….
+          </p>
+
+          <div
+            class="catalog-page__pagination"
+            data-catalog-pagination
+          >
+            {{ pagination(1, 3) }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+=== C:\Projects\red-anchor\src\pages\catalog\index.njk.json ===
+
+{
+  "page": {
+    "title": "РљР°С‚Р°Р»РѕРі",
+    "description": "РљР°С‚Р°Р»РѕРі РїСЂРѕРґСѓРєС†РёРё",
+    "bodyClass": "page-catalog"
+  }
+}
+
+=== C:\Projects\red-anchor\src\pages\ui-kit\index.njk ===
+
+{% extends "templates/layouts/base.njk" %}
+{% from "templates/components/ui/button.njk" import button %}
+{% from "templates/components/ui/checkbox.njk" import checkbox %}
+{% from "templates/components/ui/radio.njk" import radio %}
+{% from "templates/components/ui/badge.njk" import badge %}
+{% from "templates/components/ui/date-field.njk" import dateField %}
+{% from "templates/components/ui/file-upload.njk" import fileUpload %}
+{% from "templates/components/ui/input.njk" import input %}
+{% from "templates/components/ui/select.njk" import select %}
+{% from "templates/components/ui/textarea.njk" import textarea %}
+{% from "templates/components/ui/breadcrumb.njk" import breadcrumb %}
+{% from "templates/components/ui/pagination.njk" import pagination %}
+
+{% block content %}
+  <section class="ui-kit">
+    <div class="container">
+      <header class="ui-kit__header">
+        <p class="ui-kit__label">РЎР»СѓР¶РµР±РЅР°СЏ СЃС‚СЂР°РЅРёС†Р°</p>
+        <h1>UI-kit РїСЂРѕРµРєС‚Р°</h1>
+        <p>
+          Р—РґРµСЃСЊ Р±СѓРґСѓС‚ СЃРѕР±РёСЂР°С‚СЊСЃСЏ С‚РёРїРѕРіСЂР°С„РёРєР°, С†РІРµС‚Р°, РєРЅРѕРїРєРё,
+          РїРѕР»СЏ С„РѕСЂРј, РєР°СЂС‚РѕС‡РєРё Рё РѕСЃС‚Р°Р»СЊРЅС‹Рµ РїРѕРІС‚РѕСЂСЏРµРјС‹Рµ РєРѕРјРїРѕРЅРµРЅС‚С‹.
+        </p>
+      </header>
+
+      <section class="ui-kit__section">
+        <h2>Р—Р°РіРѕР»РѕРІРєРё</h2>
+
+        <div class="ui-kit__preview">
+          <h1>Р—Р°РіРѕР»РѕРІРѕРє РїРµСЂРІРѕРіРѕ СѓСЂРѕРІРЅСЏ</h1>
+          <h2>Р—Р°РіРѕР»РѕРІРѕРє РІС‚РѕСЂРѕРіРѕ СѓСЂРѕРІРЅСЏ</h2>
+          <h3>Р—Р°РіРѕР»РѕРІРѕРє С‚СЂРµС‚СЊРµРіРѕ СѓСЂРѕРІРЅСЏ</h3>
+          <p>
+            РџСЂРёРјРµСЂ РѕСЃРЅРѕРІРЅРѕРіРѕ С‚РµРєСЃС‚Р° СЃС‚СЂР°РЅРёС†С‹.
+          </p>
+        </div>
+      </section>
+
+      <section class="ui-kit__section">
+        <h2>РљРЅРѕРїРєРё</h2>
+
+        <div class="ui-kit__row">
+          {{ button("РћСЃРЅРѕРІРЅР°СЏ РєРЅРѕРїРєР°", "#") }}
+          {{ button("Р’С‚РѕСЂРёС‡РЅР°СЏ РєРЅРѕРїРєР°", "#", "secondary") }}
+        </div>
+      </section>
+      <section class="ui-kit__section">
+        <h2 class="type-h4 ui-kit__section-title">
+          РџРѕР»СЏ С„РѕСЂРјС‹
+        </h2>
+
+        <div class="ui-kit__form-preview">
+          {{ input(
+            "Р’Р°С€Рµ Р¤РРћ",
+            "demo-name",
+            "name",
+            "text",
+            "РРІР°РЅРѕРІ РРІР°РЅ РРІР°РЅРѕРІРёС‡",
+            "",
+            true
+          ) }}
+
+          {{ input(
+            "Р–РµР»Р°РµРјС‹Р№ СЃСЂРѕРє",
+            "demo-date",
+            "date",
+            "date",
+            "",
+            "",
+            true
+          ) }}
+
+          {{ select(
+            "РњР°С‚РµСЂРёР°Р»",
+            "demo-material",
+            "material",
+            [
+              { value: "", label: "Р’С‹Р±РµСЂРёС‚Рµ РјР°С‚РµСЂРёР°Р»" },
+              { value: "category-1", label: "РљР°С‚РµРіРѕСЂРёСЏ 1" },
+              { value: "category-2", label: "РљР°С‚РµРіРѕСЂРёСЏ 2" },
+              { value: "category-3", label: "РљР°С‚РµРіРѕСЂРёСЏ 3" },
+              { value: "category-4", label: "РљР°С‚РµРіРѕСЂРёСЏ 4" }
+            ]
+          ) }}
+
+          {{ textarea(
+            "Р’Р°С€ РєРѕРјРјРµРЅС‚Р°СЂРёР№",
+            "demo-comment",
+            "comment",
+            "РўРµРєСЃС‚ РєРѕРјРјРµРЅС‚Р°СЂРёСЏ"
+          ) }}
+        </div>
+      </section>
+
+      <section class="ui-kit__section">
+        <h2 class="type-h4 ui-kit__section-title">
+          РҐР»РµР±РЅС‹Рµ РєСЂРѕС€РєРё
+        </h2>
+
+        {{ breadcrumb([
+          { label: "РџСЂРѕРґСѓРєС†РёСЏ", href: "/catalog/" },
+          { label: "РЇРєРѕСЂРЅС‹Рµ С†РµРїРё Рё РєРѕРјРїР»РµРєС‚СѓСЋС‰РёРµ", href: "#" },
+          { label: "РЇРєРѕСЂРЅС‹Рµ СЃРјС‹С‡РєРё", current: true }
+        ]) }}
+      </section>
+
+      <section class="ui-kit__section">
+        <h2 class="type-h4 ui-kit__section-title">
+          РџР°РіРёРЅР°С†РёСЏ
+        </h2>
+
+        {{ pagination(3, 8) }}
+      </section>
+      <section class="ui-kit__section">
+        <h2 class="type-h4 ui-kit__section-title">
+          Р”Р°С‚Р°
+        </h2>
+
+        <div class="ui-kit__form-preview">
+          {{ dateField(
+            "Р–РµР»Р°РµРјР°СЏ РґР°С‚Р° РїРѕСЃС‚Р°РІРєРё",
+            "demo-delivery-date",
+            "deliveryDate",
+            "",
+            true
+          ) }}
+        </div>
+      </section>
+
+      <section class="ui-kit__section">
+        <h2 class="type-h4 ui-kit__section-title">
+          Checkbox Рё radio
+        </h2>
+
+        <div class="ui-kit__component-group">
+          {{ checkbox(
+            "demo-agreement",
+            "agreement",
+            "РЇ СЃРѕРіР»Р°СЃРµРЅ РЅР° РѕР±СЂР°Р±РѕС‚РєСѓ РґР°РЅРЅС‹С…",
+            "yes",
+            true
+          ) }}
+
+          {{ checkbox(
+            "demo-disabled-checkbox",
+            "disabledAgreement",
+            "РќРµРґРѕСЃС‚СѓРїРЅС‹Р№ checkbox",
+            "disabled",
+            false,
+            true
+          ) }}
+        </div>
+
+        <div class="ui-kit__component-group">
+          {{ radio(
+            "demo-delivery-warehouse",
+            "deliveryType",
+            "Р”РѕСЃС‚Р°РІРєР° РЅР° СЃРєР»Р°Рґ",
+            "warehouse",
+            true
+          ) }}
+
+          {{ radio(
+            "demo-delivery-address",
+            "deliveryType",
+            "Р”РѕСЃС‚Р°РІРєР° РїРѕ Р°РґСЂРµСЃСѓ",
+            "address"
+          ) }}
+
+          {{ radio(
+            "demo-disabled-radio",
+            "disabledDeliveryType",
+            "РќРµРґРѕСЃС‚СѓРїРЅС‹Р№ radio",
+            "disabled",
+            false,
+            true
+          ) }}
+        </div>
+      </section>
+
+      <section class="ui-kit__section">
+        <h2 class="type-h4 ui-kit__section-title">
+          Badge
+        </h2>
+
+        <div class="ui-kit__component-group">
+          {{ badge("РљР°С‚Р°Р»РѕРі") }}
+          {{ badge("РќРѕРІРёРЅРєР°", "accent") }}
+          {{ badge("РђСЂС…РёРІ", "dark") }}
+          {{ badge("РџРѕРґСЂРѕР±РЅРµРµ", "outline") }}
+          {{ badge("РЎР»СѓР¶РµР±РЅС‹Р№", "muted") }}
+        </div>
+      </section>
+
+      <section class="ui-kit__section">
+        <h2 class="type-h4 ui-kit__section-title">
+          Р—Р°РіСЂСѓР·РєР° С„Р°Р№Р»Р°
+        </h2>
+
+        <div class="ui-kit__file-preview">
+          {{ fileUpload(
+            "demo-attachment",
+            "attachment"
+          ) }}
+        </div>
+      </section>
+    </div>
+  </section>
+{% endblock %}
+
+=== C:\Projects\red-anchor\src\pages\ui-kit\index.njk.json ===
+
+{
+  "page": {
+    "title": "UI-kit",
+    "description": "РўРµС…РЅРёС‡РµСЃРєР°СЏ СЃС‚СЂР°РЅРёС†Р° РєРѕРјРїРѕРЅРµРЅС‚РѕРІ РїСЂРѕРµРєС‚Р°",
+    "bodyClass": "page-ui-kit"
+  }
+}
+
+=== C:\Projects\red-anchor\src\pages\index.njk ===
+
+{% extends "templates/layouts/base.njk" %}
+{% from "templates/components/ui/button.njk" import button %}
+
+{% macro typeSample(label, className, text) %}
+  <article class="ui-kit__type-sample">
+    <p class="ui-kit__type-label">{{ label }}</p>
+    <p class="{{ className }}">{{ text }}</p>
+  </article>
+{% endmacro %}
+
+{% set paragraphText %}
+  Р¤РѕСЂРјРёСЂРѕРІР°РЅРёРµ РёРјРёРґР¶Р° СЃРѕР·РґР°С‘С‚ РјРµР¶Р»РёС‡РЅРѕСЃС‚РЅС‹Р№ Р±Р°РёРЅРі Рё СЃРµР»Р»РёРЅРі.
+  РЎРѕРіР»Р°СЃРЅРѕ СЃС‚Р°РІС€РµР№ СѓР¶Рµ РєР»Р°СЃСЃРёС‡РµСЃРєРѕР№ СЂР°Р±РѕС‚Рµ Р¤РёР»РёРїР° РљРѕС‚Р»РµСЂР°,
+  РѕСЂРіР°РЅРёР·Р°С†РёСЏ РїСЂР°РєС‚РёС‡РµСЃРєРѕРіРѕ РІР·Р°РёРјРѕРґРµР№СЃС‚РІРёСЏ РґРёСЂРµРєС‚РёРІРЅРѕ
+  СЃРїРµС†РёС„РёС†РёСЂСѓРµС‚ РєРѕРЅРІРµСЂРіРµРЅС‚РЅС‹Р№ РґРёРєС‚Р°С‚ РїРѕС‚СЂРµР±РёС‚РµР»СЏ.
+{% endset %}
+
+{% set shortText %}
+  Р”Р»СЏ РєРѕСЂРѕС‚РєРѕРіРѕ С‚РµРєСЃС‚Р°, СЃРѕСЃС‚РѕСЏС‰РµРіРѕ РёР· 1вЂ“3 СЃС‚СЂРѕС‡РµРє.
+  Р¤РѕСЂРјРёСЂРѕРІР°РЅРёРµ РёРјРёРґР¶Р° СЃРѕР·РґР°С‘С‚.
+{% endset %}
+
+{% block content %}
+  <section class="ui-kit">
+    <div class="container">
+      <header class="ui-kit__header">
+        <p class="ui-kit__label">РЎР»СѓР¶РµР±РЅР°СЏ СЃС‚СЂР°РЅРёС†Р°</p>
+
+        <h1 class="type-h1">
+          UI-kit РїСЂРѕРµРєС‚Р°
+        </h1>
+
+        <p class="type-p2">
+          РўРёРїРѕРіСЂР°С„РёС‡РµСЃРєРёРµ СЃС‚РёР»Рё, С†РІРµС‚Р°, РєРЅРѕРїРєРё, РїРѕР»СЏ С„РѕСЂРј,
+          РєР°СЂС‚РѕС‡РєРё Рё РѕСЃС‚Р°Р»СЊРЅС‹Рµ РїРѕРІС‚РѕСЂСЏРµРјС‹Рµ РєРѕРјРїРѕРЅРµРЅС‚С‹ РїСЂРѕРµРєС‚Р°.
+        </p>
+      </header>
+
+      <section class="ui-kit__section">
+        <h2 class="type-h4 ui-kit__section-title">
+          Р—Р°РіРѕР»РѕРІРєРё
+        </h2>
+
+        <div class="ui-kit__preview">
+          {{ typeSample(
+            "H1 Р±РѕР»СЊС€РѕР№ В· TT Bluescreens Bold 700",
+            "type-display",
+            "Р‘РѕР»СЊС€РѕР№ Р·Р°РіРѕР»РѕРІРѕРє РїРµСЂРІРѕРіРѕ СѓСЂРѕРІРЅСЏ"
+          ) }}
+
+          {{ typeSample(
+            "H1 СЃСЂРµРґРЅРёР№ В· TT Bluescreens Bold 700",
+            "type-h1",
+            "Р—Р°РіРѕР»РѕРІРѕРє РїРµСЂРІРѕРіРѕ СѓСЂРѕРІРЅСЏ"
+          ) }}
+
+          {{ typeSample(
+            "H2 В· TT Bluescreens Bold 700",
+            "type-h2",
+            "Р—Р°РіРѕР»РѕРІРѕРє РІС‚РѕСЂРѕРіРѕ СѓСЂРѕРІРЅСЏ"
+          ) }}
+
+          {{ typeSample(
+            "H3 В· TT Bluescreens Bold 700",
+            "type-h3",
+            "Р—Р°РіРѕР»РѕРІРѕРє С‚СЂРµС‚СЊРµРіРѕ СѓСЂРѕРІРЅСЏ"
+          ) }}
+
+          {{ typeSample(
+            "H4 В· TT Bluescreens Bold 700",
+            "type-h4",
+            "Р—Р°РіРѕР»РѕРІРѕРє С‡РµС‚РІС‘СЂС‚РѕРіРѕ СѓСЂРѕРІРЅСЏ"
+          ) }}
+
+          {{ typeSample(
+            "H5 В· TT Bluescreens Bold 700",
+            "type-h5",
+            "Р—Р°РіРѕР»РѕРІРѕРє РїСЏС‚РѕРіРѕ СѓСЂРѕРІРЅСЏ"
+          ) }}
+        </div>
+      </section>
+
+      <section class="ui-kit__section">
+        <h2 class="type-h4 ui-kit__section-title">
+          РћСЃРЅРѕРІРЅРѕР№ С‚РµРєСЃС‚
+        </h2>
+
+        <div class="ui-kit__preview">
+          {{ typeSample(
+            "P1 Light В· PF DIN Text Cond Pro 300",
+            "type-p1",
+            paragraphText
+          ) }}
+
+          {{ typeSample(
+            "P1 Medium В· PF DIN Text Cond Pro 500",
+            "type-p1 type--medium",
+            paragraphText
+          ) }}
+
+          {{ typeSample(
+            "P2 Light В· PF DIN Text Cond Pro 300",
+            "type-p2",
+            paragraphText
+          ) }}
+
+          {{ typeSample(
+            "P2 Medium В· PF DIN Text Cond Pro 500",
+            "type-p2 type--medium",
+            paragraphText
+          ) }}
+
+          {{ typeSample(
+            "P3 Light В· PF DIN Text Cond Pro 300",
+            "type-p3",
+            paragraphText
+          ) }}
+
+          {{ typeSample(
+            "P3 Medium В· PF DIN Text Cond Pro 500",
+            "type-p3 type--medium",
+            paragraphText
+          ) }}
+
+          {{ typeSample(
+            "P4 Light В· PF DIN Text Cond Pro 300",
+            "type-p4",
+            paragraphText
+          ) }}
+
+          {{ typeSample(
+            "P4 Medium В· PF DIN Text Cond Pro 500",
+            "type-p4 type--medium",
+            paragraphText
+          ) }}
+        </div>
+      </section>
+
+      <section class="ui-kit__section">
+        <h2 class="type-h4 ui-kit__section-title">
+          РљРѕСЂРѕС‚РєРёР№ С‚РµРєСЃС‚
+        </h2>
+
+        <div class="ui-kit__preview ui-kit__preview--short">
+          {{ typeSample(
+            "S1 Light В· PF DIN Text Cond Pro 300",
+            "type-s1",
+            shortText
+          ) }}
+
+          {{ typeSample(
+            "S1 Medium В· PF DIN Text Cond Pro 500",
+            "type-s1 type--medium",
+            shortText
+          ) }}
+
+          {{ typeSample(
+            "S2 Light В· PF DIN Text Cond Pro 300",
+            "type-s2",
+            shortText
+          ) }}
+
+          {{ typeSample(
+            "S2 Medium В· PF DIN Text Cond Pro 500",
+            "type-s2 type--medium",
+            shortText
+          ) }}
+
+          {{ typeSample(
+            "S3 Light В· PF DIN Text Cond Pro 300",
+            "type-s3",
+            shortText
+          ) }}
+
+          {{ typeSample(
+            "S3 Medium В· PF DIN Text Cond Pro 500",
+            "type-s3 type--medium",
+            shortText
+          ) }}
+
+          {{ typeSample(
+            "S4 Light В· PF DIN Text Cond Pro 300",
+            "type-s4",
+            shortText
+          ) }}
+
+          {{ typeSample(
+            "S4 Medium В· PF DIN Text Cond Pro 500",
+            "type-s4 type--medium",
+            shortText
+          ) }}
+        </div>
+      </section>
+
+      <section class="ui-kit__section">
+        <h2 class="type-h4 ui-kit__section-title">
+          РљРЅРѕРїРєРё
+        </h2>
+
+        <div class="ui-kit__row">
+          {{ button("РћСЃРЅРѕРІРЅР°СЏ РєРЅРѕРїРєР°", "#") }}
+          {{ button("Р’С‚РѕСЂРёС‡РЅР°СЏ РєРЅРѕРїРєР°", "#", "secondary") }}
+        </div>
+      </section>
+    </div>
+  </section>
+{% endblock %}
+
+=== C:\Projects\red-anchor\src\pages\index.njk.json ===
+
+{
+  "page": {
+    "title": "Р“Р»Р°РІРЅР°СЏ",
+    "description": "Р“Р»Р°РІРЅР°СЏ СЃС‚СЂР°РЅРёС†Р° СЃР°Р№С‚Р° В«РљСЂР°СЃРЅС‹Р№ СЏРєРѕСЂСЊВ»",
+    "bodyClass": "page-home"
+  }
+}
+
+=== C:\Projects\red-anchor\src\scripts\adapters\+.js ===
+
+import './demo-catalog-adapter.ts'
+import './demo-order-adapter.ts'
+
+=== C:\Projects\red-anchor\src\scripts\adapters\demo-catalog-adapter.ts ===
+
+export type CatalogFilters = {
+  caliberFrom: number | null;
+  caliberTo: number | null;
+  category: string;
+};
+
+export interface CatalogAdapter {
+  apply(filters: CatalogFilters): number;
+  getTotal(): number;
+}
+
+export class DemoCatalogAdapter implements CatalogAdapter {
+  private readonly cards: HTMLElement[];
+
+  constructor(root: ParentNode) {
+    this.cards = Array.from(
+      root.querySelectorAll<HTMLElement>('[data-product-card]'),
+    );
+  }
+
+  public apply(filters: CatalogFilters): number {
+    let visibleCount = 0;
+
+    this.cards.forEach((card) => {
+      const category = card.dataset.productCategory ?? '';
+      const caliberValue = card.dataset.productCaliber ?? '';
+      const parsedCaliber = Number(caliberValue);
+
+      const caliber =
+        caliberValue && Number.isFinite(parsedCaliber)
+          ? parsedCaliber
+          : null;
+
+      const matchesCategory =
+        !filters.category || category === filters.category;
+
+      const matchesCaliberFrom =
+        filters.caliberFrom === null ||
+        (caliber !== null && caliber >= filters.caliberFrom);
+
+      const matchesCaliberTo =
+        filters.caliberTo === null ||
+        (caliber !== null && caliber <= filters.caliberTo);
+
+      const isVisible =
+        matchesCategory &&
+        matchesCaliberFrom &&
+        matchesCaliberTo;
+
+      card.hidden = !isVisible;
+
+      if (isVisible) {
+        visibleCount += 1;
+      }
+    });
+
+    return visibleCount;
+  }
+
+  public getTotal(): number {
+    return this.cards.length;
+  }
+}
+
+=== C:\Projects\red-anchor\src\scripts\adapters\demo-order-adapter.ts ===
+
+export type OrderChangeListener = (
+  productIds: readonly string[],
+) => void;
+
+export interface OrderAdapter {
+  getProductIds(): readonly string[];
+  getCount(): number;
+  has(productId: string): boolean;
+  add(productId: string): Promise<void>;
+  remove(productId: string): Promise<void>;
+  subscribe(listener: OrderChangeListener): () => void;
+}
+
+const STORAGE_KEY = 'red-anchor-demo-order';
+
+export class DemoOrderAdapter implements OrderAdapter {
+  private productIds: Set<string>;
+
+  private readonly listeners =
+    new Set<OrderChangeListener>();
+
+  constructor() {
+    this.productIds = this.readStorage();
+
+    window.addEventListener('storage', (event) => {
+      if (event.key !== STORAGE_KEY) {
+        return;
+      }
+
+      this.productIds = this.readStorage();
+      this.notify();
+    });
+  }
+
+  public getProductIds(): readonly string[] {
+    return Array.from(this.productIds);
+  }
+
+  public getCount(): number {
+    return this.productIds.size;
+  }
+
+  public has(productId: string): boolean {
+    return this.productIds.has(productId);
+  }
+
+  public async add(productId: string): Promise<void> {
+    if (!productId) {
+      return;
+    }
+
+    this.productIds.add(productId);
+    this.save();
+    this.notify();
+  }
+
+  public async remove(productId: string): Promise<void> {
+    this.productIds.delete(productId);
+    this.save();
+    this.notify();
+  }
+
+  public subscribe(
+    listener: OrderChangeListener,
+  ): () => void {
+    this.listeners.add(listener);
+
+    return () => {
+      this.listeners.delete(listener);
+    };
+  }
+
+  private readStorage(): Set<string> {
+    try {
+      const storedValue =
+        window.localStorage.getItem(STORAGE_KEY);
+
+      if (!storedValue) {
+        return new Set();
+      }
+
+      const parsedValue: unknown =
+        JSON.parse(storedValue);
+
+      if (!Array.isArray(parsedValue)) {
+        return new Set();
+      }
+
+      const productIds = parsedValue.filter(
+        (value): value is string =>
+          typeof value === 'string' && value.length > 0,
+      );
+
+      return new Set(productIds);
+    } catch {
+      return new Set();
+    }
+  }
+
+  private save(): void {
+    try {
+      window.localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(this.getProductIds()),
+      );
+    } catch {
+      /*
+       * Р•СЃР»Рё localStorage РЅРµРґРѕСЃС‚СѓРїРµРЅ, Р·Р°РєР°Р· РїСЂРѕРґРѕР»Р¶РёС‚
+       * СЂР°Р±РѕС‚Р°С‚СЊ РґРѕ РѕР±РЅРѕРІР»РµРЅРёСЏ С‚РµРєСѓС‰РµР№ СЃС‚СЂР°РЅРёС†С‹.
+       */
+    }
+  }
+
+  private notify(): void {
+    const productIds = this.getProductIds();
+
+    this.listeners.forEach((listener) => {
+      listener(productIds);
+    });
+  }
+}
+
+export const demoOrderAdapter =
+  new DemoOrderAdapter();
+
+=== C:\Projects\red-anchor\src\scripts\components\+.js ===
+
+import './file-upload.ts'
+import './filter.ts'
+import './mobile-menu.ts'
+import './order.ts'
+
+=== C:\Projects\red-anchor\src\scripts\components\file-upload.ts ===
+
+const DEFAULT_MAX_SIZE = 10 * 1024 * 1024;
+
+function formatFileSize(size: number): string {
+  if (size < 1024) {
+    return `${size} Р‘`;
+  }
+
+  if (size < 1024 * 1024) {
+    return `${Math.round(size / 1024)} РљР‘`;
+  }
+
+  return `${(size / (1024 * 1024)).toFixed(1)} РњР‘`;
+}
+
+function getFileExtension(fileName: string): string {
+  const parts = fileName.toLowerCase().split('.');
+
+  if (parts.length < 2) {
+    return '';
+  }
+
+  return `.${parts.at(-1)}`;
+}
+
+function isFileAccepted(file: File, accept: string): boolean {
+  if (!accept) {
+    return true;
+  }
+
+  const acceptedValues = accept
+    .split(',')
+    .map((value) => value.trim().toLowerCase())
+    .filter(Boolean);
+
+  const extension = getFileExtension(file.name);
+  const fileType = file.type.toLowerCase();
+
+  return acceptedValues.some((value) => {
+    if (value.startsWith('.')) {
+      return value === extension;
+    }
+
+    if (value.endsWith('/*')) {
+      return fileType.startsWith(value.slice(0, -1));
+    }
+
+    return value === fileType;
+  });
+}
+
+function setInputFile(input: HTMLInputElement, file: File): void {
+  try {
+    const dataTransfer = new DataTransfer();
+
+    dataTransfer.items.add(file);
+    input.files = dataTransfer.files;
+  } catch {
+    /*
+     * РќРµРєРѕС‚РѕСЂС‹Рµ Р±СЂР°СѓР·РµСЂС‹ Р·Р°РїСЂРµС‰Р°СЋС‚ РїСЂРѕРіСЂР°РјРјРЅРѕ РјРµРЅСЏС‚СЊ input.files.
+     * Р’ С‚Р°РєРѕРј СЃР»СѓС‡Р°Рµ С„Р°Р№Р» РІСЃС‘ СЂР°РІРЅРѕ РѕСЃС‚Р°С‘С‚СЃСЏ РѕС‚РѕР±СЂР°Р¶С‘РЅРЅС‹Рј РІ РєРѕРјРїРѕРЅРµРЅС‚Рµ.
+     */
+  }
+}
+
+function renderFile(
+  root: HTMLElement,
+  input: HTMLInputElement,
+  file: File,
+): void {
+  const list = root.querySelector<HTMLElement>('[data-file-list]');
+
+  if (!list) {
+    return;
+  }
+
+  list.innerHTML = '';
+
+  const fileElement = document.createElement('div');
+  fileElement.className = 'file-upload__file';
+
+  const nameElement = document.createElement('span');
+  nameElement.className = 'file-upload__file-name';
+  nameElement.textContent = file.name;
+  nameElement.title = file.name;
+
+  const sizeElement = document.createElement('span');
+  sizeElement.className = 'file-upload__file-size';
+  sizeElement.textContent = formatFileSize(file.size);
+
+  const removeButton = document.createElement('button');
+  removeButton.className = 'file-upload__remove';
+  removeButton.type = 'button';
+  removeButton.textContent = 'РЈРґР°Р»РёС‚СЊ';
+
+  removeButton.addEventListener('click', () => {
+    input.value = '';
+    list.innerHTML = '';
+    root.classList.remove('has-file');
+  });
+
+  fileElement.append(nameElement, sizeElement, removeButton);
+  list.append(fileElement);
+
+  root.classList.add('has-file');
+}
+
+function showError(root: HTMLElement, message: string): void {
+  const errorElement = root.querySelector<HTMLElement>('[data-file-error]');
+
+  if (errorElement) {
+    errorElement.textContent = message;
+  }
+
+  root.classList.toggle('is-invalid', Boolean(message));
+}
+
+function handleFile(
+  root: HTMLElement,
+  input: HTMLInputElement,
+  file: File | undefined,
+): void {
+  const maxSize = Number(root.dataset.maxSize) || DEFAULT_MAX_SIZE;
+  const accept = input.getAttribute('accept') ?? '';
+
+  root.classList.remove('has-file');
+  showError(root, '');
+
+  if (!file) {
+    return;
+  }
+
+  if (!isFileAccepted(file, accept)) {
+    input.value = '';
+    showError(root, 'Р¤РѕСЂРјР°С‚ С„Р°Р№Р»Р° РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚СЃСЏ.');
+    return;
+  }
+
+  if (file.size > maxSize) {
+    input.value = '';
+    showError(
+      root,
+      `Р¤Р°Р№Р» СЃР»РёС€РєРѕРј Р±РѕР»СЊС€РѕР№. РњР°РєСЃРёРјР°Р»СЊРЅС‹Р№ СЂР°Р·РјРµСЂ: ${formatFileSize(maxSize)}.`,
+    );
+    return;
+  }
+
+  setInputFile(input, file);
+  renderFile(root, input, file);
+}
+
+export function initFileUploads(): void {
+  const roots = document.querySelectorAll<HTMLElement>('[data-file-upload]');
+
+  roots.forEach((root) => {
+    const input = root.querySelector<HTMLInputElement>(
+      '.file-upload__input',
+    );
+
+    const dropzone = root.querySelector<HTMLElement>(
+      '.file-upload__dropzone',
+    );
+
+    if (!input || !dropzone) {
+      return;
+    }
+
+    input.addEventListener('change', () => {
+      handleFile(root, input, input.files?.[0]);
+    });
+
+    ['dragenter', 'dragover'].forEach((eventName) => {
+      dropzone.addEventListener(eventName, (event) => {
+        event.preventDefault();
+        root.classList.add('is-dragover');
+      });
+    });
+
+    ['dragleave', 'drop'].forEach((eventName) => {
+      dropzone.addEventListener(eventName, (event) => {
+        event.preventDefault();
+        root.classList.remove('is-dragover');
+      });
+    });
+
+    dropzone.addEventListener('drop', (event) => {
+      const dragEvent = event as DragEvent;
+      const file = dragEvent.dataTransfer?.files?.[0];
+
+      handleFile(root, input, file);
+    });
+  });
+}
+
+=== C:\Projects\red-anchor\src\scripts\components\filter.ts ===
+
+import {
+  DemoCatalogAdapter,
+  type CatalogFilters,
+} from '../adapters/demo-catalog-adapter';
+
+function parseNumber(value: FormDataEntryValue | null): number | null {
+  if (typeof value !== 'string' || value.trim() === '') {
+    return null;
+  }
+
+  const parsedValue = Number(value);
+
+  return Number.isFinite(parsedValue)
+    ? parsedValue
+    : null;
+}
+
+function readFilters(form: HTMLFormElement): CatalogFilters {
+  const formData = new FormData(form);
+
+  return {
+    caliberFrom: parseNumber(formData.get('caliberFrom')),
+    caliberTo: parseNumber(formData.get('caliberTo')),
+    category: String(formData.get('category') ?? ''),
+  };
+}
+
+function setControlValue(
+  form: HTMLFormElement,
+  name: string,
+  value: string,
+): void {
+  const control = form.elements.namedItem(name);
+
+  if (
+    control instanceof HTMLInputElement ||
+    control instanceof HTMLSelectElement
+  ) {
+    control.value = value;
+  }
+}
+
+function restoreFiltersFromUrl(form: HTMLFormElement): void {
+  const searchParams = new URLSearchParams(window.location.search);
+
+  setControlValue(
+    form,
+    'caliberFrom',
+    searchParams.get('caliberFrom') ?? '',
+  );
+
+  setControlValue(
+    form,
+    'caliberTo',
+    searchParams.get('caliberTo') ?? '',
+  );
+
+  setControlValue(
+    form,
+    'category',
+    searchParams.get('category') ?? '',
+  );
+}
+
+function setSearchParameter(
+  searchParams: URLSearchParams,
+  name: string,
+  value: string | number | null,
+): void {
+  if (value === null || value === '') {
+    searchParams.delete(name);
+    return;
+  }
+
+  searchParams.set(name, String(value));
+}
+
+function updateUrl(filters: CatalogFilters): void {
+  const url = new URL(window.location.href);
+
+  setSearchParameter(
+    url.searchParams,
+    'caliberFrom',
+    filters.caliberFrom,
+  );
+
+  setSearchParameter(
+    url.searchParams,
+    'caliberTo',
+    filters.caliberTo,
+  );
+
+  setSearchParameter(
+    url.searchParams,
+    'category',
+    filters.category,
+  );
+
+  url.searchParams.delete('page');
+
+  window.history.replaceState(
+    {},
+    '',
+    `${url.pathname}${url.search}${url.hash}`,
+  );
+}
+
+function validateRange(
+  form: HTMLFormElement,
+  filters: CatalogFilters,
+): boolean {
+  const caliberToInput =
+    form.elements.namedItem('caliberTo');
+
+  if (!(caliberToInput instanceof HTMLInputElement)) {
+    return true;
+  }
+
+  caliberToInput.setCustomValidity('');
+
+  if (
+    filters.caliberFrom !== null &&
+    filters.caliberTo !== null &&
+    filters.caliberFrom > filters.caliberTo
+  ) {
+    caliberToInput.setCustomValidity(
+      'Р—РЅР°С‡РµРЅРёРµ В«Р”РѕВ» РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РјРµРЅСЊС€Рµ Р·РЅР°С‡РµРЅРёСЏ В«РћС‚В».',
+    );
+
+    caliberToInput.reportValidity();
+
+    return false;
+  }
+
+  return true;
+}
+
+function updateCatalogState(
+  root: HTMLElement,
+  visibleCount: number,
+): void {
+  const resultCount = root.querySelector<HTMLElement>(
+    '[data-catalog-result-count]',
+  );
+
+  const emptyState = root.querySelector<HTMLElement>(
+    '[data-catalog-empty]',
+  );
+
+  const pagination = root.querySelector<HTMLElement>(
+    '[data-catalog-pagination]',
+  );
+
+  if (resultCount) {
+    resultCount.textContent =
+      `РќР°Р№РґРµРЅРѕ С‚РѕРІР°СЂРѕРІ: ${visibleCount}`;
+  }
+
+  if (emptyState) {
+    emptyState.hidden = visibleCount !== 0;
+  }
+
+  if (pagination) {
+    pagination.hidden = visibleCount === 0;
+  }
+}
+
+function applyFilters(
+  form: HTMLFormElement,
+  root: HTMLElement,
+  adapter: DemoCatalogAdapter,
+  shouldUpdateUrl: boolean,
+): void {
+  const filters = readFilters(form);
+
+  if (!validateRange(form, filters)) {
+    return;
+  }
+
+  const visibleCount = adapter.apply(filters);
+
+  updateCatalogState(root, visibleCount);
+
+  if (shouldUpdateUrl) {
+    updateUrl(filters);
+  }
+}
+
+export function initFilters(): void {
+  const forms =
+    document.querySelectorAll<HTMLFormElement>('[data-filter]');
+
+  forms.forEach((form) => {
+    const root = form.closest<HTMLElement>('.catalog-page');
+
+    if (!root) {
+      return;
+    }
+
+    const adapter = new DemoCatalogAdapter(root);
+
+    restoreFiltersFromUrl(form);
+    applyFilters(form, root, adapter, false);
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      applyFilters(form, root, adapter, true);
+    });
+
+    form.addEventListener('reset', () => {
+      window.setTimeout(() => {
+        applyFilters(form, root, adapter, true);
+      }, 0);
+    });
+
+    window.addEventListener('popstate', () => {
+      restoreFiltersFromUrl(form);
+      applyFilters(form, root, adapter, false);
+    });
+  });
+}
+
+=== C:\Projects\red-anchor\src\scripts\components\mobile-menu.ts ===
+
+export function initMobileMenu(): void {
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const menu = document.querySelector<HTMLElement>('[data-menu]');
+
+  if (!header || !toggle || !menu) {
+    return;
+  }
+
+  const desktopMedia = window.matchMedia('(min-width: 1024px)');
+
+  const setOpen = (isOpen: boolean): void => {
+    header.classList.toggle('is-menu-open', isOpen);
+    document.body.classList.toggle('is-scroll-locked', isOpen);
+    toggle.setAttribute('aria-expanded', String(isOpen));
+  };
+
+  const closeMenu = (): void => {
+    setOpen(false);
+  };
+
+  toggle.addEventListener('click', () => {
+    const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+
+    setOpen(!isOpen);
+  });
+
+  menu.addEventListener('click', (event) => {
+    const target = event.target;
+
+    if (target instanceof HTMLAnchorElement) {
+      closeMenu();
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      closeMenu();
+      toggle.focus();
+    }
+  });
+
+  desktopMedia.addEventListener('change', (event) => {
+    if (event.matches) {
+      closeMenu();
+    }
+  });
+}
+
+=== C:\Projects\red-anchor\src\scripts\components\order.ts ===
+
+import {
+  demoOrderAdapter,
+  type OrderAdapter,
+} from '../adapters/demo-order-adapter';
+
+const DEFAULT_LABEL = 'Р”РѕР±Р°РІРёС‚СЊ РІ Р·Р°РєР°Р·';
+const ADDED_LABEL = 'Р”РѕР±Р°РІР»РµРЅРѕ РІ Р·Р°РєР°Р·';
+
+function updateButton(
+  button: HTMLButtonElement,
+  adapter: OrderAdapter,
+): void {
+  const productId = button.dataset.productId ?? '';
+  const isAdded = adapter.has(productId);
+
+  const label = button.querySelector<HTMLElement>(
+    '[data-order-button-text]',
+  );
+
+  button.classList.toggle('is-added', isAdded);
+  button.setAttribute(
+    'aria-pressed',
+    isAdded ? 'true' : 'false',
+  );
+
+  if (label) {
+    label.textContent = isAdded
+      ? ADDED_LABEL
+      : DEFAULT_LABEL;
+  }
+}
+
+function updateCounters(
+  root: ParentNode,
+  adapter: OrderAdapter,
+): void {
+  const count = adapter.getCount();
+
+  const counters =
+    root.querySelectorAll<HTMLElement>('[data-order-count]');
+
+  counters.forEach((counter) => {
+    counter.textContent = String(count);
+  });
+}
+
+export function initOrder(
+  adapter: OrderAdapter = demoOrderAdapter,
+): void {
+  const buttons =
+    document.querySelectorAll<HTMLButtonElement>(
+      '[data-add-to-order]',
+    );
+
+  const updateInterface = (): void => {
+    buttons.forEach((button) => {
+      updateButton(button, adapter);
+    });
+
+    updateCounters(document, adapter);
+  };
+
+  buttons.forEach((button) => {
+    if (button.dataset.orderInitialized === 'true') {
+      return;
+    }
+
+    button.dataset.orderInitialized = 'true';
+
+    button.addEventListener('click', async () => {
+      const productId = button.dataset.productId ?? '';
+
+      if (!productId) {
+        return;
+      }
+
+      button.disabled = true;
+      button.classList.add('is-pending');
+
+      try {
+        if (adapter.has(productId)) {
+          await adapter.remove(productId);
+        } else {
+          await adapter.add(productId);
+        }
+      } finally {
+        button.disabled = false;
+        button.classList.remove('is-pending');
+        updateInterface();
+      }
+    });
+  });
+
+  adapter.subscribe(() => {
+    updateInterface();
+  });
+
+  updateInterface();
+}
+
+=== C:\Projects\red-anchor\src\scripts\main.ts ===
+
+import '../styles/main.scss';
+
+import { initFileUploads } from './components/file-upload';
+import { initFilters } from './components/filter';
+import { initMobileMenu } from './components/mobile-menu';
+import { initOrder } from './components/order';
+
+
+function initApp(): void {
+  initMobileMenu();
+  initFileUploads();
+  initFilters();
+  initOrder();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp, { once: true });
+} else {
+  initApp();
+}
+
+=== C:\Projects\red-anchor\src\styles\abstracts\+.css ===
+
+@import "./_breakpoints.scss";
+@import "./_functions.scss";
+@import "./_index.scss";
+@import "./_mixins.scss";
+@import "./_variables.scss";
+
+=== C:\Projects\red-anchor\src\styles\abstracts\_breakpoints.scss ===
+
+$breakpoints: (
+  mobile: 480px,
+  tablet: 768px,
+  desktop: 1024px,
+  wide: 1440px,
+  large: 1920px,
+);
+
+=== C:\Projects\red-anchor\src\styles\abstracts\_functions.scss ===
+
+@use 'sass:math';
+
+@function rem($pixels, $base: 16px) {
+  @return math.div($pixels, $base) * 1rem;
+}
+
+@function fluid($min-size, $max-size, $min-viewport: 360px, $max-viewport: 1440px) {
+  @if $max-viewport <= $min-viewport {
+    @error '$max-viewport РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ Р±РѕР»СЊС€Рµ $min-viewport';
+  }
+
+  @if $max-size < $min-size {
+    @error '$max-size РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РЅРµ РјРµРЅСЊС€Рµ $min-size';
+  }
+
+  $slope: math.div($max-size - $min-size, $max-viewport - $min-viewport);
+  $intersection: $min-size - $slope * $min-viewport;
+
+  @return clamp(#{$min-size}, calc(#{$intersection} + #{$slope * 100}vw), #{$max-size});
+}
+
+=== C:\Projects\red-anchor\src\styles\abstracts\_index.scss ===
+
+@forward 'variables';
+@forward 'breakpoints';
+@forward 'functions';
+@forward 'mixins';
+
+=== C:\Projects\red-anchor\src\styles\abstracts\_mixins.scss ===
+
+@use 'sass:map';
+@use 'breakpoints' as *;
+
+@mixin media-up($name) {
+  $breakpoint: map.get($breakpoints, $name);
+
+  @if not $breakpoint {
+    @error 'Р‘СЂРµР№РєРїРѕРёРЅС‚ `#{$name}` РЅРµ РЅР°Р№РґРµРЅ';
+  }
+
+  @media (min-width: $breakpoint) {
+    @content;
+  }
+}
+
+@mixin hover {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @content;
+    }
+  }
+
+  @media (hover: none) or (pointer: coarse) {
+    &:active {
+      @content;
+    }
+  }
+}
+
+@mixin focus-ring {
+  &:focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 3px;
+  }
+}
+
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+=== C:\Projects\red-anchor\src\styles\abstracts\_variables.scss ===
+
+$font-family-base: 'PF DIN Text Cond Pro', arial, helvetica, sans-serif;
+$font-family-heading: 'TT Bluescreens', impact, sans-serif;
+
+$color-white: #fff;
+$color-black: #110101;
+
+$color-text: #150f0f;
+$color-text-muted: #50575a;
+
+$color-background: #fff;
+$color-background-muted: #f5f5f5;
+
+$color-border: rgba(79, 86, 89, 0.2);
+
+$color-accent: #dd2b1c;
+
+$color-accent-hover: #a9181e;
+
+$color-focus: #2357d9;
+
+$container-max-width: 1440px;
+
+$transition-duration: 200ms;
+$transition-timing-function: ease;
+
+$z-index-header: 100;
+$z-index-overlay: 200;
+$z-index-modal: 300;
+
+=== C:\Projects\red-anchor\src\styles\base\+.css ===
+
+@import "./_fonts.scss";
+@import "./_global.scss";
+@import "./_reset.scss";
+@import "./_tokens.scss";
+@import "./_typography.scss";
+
+=== C:\Projects\red-anchor\src\styles\base\_fonts.scss ===
+
+@font-face {
+  font-family: 'PF DIN Text Cond Pro';
+  src: url('../../assets/fonts/pf-din-text-cond-pro-light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PF DIN Text Cond Pro';
+  src: url('../../assets/fonts/pf-din-text-cond-pro-medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TT Bluescreens';
+  src: url('../../assets/fonts/tt-bluescreens-bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+=== C:\Projects\red-anchor\src\styles\base\_global.scss ===
+
+@use '../abstracts' as *;
+
+body {
+  color: var(--color-text);
+  font-family: var(--font-family-base);
+  font-size: var(--type-p2-size);
+  font-weight: 300;
+  font-style: normal;
+  line-height: var(--type-p2-line-height);
+  letter-spacing: var(--type-p2-letter-spacing);
+  background-color: var(--color-background);
+  font-synthesis: none;
+  text-rendering: optimizelegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body.is-scroll-locked {
+  overflow: hidden;
+}
+
+a,
+button,
+input,
+textarea,
+select {
+  @include focus-ring;
+}
+
+::selection {
+  color: var(--color-white);
+  background-color: var(--color-accent);
+}
+
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: var(--z-index-modal);
+  padding: 10px 14px;
+  color: var(--color-white);
+  background-color: var(--color-black);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+=== C:\Projects\red-anchor\src\styles\base\_reset.scss ===
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+ul,
+ol,
+figure,
+blockquote {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  padding: 0;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+=== C:\Projects\red-anchor\src\styles\base\_tokens.scss ===
+
+@use '../abstracts' as *;
+
+:root {
+  /*
+  * Primitive/design tokens from Figma.
+  */
+
+  --color-txt-white: #fff;
+  --color-txt-primary: #dd2b1c;
+  --color-txt-black: #150f0f;
+
+  --color-ui-primary: #dd2b1c;
+  --color-ui-black: #110101;
+  --color-ui-gray-1: #50575a;
+  --color-ui-white: #fff;
+
+  --color-ui-white-20: rgb(255 255 255 / 20%);
+  --color-ui-white-40: rgb(255 255 255 / 40%);
+  --color-ui-black-80: rgb(21 15 15 / 80%);
+  --color-ui-black-90: rgb(21 15 15 / 90%);
+  --color-ui-gray-1-20: rgb(79 86 89 / 20%);
+  --color-overlay-black-20: rgb(0 0 0 / 20%);
+
+  /*
+  * Semantic aliases used by the application.
+  */
+
+  --color-white: var(--color-ui-white);
+  --color-black: var(--color-ui-black);
+  --color-text: var(--color-txt-black);
+  --color-text-muted: var(--color-ui-gray-1);
+  --color-background: var(--color-ui-white);
+  --color-background-muted: #f5f5f5;
+  --color-border: var(--color-ui-gray-1-20);
+  --color-accent: var(--color-ui-primary);
+  --color-accent-hover: #b92318;
+  --color-focus: var(--color-ui-primary);
+
+  /*
+  * Layout and spacing.
+  */
+  --font-family-base: #{$font-family-base};
+  --font-family-heading: #{$font-family-heading};
+
+  --container-max-width: #{$container-max-width};
+  --container-padding: #{fluid(16px, 40px)};
+  --section-spacing: #{fluid(48px, 112px)};
+  --block-spacing: #{fluid(24px, 48px)};
+
+  /*
+  * Base: 320вЂ“767 px
+  */
+
+  --type-display-size: 64px;
+  --type-display-line-height: 64px;
+  --type-display-letter-spacing: 0.03em;
+
+  --type-h1-size: 52px;
+  --type-h1-line-height: 52px;
+  --type-h1-letter-spacing: 0.03em;
+
+  --type-h2-size: 44px;
+  --type-h2-line-height: 44px;
+  --type-h2-letter-spacing: 0.04em;
+
+  --type-h3-size: 32px;
+  --type-h3-line-height: 32px;
+  --type-h3-letter-spacing: 0.05em;
+
+  --type-h4-size: 28px;
+  --type-h4-line-height: 28px;
+  --type-h4-letter-spacing: 0.05em;
+
+  --type-h5-size: 24px;
+  --type-h5-line-height: 24px;
+  --type-h5-letter-spacing: 0.06em;
+
+  --type-p1-size: 18px;
+  --type-p1-line-height: 28px;
+  --type-p1-letter-spacing: 0.03em;
+
+  --type-p2-size: 16px;
+  --type-p2-medium-size: 16px;
+  --type-p2-line-height: 24px;
+  --type-p2-letter-spacing: 0.03em;
+
+  --type-p3-size: 14px;
+  --type-p3-line-height: 20px;
+  --type-p3-letter-spacing: 0.05em;
+
+  --type-p4-size: 12px;
+  --type-p4-line-height: 16px;
+  --type-p4-letter-spacing: 0.05em;
+
+  --type-s1-size: 18px;
+  --type-s1-line-height: 22px;
+  --type-s1-letter-spacing: 0.03em;
+
+  --type-s2-size: 16px;
+  --type-s2-line-height: 20px;
+  --type-s2-letter-spacing: 0.03em;
+
+  --type-s3-size: 14px;
+  --type-s3-line-height: 16px;
+  --type-s3-letter-spacing: 0.05em;
+
+  --type-s4-size: 12px;
+  --type-s4-line-height: 14px;
+  --type-s4-letter-spacing: 0.05em;
+
+  /*
+  * Backward compatibility with existing styles.
+  */
+
+  --font-size-body: var(--type-p2-size);
+  --font-size-h1: var(--type-h1-size);
+  --font-size-h2: var(--type-h2-size);
+  --font-size-h3: var(--type-h3-size);
+
+  --line-height-body: var(--type-p2-line-height);
+  --line-height-heading: 1;
+
+  --transition-duration: #{$transition-duration};
+  --transition-timing-function: #{$transition-timing-function};
+
+  --z-index-header: #{$z-index-header};
+  --z-index-overlay: #{$z-index-overlay};
+  --z-index-modal: #{$z-index-modal};
+
+  /*
+  * Tablet: РѕС‚ 768 px
+  */
+
+  @include media-up(tablet) {
+    --type-display-size: 120px;
+    --type-display-line-height: 120px;
+    --type-display-letter-spacing: 0.03em;
+
+    --type-h1-size: 90px;
+    --type-h1-line-height: 90px;
+    --type-h1-letter-spacing: 0.03em;
+
+    --type-h2-size: 60px;
+    --type-h2-line-height: 60px;
+    --type-h2-letter-spacing: 0.05em;
+
+    --type-h3-size: 48px;
+    --type-h3-line-height: 48px;
+    --type-h3-letter-spacing: 0.05em;
+
+    --type-h4-size: 40px;
+    --type-h4-line-height: 40px;
+    --type-h4-letter-spacing: 0.05em;
+
+    --type-h5-size: 28px;
+    --type-h5-line-height: 32px;
+    --type-h5-letter-spacing: 0.05em;
+
+    --type-p1-size: 20px;
+    --type-p1-line-height: 28px;
+
+    --type-p2-size: 18px;
+    --type-p2-medium-size: 18px;
+    --type-p2-line-height: 28px;
+
+    --type-p3-size: 16px;
+    --type-p3-line-height: 24px;
+
+    --type-p4-size: 14px;
+    --type-p4-line-height: 20px;
+
+    --type-s1-size: 20px;
+    --type-s1-line-height: 24px;
+
+    --type-s2-size: 18px;
+    --type-s2-line-height: 22px;
+
+    --type-s3-size: 16px;
+    --type-s3-line-height: 20px;
+
+    --type-s4-size: 14px;
+    --type-s4-line-height: 16px;
+  }
+
+  /*
+  * Desktop: РѕС‚ 1024 px
+  */
+
+  @include media-up(desktop) {
+    --type-display-size: 114px;
+    --type-display-line-height: 114px;
+    --type-display-letter-spacing: 0.03em;
+
+    --type-h1-size: 90px;
+    --type-h1-line-height: 90px;
+    --type-h1-letter-spacing: 0.03em;
+
+    --type-h2-size: 80px;
+    --type-h2-line-height: 80px;
+    --type-h2-letter-spacing: 0.04em;
+
+    --type-h3-size: 36px;
+    --type-h3-line-height: 36px;
+    --type-h3-letter-spacing: 0.05em;
+
+    --type-h4-size: 32px;
+    --type-h4-line-height: 32px;
+    --type-h4-letter-spacing: 0.05em;
+
+    --type-h5-size: 24px;
+    --type-h5-line-height: 24px;
+    --type-h5-letter-spacing: 0.06em;
+
+    --type-p1-size: 20px;
+    --type-p1-line-height: 32px;
+
+    --type-p2-size: 16px;
+    --type-p2-medium-size: 16px;
+    --type-p2-line-height: 24px;
+
+    --type-p3-size: 14px;
+    --type-p3-line-height: 20px;
+
+    --type-p4-size: 12px;
+    --type-p4-line-height: 16px;
+
+    --type-s1-size: 20px;
+    --type-s1-line-height: 24px;
+
+    --type-s2-size: 16px;
+    --type-s2-line-height: 20px;
+
+    --type-s3-size: 14px;
+    --type-s3-line-height: 16px;
+
+    --type-s4-size: 12px;
+    --type-s4-line-height: 14px;
+  }
+
+  /*
+  * Wide: РѕС‚ 1440 px
+  */
+
+  @include media-up(wide) {
+    --type-display-size: 152px;
+    --type-display-line-height: 148px;
+    --type-display-letter-spacing: 0.02em;
+
+    --type-h1-size: 120px;
+    --type-h1-line-height: 120px;
+    --type-h1-letter-spacing: 0.03em;
+
+    --type-h2-size: 80px;
+    --type-h2-line-height: 80px;
+    --type-h2-letter-spacing: 0.04em;
+
+    --type-h3-size: 44px;
+    --type-h3-line-height: 44px;
+    --type-h3-letter-spacing: 0.05em;
+
+    --type-h4-size: 36px;
+    --type-h4-line-height: 36px;
+    --type-h4-letter-spacing: 0.06em;
+
+    --type-h5-size: 28px;
+    --type-h5-line-height: 28px;
+    --type-h5-letter-spacing: 0.06em;
+
+    --type-p1-size: 24px;
+    --type-p1-line-height: 36px;
+
+    --type-p2-size: 20px;
+    --type-p2-medium-size: 20px;
+    --type-p2-line-height: 32px;
+
+    --type-p3-size: 16px;
+    --type-p3-line-height: 24px;
+
+    --type-p4-size: 14px;
+    --type-p4-line-height: 20px;
+
+    --type-s1-size: 24px;
+    --type-s1-line-height: 28px;
+
+    --type-s2-size: 20px;
+    --type-s2-line-height: 24px;
+
+    --type-s3-size: 16px;
+    --type-s3-line-height: 20px;
+
+    --type-s4-size: 14px;
+    --type-s4-line-height: 16px;
+  }
+
+  /*
+  * Large: РѕС‚ 1920 px
+  */
+
+  @include media-up(large) {
+    --type-display-size: 200px;
+    --type-display-line-height: 200px;
+    --type-display-letter-spacing: 0.02em;
+
+    --type-h1-size: 144px;
+    --type-h1-line-height: 144px;
+    --type-h1-letter-spacing: 0.03em;
+
+    --type-h2-size: 104px;
+    --type-h2-line-height: 104px;
+    --type-h2-letter-spacing: 0.04em;
+
+    --type-h3-size: 60px;
+    --type-h3-line-height: 60px;
+    --type-h3-letter-spacing: 0.05em;
+
+    --type-h4-size: 44px;
+    --type-h4-line-height: 44px;
+    --type-h4-letter-spacing: 0.05em;
+
+    --type-h5-size: 36px;
+    --type-h5-line-height: 36px;
+    --type-h5-letter-spacing: 0.06em;
+
+    --type-p1-size: 32px;
+    --type-p1-line-height: 46px;
+
+    --type-p2-size: 24px;
+    --type-p2-medium-size: 28px;
+    --type-p2-line-height: 40px;
+
+    --type-p3-size: 20px;
+    --type-p3-line-height: 28px;
+
+    --type-p4-size: 16px;
+    --type-p4-line-height: 22px;
+
+    --type-s1-size: 32px;
+    --type-s1-line-height: 36px;
+
+    --type-s2-size: 24px;
+    --type-s2-line-height: 28px;
+
+    --type-s3-size: 20px;
+    --type-s3-line-height: 24px;
+
+    --type-s4-size: 16px;
+    --type-s4-line-height: 20px;
+  }
+}
+
+=== C:\Projects\red-anchor\src\styles\base\_typography.scss ===
+
+h1,
+h2,
+h3,
+h4,
+h5,
+.type-display,
+.type-h1,
+.type-h2,
+.type-h3,
+.type-h4,
+.type-h5 {
+  font-family: var(--font-family-heading);
+  font-weight: 700;
+  font-style: normal;
+  text-transform: uppercase;
+}
+
+@supports (text-wrap: balance) {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  .type-display,
+  .type-h1,
+  .type-h2,
+  .type-h3,
+  .type-h4,
+  .type-h5 {
+    text-wrap: balance;
+  }
+}
+
+@supports (text-wrap: pretty) {
+  p,
+  .type-p1,
+  .type-p2,
+  .type-p3,
+  .type-p4 {
+    text-wrap: pretty;
+  }
+}
+
+.type-display {
+  font-size: var(--type-display-size);
+  line-height: var(--type-display-line-height);
+  letter-spacing: var(--type-display-letter-spacing);
+}
+
+h1,
+.type-h1 {
+  font-size: var(--type-h1-size);
+  line-height: var(--type-h1-line-height);
+  letter-spacing: var(--type-h1-letter-spacing);
+}
+
+h2,
+.type-h2 {
+  font-size: var(--type-h2-size);
+  line-height: var(--type-h2-line-height);
+  letter-spacing: var(--type-h2-letter-spacing);
+}
+
+h3,
+.type-h3 {
+  font-size: var(--type-h3-size);
+  line-height: var(--type-h3-line-height);
+  letter-spacing: var(--type-h3-letter-spacing);
+}
+
+h4,
+.type-h4 {
+  font-size: var(--type-h4-size);
+  line-height: var(--type-h4-line-height);
+  letter-spacing: var(--type-h4-letter-spacing);
+}
+
+h5,
+.type-h5 {
+  font-size: var(--type-h5-size);
+  line-height: var(--type-h5-line-height);
+  letter-spacing: var(--type-h5-letter-spacing);
+}
+
+.type-p1,
+.type-p2,
+.type-p3,
+.type-p4,
+.type-s1,
+.type-s2,
+.type-s3,
+.type-s4 {
+  font-family: var(--font-family-base);
+  font-weight: 300;
+  font-style: normal;
+  text-transform: none;
+}
+
+.type-p1,
+.type-p2,
+.type-p3,
+.type-p4 {
+  text-wrap: pretty;
+}
+
+.type-p1 {
+  font-size: var(--type-p1-size);
+  line-height: var(--type-p1-line-height);
+  letter-spacing: var(--type-p1-letter-spacing);
+}
+
+.type-p2 {
+  font-size: var(--type-p2-size);
+  line-height: var(--type-p2-line-height);
+  letter-spacing: var(--type-p2-letter-spacing);
+}
+
+.type-p3 {
+  font-size: var(--type-p3-size);
+  line-height: var(--type-p3-line-height);
+  letter-spacing: var(--type-p3-letter-spacing);
+}
+
+.type-p4 {
+  font-size: var(--type-p4-size);
+  line-height: var(--type-p4-line-height);
+  letter-spacing: var(--type-p4-letter-spacing);
+}
+
+.type-s1 {
+  font-size: var(--type-s1-size);
+  line-height: var(--type-s1-line-height);
+  letter-spacing: var(--type-s1-letter-spacing);
+}
+
+.type-s2 {
+  font-size: var(--type-s2-size);
+  line-height: var(--type-s2-line-height);
+  letter-spacing: var(--type-s2-letter-spacing);
+}
+
+.type-s3 {
+  font-size: var(--type-s3-size);
+  line-height: var(--type-s3-line-height);
+  letter-spacing: var(--type-s3-letter-spacing);
+}
+
+.type-s4 {
+  font-size: var(--type-s4-size);
+  line-height: var(--type-s4-line-height);
+  letter-spacing: var(--type-s4-letter-spacing);
+}
+
+:is(.type-p1, .type-p2, .type-p3, .type-p4, .type-s1, .type-s2, .type-s3, .type-s4).type--medium {
+  font-weight: 500;
+}
+
+.type-p2.type--medium {
+  font-size: var(--type-p2-medium-size);
+}
+
+p {
+  text-wrap: pretty;
+}
+
+=== C:\Projects\red-anchor\src\styles\components\+.css ===
+
+@import "./_badge.scss";
+@import "./_breadcrumb.scss";
+@import "./_button.scss";
+@import "./_checkbox.scss";
+@import "./_date-field.scss";
+@import "./_field.scss";
+@import "./_file-upload.scss";
+@import "./_filter.scss";
+@import "./_footer.scss";
+@import "./_header.scss";
+@import "./_input.scss";
+@import "./_link.scss";
+@import "./_pagination.scss";
+@import "./_product-card.scss";
+@import "./_radio.scss";
+@import "./_select.scss";
+@import "./_textarea.scss";
+
+=== C:\Projects\red-anchor\src\styles\components\_badge.scss ===
+
+@use '../abstracts' as *;
+
+.badge {
+  display: inline-flex;
+  width: fit-content;
+  min-height: 28px;
+  align-items: center;
+  padding: 5px 10px;
+  color: var(--color-text);
+  font-family: var(--font-family-base);
+  font-size: var(--type-p4-size);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: var(--type-p4-letter-spacing);
+  text-transform: uppercase;
+  background-color: var(--color-background-muted);
+  border: 1px solid var(--color-border);
+}
+
+.badge--accent {
+  color: var(--color-white);
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.badge--dark {
+  color: var(--color-white);
+  background-color: var(--color-black);
+  border-color: var(--color-black);
+}
+
+.badge--outline {
+  color: var(--color-accent);
+  background-color: transparent;
+  border-color: var(--color-accent);
+}
+
+.badge--muted {
+  color: var(--color-text-muted);
+  background-color: transparent;
+}
+
+=== C:\Projects\red-anchor\src\styles\components\_breadcrumb.scss ===
+
+@use '../abstracts' as *;
+
+.breadcrumbs {
+  color: var(--color-text-muted);
+  font-size: var(--type-p3-size);
+  line-height: var(--type-p3-line-height);
+}
+
+.breadcrumbs__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 0;
+}
+
+.breadcrumbs__item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.breadcrumbs__item:not(:last-child)::after {
+  margin-inline: 10px;
+  color: var(--color-text-muted);
+  content: '/';
+}
+
+.breadcrumbs__link {
+  color: var(--color-text-muted);
+  transition: color var(--transition-duration) var(--transition-timing-function);
+
+  @include hover {
+    color: var(--color-accent);
+  }
+}
+
+.breadcrumbs__item[aria-current='page'] {
+  color: var(--color-text);
+}
+
+=== C:\Projects\red-anchor\src\styles\components\_button.scss ===
+
+@use '../abstracts' as *;
+
+.button {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-family-base);
+  font-weight: 500;
+  line-height: 1.2;
+  padding: 12px 22px;
+  color: var(--color-white);
+  text-align: center;
+  background-color: var(--color-accent);
+  border: 1px solid var(--color-accent);
+  transition:
+    color var(--transition-duration) var(--transition-timing-function),
+    background-color var(--transition-duration) var(--transition-timing-function),
+    border-color var(--transition-duration) var(--transition-timing-function);
+
+  @include hover {
+    background-color: var(--color-accent-hover);
+    border-color: var(--color-accent-hover);
+  }
+}
+
+.button--secondary {
+  color: var(--color-text);
+  background-color: transparent;
+  border-color: var(--color-border);
+
+  @include hover {
+    color: var(--color-white);
+    background-color: var(--color-black);
+    border-color: var(--color-black);
+  }
+}
+
+=== C:\Projects\red-anchor\src\styles\components\_checkbox.scss ===
+
+@use '../abstracts' as *;
+
+.checkbox {
+  display: inline-flex;
+  width: fit-content;
+  align-items: flex-start;
+  gap: 12px;
+  color: var(--color-text);
+  font-family: var(--font-family-base);
+  font-size: var(--type-p2-size);
+  font-weight: 300;
+  line-height: var(--type-p2-line-height);
+  cursor: pointer;
+}
+
+.checkbox__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.checkbox__box {
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+  background-color: var(--color-background);
+  border: 1px solid var(--color-text-muted);
+  transition:
+    background-color var(--transition-duration) var(--transition-timing-function),
+    border-color var(--transition-duration) var(--transition-timing-function);
+}
+
+.checkbox__box::after {
+  width: 10px;
+  height: 6px;
+  content: '';
+  border-bottom: 2px solid var(--color-white);
+  border-left: 2px solid var(--color-white);
+  opacity: 0;
+  transform: translateY(-1px) rotate(-45deg);
+  transition: opacity var(--transition-duration) var(--transition-timing-function);
+}
+
+.checkbox__input:checked + .checkbox__box {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.checkbox__input:checked + .checkbox__box::after {
+  opacity: 1;
+}
+
+.checkbox__input:focus-visible + .checkbox__box {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.checkbox__input:disabled + .checkbox__box {
+  background-color: var(--color-background-muted);
+  border-color: var(--color-border);
+}
+
+.checkbox__input:disabled ~ .checkbox__text {
+  color: var(--color-text-muted);
+}
+
+.checkbox:has(.checkbox__input:disabled) {
+  cursor: not-allowed;
+}
+
+=== C:\Projects\red-anchor\src\styles\components\_date-field.scss ===
+
+.date-field {
+  position: relative;
+}
+
+.date-field .field__control {
+  min-width: 0;
+}
+
+.date-field .field__control::-webkit-calendar-picker-indicator {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.date-field .field__control:disabled::-webkit-calendar-picker-indicator {
+  cursor: not-allowed;
+  opacity: 0.35;
+}
+
+=== C:\Projects\red-anchor\src\styles\components\_field.scss ===
+
+@use '../abstracts' as *;
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.field__label {
+  color: var(--color-text);
+  font-family: var(--font-family-base);
+  font-size: var(--type-p3-size);
+  font-weight: 500;
+  line-height: var(--type-p3-line-height);
+  letter-spacing: var(--type-p3-letter-spacing);
+}
+
+.field__required {
+  color: var(--color-accent);
+}
+
+.field__control {
+  display: block;
+  width: 100%;
+  min-height: 56px;
+  padding: 14px 16px;
+  color: var(--color-text);
+  font-family: var(--font-family-base);
+  font-size: var(--type-p2-size);
+  font-weight: 300;
+  line-height: var(--type-p2-line-height);
+  letter-spacing: var(--type-p2-letter-spacing);
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: 0;
+  outline: none;
+  transition:
+    border-color var(--transition-duration) var(--transition-timing-function),
+    background-color var(--transition-duration) var(--transition-timing-function);
+}
+
+.field__control::placeholder {
+  color: var(--color-text-muted);
+  opacity: 1;
+}
+
+.field__control:hover {
+  border-color: var(--color-text-muted);
+}
+
+.field__control:focus {
+  border-color: var(--color-accent);
+}
+
+.field__hint,
+.field__error {
+  font-family: var(--font-family-base);
+  font-size: var(--type-p4-size);
+  font-weight: 300;
+  line-height: var(--type-p4-line-height);
+  letter-spacing: var(--type-p4-letter-spacing);
+}
+
+.field__hint {
+  color: var(--color-text-muted);
+}
+
+.field__error {
+  display: none;
+  color: var(--color-accent);
+}
+
+.field.is-invalid .field__control {
+  border-color: var(--color-accent);
+}
+
+.field.is-invalid .field__error {
+  display: block;
+}
+
+=== C:\Projects\red-anchor\src\styles\components\_file-upload.scss ===
+
+@use '../abstracts' as *;
+
+.file-upload {
+  display: grid;
+  gap: 12px;
+}
+
+.file-upload__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.file-upload__dropzone {
+  display: grid;
+  min-height: 180px;
+  align-content: center;
+  justify-items: center;
+  gap: 12px;
+  padding: 24px;
+  text-align: center;
+  background-color: var(--color-background);
+  border: 1px dashed var(--color-text-muted);
+  cursor: pointer;
+  transition:
+    background-color var(--transition-duration) var(--transition-timing-function),
+    border-color var(--transition-duration) var(--transition-timing-function);
+}
+
+.file-upload__dropzone:hover,
+.file-upload.is-dragover .file-upload__dropzone {
+  background-color: var(--color-background-muted);
+  border-color: var(--color-accent);
+}
+
+.file-upload__input:focus-visible + .file-upload__dropzone {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.file-upload__title {
+  color: var(--color-text);
+  font-family: var(--font-family-base);
+  font-size: var(--type-p2-size);
+  font-weight: 500;
+  line-height: var(--type-p2-line-height);
+}
+
+.file-upload__hint {
+  max-width: 620px;
+  color: var(--color-text-muted);
+  font-family: var(--font-family-base);
+  font-size: var(--type-p4-size);
+  font-weight: 300;
+  line-height: var(--type-p4-line-height);
+}
+
+.file-upload__files {
+  display: grid;
+  gap: 8px;
+}
+
+.file-upload__file {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 16px;
+  background-color: var(--color-background-muted);
+  border: 1px solid var(--color-border);
+}
+
+.file-upload__file-name {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--color-text);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-upload__file-size {
+  flex: 0 0 auto;
+  color: var(--color-text-muted);
+  font-size: var(--type-p4-size);
+}
+
+.file-upload__remove {
+  flex: 0 0 auto;
+  padding: 4px;
+  color: var(--color-accent);
+  font-family: inherit;
+  font-size: var(--type-p4-size);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.file-upload__error {
+  display: none;
+  color: var(--color-accent);
+  font-family: var(--font-family-base);
+  font-size: var(--type-p4-size);
+  font-weight: 300;
+  line-height: var(--type-p4-line-height);
+}
+
+.file-upload.is-invalid .file-upload__error {
+  display: block;
+}
+
+.file-upload.is-invalid .file-upload__dropzone {
+  border-color: var(--color-accent);
+}
+
+=== C:\Projects\red-anchor\src\styles\components\_filter.scss ===
+
+@use '../abstracts' as *;
+
+.filter {
+  display: grid;
+  gap: 24px;
+  padding: 24px;
+  background-color: var(--color-background-muted);
+}
+
+.filter__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.filter__title {
+  margin: 0;
+  font-family: var(--font-family-heading);
+  font-size: var(--type-h5-size);
+  font-weight: 700;
+  line-height: var(--type-h5-line-height);
+  letter-spacing: var(--type-h5-letter-spacing);
+  text-transform: uppercase;
+}
+
+.filter__reset {
+  padding: 0;
+  color: var(--color-text-muted);
+  font-family: var(--font-family-base);
+  font-size: var(--type-p4-size);
+  font-weight: 300;
+  line-height: var(--type-p4-line-height);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  transition: color var(--transition-duration) var(--transition-timing-function);
+
+  @include hover {
+    color: var(--color-accent);
+  }
+}
+
+.filter__body {
+  display: grid;
+  gap: 20px;
+}
+
+.filter__group {
+  display: grid;
+  gap: 8px;
+}
+
+.filter__label {
+  color: var(--color-text);
+  font-family: var(--font-family-base);
+  font-size: var(--type-p3-size);
+  font-weight: 500;
+  line-height: var(--type-p3-line-height);
+  letter-spacing: var(--type-p3-letter-spacing);
+}
+
+.filter__range {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+}
+
+.filter__range-separator {
+  color: var(--color-text-muted);
+}
+
+.filter__control {
+ display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  padding: 12px 14px;
+  color: var(--color-text);
+  font-family: var(--font-family-base);
+  font-size: var(--type-p2-size);
+  font-weight: 300;
+  line-height: var(--type-p2-line-height);
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: 0;
+  outline: none;
+  transition:
+    border-color var(--transition-duration) var(--transition-timing-function),
+    background-color var(--transition-duration) var(--transition-timing-function);
+}
+
+.filter__control::placeholder {
+  color: var(--color-text-muted);
+  opacity: 1;
+}
+
+.filter__control:hover {
+  border-color: var(--color-text-muted);
+}
+
+.filter__control:focus {
+  border-color: var(--color-accent);
+}
+
+.filter__control[type='number'] {
+  appearance: textfield;
+}
+
+.filter__control[type='number']::-webkit-inner-spin-button,
+.filter__control[type='number']::-webkit-outer-spin-button {
+  margin: 0;
+  appearance: none;
+}
+
+.filter__select-wrapper {
+  position: relative;
+}
+
+.filter__select-wrapper::after {
+  position: absolute;
+  top: 50%;
+  right: 18px;
+  width: 8px;
+  height: 8px;
+  content: '';
+  border-right: 1px solid var(--color-text);
+  border-bottom: 1px solid var(--color-text);
+  transform: translateY(-70%) rotate(45deg);
+  pointer-events: none;
+}
+
+.filter__select {
+  padding-right: 48px;
+  appearance: none;
+  cursor: pointer;
+}
+
+.filter__submit {
+  width: 100%;
+}
+
+@include media-up(tablet) {
+  .filter {
+    padding: 28px;
+  }
+
+  .filter__body {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: end;
+    column-gap: 20px;
+  }
+}
+
+@include media-up(desktop) {
+  .filter {
+    padding: 32px;
+  }
+
+  .filter__body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .filter__submit {
+    width: 100%;
+    justify-self: stretch;
+  }
+}
+
+=== C:\Projects\red-anchor\src\styles\components\_footer.scss ===
+
+@use '../abstracts' as *;
+
+.site-footer {
+  padding-block: 48px 24px;
+  color: var(--color-white);
+  background-color: var(--color-black);
+}
+
+.site-footer__container {
+  display: grid;
+  gap: 32px;
+}
+
+.site-footer__brand {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+}
+
+.site-footer__logo {
+  width: fit-content;
+  color: var(--color-white);
+  font-family: var(--font-family-heading);
+  font-size: var(--type-h5-size);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: var(--type-h5-letter-spacing);
+  text-transform: uppercase;
+}
+
+.site-footer__description {
+  max-width: 320px;
+  margin: 0;
+  color: #bdbdbd;
+  font-size: var(--type-p3-size);
+  line-height: var(--type-p3-line-height);
+}
+
+.site-footer__title {
+  margin: 0 0 12px;
+  color: var(--color-white);
+  font-size: var(--type-p4-size);
+  font-weight: 500;
+  line-height: var(--type-p4-line-height);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.site-footer__list {
+  display: grid;
+  gap: 8px;
+}
+
+.site-footer__link {
+  color: #bdbdbd;
+  transition: color var(--transition-duration) var(--transition-timing-function);
+
+  @include hover {
+    color: var(--color-white);
+  }
+}
+
+.site-footer__link--accent {
+  color: var(--color-accent);
+
+  @include hover {
+    color: var(--color-white);
+  }
+}
+
+.site-footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px 24px;
+  margin-top: 48px;
+  padding-top: 20px;
+  color: #bdbdbd;
+  border-top: 1px solid rgb(255 255 255 / 20%);
+}
+
+.site-footer__copyright,
+.site-footer__note {
+  margin: 0;
+  font-size: var(--type-p4-size);
+  line-height: var(--type-p4-line-height);
+}
+
+@include media-up(tablet) {
+  .site-footer {
+    padding-top: 64px;
+  }
+
+  .site-footer__container {
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 40px;
+  }
+}
+
+=== C:\Projects\red-anchor\src\styles\components\_header.scss ===
+
+@use '../abstracts' as *;
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-index-header);
+  background-color: var(--color-white);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.site-header__container {
+  position: relative;
+  display: flex;
+  min-height: 72px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.site-header__logo {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  color: var(--color-text);
+}
+
+.site-header__logo-text {
+  font-family: var(--font-family-heading);
+  font-size: var(--type-h5-size);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: var(--type-h5-letter-spacing);
+  text-transform: uppercase;
+  transition: color var(--transition-duration) var(--transition-timing-function);
+
+  @include hover {
+    color: var(--color-accent);
+  }
+}
+
+.site-header__menu-button {
+  display: inline-flex;
+  min-width: 48px;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  color: var(--color-text);
+  font-family: var(--font-family-base);
+  font-size: var(--type-p3-size);
+  font-weight: 500;
+  background-color: transparent;
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+}
+
+.site-header__menu-button:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.site-header__nav {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  display: none;
+  padding: 20px var(--container-padding);
+  background-color: var(--color-white);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.site-header.is-menu-open .site-header__nav {
+  display: block;
+}
+
+.site-header__nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.site-header__nav-link {
+  display: inline-flex;
+  padding-block: 6px;
+  color: var(--color-text);
+  transition: color var(--transition-duration) var(--transition-timing-function);
+
+  @include hover {
+    color: var(--color-accent);
+  }
+}
+
+.site-header__nav-item--action {
+  padding-top: 4px;
+}
+
+.site-header__nav-item--action .button {
+  width: 100%;
+  justify-content: center;
+}
+
+@include media-up(desktop) {
+  .site-header__menu-button {
+    display: none;
+  }
+
+  .site-header__nav {
+    position: static;
+    display: block;
+    padding: 0;
+    border: 0;
+  }
+
+  .site-header__nav-list {
+    flex-direction: row;
+    align-items: center;
+    gap: fluid(20px, 40px, 1024px, 1440px);
+  }
+
+  .site-header__nav-item--action {
+    padding-top: 0;
+  }
+
+  .site-header__nav-item--action .button {
+    width: auto;
+  }
+}
+
+=== C:\Projects\red-anchor\src\styles\components\_input.scss ===
+
+input.field__control {
+  appearance: none;
+}
+
+input.field__control[type='date'] {
+  min-width: 0;
+}
+
+input.field__control[type='number'] {
+  appearance: textfield;
+}
+
+input.field__control[type='number']::-webkit-inner-spin-button,
+input.field__control[type='number']::-webkit-outer-spin-button {
+  margin: 0;
+  appearance: none;
+}
+
+=== C:\Projects\red-anchor\src\styles\components\_link.scss ===
+
+@use '../abstracts' as *;
+
+.link {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: color var(--transition-duration) var(--transition-timing-function);
+
+  @include hover {
+    color: var(--color-accent);
+  }
+}
+
+.link--accent {
+  color: var(--color-accent);
+}
+
+.link--muted {
+  color: var(--color-text-muted);
+}
+
+.link--plain {
+  text-decoration: none;
+}
+
+=== C:\Projects\red-anchor\src\styles\components\_pagination.scss ===
+
+@use '../abstracts' as *;
+
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.pagination__link,
+.pagination__ellipsis {
+  display: inline-flex;
+  min-width: 40px;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--type-p3-size);
+  line-height: 1;
+}
+
+.pagination__link {
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  transition:
+    color var(--transition-duration) var(--transition-timing-function),
+    background-color var(--transition-duration) var(--transition-timing-function),
+    border-color var(--transition-duration) var(--transition-timing-function);
+
+  @include hover {
+    color: var(--color-white);
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+}
+
+.pagination__link--current {
+  color: var(--color-white);
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.pagination__ellipsis {
+  color: var(--color-text-muted);
+}
+
+=== C:\Projects\red-anchor\src\styles\components\_product-card.scss ===
+
+@use '../abstracts' as *;
+
+.product-card {
+  display: grid;
+  height: 100%;
+  grid-template-rows: auto 1fr;
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  transition:
+    border-color var(--transition-duration) var(--transition-timing-function),
+    box-shadow var(--transition-duration) var(--transition-timing-function);
+}
+
+.product-card:hover {
+  border-color: var(--color-text-muted);
+  box-shadow: 0 12px 32px rgb(17 1 1 / 8%);
+}
+
+.product-card__media {
+  position: relative;
+  display: grid;
+  min-height: 220px;
+  place-items: center;
+  overflow: hidden;
+  background-color: var(--color-background-muted);
+}
+
+.product-card__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-card__media-placeholder {
+  color: var(--color-text-muted);
+  font-size: var(--type-p4-size);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.product-card__body {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+  padding: 20px;
+}
+
+.product-card__category {
+  margin: 0;
+  color: var(--color-accent);
+  font-family: var(--font-family-base);
+  font-size: var(--type-p4-size);
+  font-weight: 500;
+  line-height: var(--type-p4-line-height);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.product-card__title {
+  margin: 0;
+  font-family: var(--font-family-heading);
+  font-size: var(--type-h5-size);
+  font-weight: 700;
+  line-height: var(--type-h5-line-height);
+  letter-spacing: var(--type-h5-letter-spacing);
+  text-transform: uppercase;
+}
+
+.product-card__title-link {
+  color: var(--color-text);
+  transition: color var(--transition-duration) var(--transition-timing-function);
+
+  @include hover {
+    color: var(--color-accent);
+  }
+}
+
+.product-card__meta {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--type-p3-size);
+  line-height: var(--type-p3-line-height);
+}
+
+.product-card__meta-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.product-card__meta-label {
+  color: var(--color-text-muted);
+}
+
+.product-card__meta-value {
+  color: var(--color-text);
+  text-align: right;
+}
+
+.product-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.product-card__action {
+  width: 100%;
+}
+
+.product-card__action[disabled] {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+@include media-up(tablet) {
+  .product-card__media {
+    min-height: 240px;
+  }
+
+  .product-card__body {
+    padding: 24px;
+  }
+}
+
+.product-card[hidden] {
+  display: none;
+}
+
+.product-card__action.is-added {
+  color: var(--color-white);
+  background-color: var(--color-black);
+  border-color: var(--color-black);
+}
+
+.product-card__action.is-pending {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+=== C:\Projects\red-anchor\src\styles\components\_radio.scss ===
+
+@use '../abstracts' as *;
+
+.radio {
+  display: inline-flex;
+  width: fit-content;
+  align-items: flex-start;
+  gap: 12px;
+  color: var(--color-text);
+  font-family: var(--font-family-base);
+  font-size: var(--type-p2-size);
+  font-weight: 300;
+  line-height: var(--type-p2-line-height);
+  cursor: pointer;
+}
+
+.radio__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.radio__circle {
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+  background-color: var(--color-background);
+  border: 1px solid var(--color-text-muted);
+  border-radius: 50%;
+  transition:
+    background-color var(--transition-duration) var(--transition-timing-function),
+    border-color var(--transition-duration) var(--transition-timing-function);
+}
+
+.radio__circle::after {
+  width: 8px;
+  height: 8px;
+  content: '';
+  background-color: var(--color-white);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity var(--transition-duration) var(--transition-timing-function);
+}
+
+.radio__input:checked + .radio__circle {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.radio__input:checked + .radio__circle::after {
+  opacity: 1;
+}
+
+.radio__input:focus-visible + .radio__circle {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.radio__input:disabled + .radio__circle {
+  background-color: var(--color-background-muted);
+  border-color: var(--color-border);
+}
+
+.radio__input:disabled ~ .radio__text {
+  color: var(--color-text-muted);
+}
+
+.radio:has(.radio__input:disabled) {
+  cursor: not-allowed;
+}
+
+=== C:\Projects\red-anchor\src\styles\components\_select.scss ===
+
+.select {
+  position: relative;
+}
+
+.select::after {
+  position: absolute;
+  right: 18px;
+  bottom: 23px;
+  width: 8px;
+  height: 8px;
+  content: '';
+  border-right: 1px solid var(--color-text);
+  border-bottom: 1px solid var(--color-text);
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+
+select.field__control {
+  padding-right: 48px;
+  appearance: none;
+  cursor: pointer;
+}
+
+select.field__control:disabled {
+  color: var(--color-text-muted);
+  background-color: var(--color-background-muted);
+  cursor: not-allowed;
+}
+
+=== C:\Projects\red-anchor\src\styles\components\_textarea.scss ===
+
+textarea.field__control {
+  min-height: 144px;
+  resize: vertical;
+}
+
+textarea.field__control::placeholder {
+  color: var(--color-text-muted);
+}
+
+=== C:\Projects\red-anchor\src\styles\layout\+.css ===
+
+@import "./_container.scss";
+@import "./_grid.scss";
+@import "./_site.scss";
+
+=== C:\Projects\red-anchor\src\styles\layout\_container.scss ===
+
+.container {
+  width: min(100% - var(--container-padding) * 2, var(--container-max-width));
+  margin-inline: auto;
+}
+
+=== C:\Projects\red-anchor\src\styles\layout\_grid.scss ===
+
+@use '../abstracts' as *;
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: fluid(16px, 32px);
+
+  @include media-up(tablet) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @include media-up(desktop) {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+}
+
+=== C:\Projects\red-anchor\src\styles\layout\_site.scss ===
+
+.site {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.site__main {
+  flex-grow: 1;
+}
+
+=== C:\Projects\red-anchor\src\styles\pages\+.css ===
+
+@import "./_catalog.scss";
+@import "./_home.scss";
+@import "./_ui-kit.scss";
+
+=== C:\Projects\red-anchor\src\styles\pages\_catalog.scss ===
+
+@use '../abstracts' as *;
+
+.catalog-page {
+  padding-block: var(--section-spacing);
+}
+
+.catalog-page__header {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.catalog-page__eyebrow {
+  margin: 0;
+  color: var(--color-accent);
+  font-family: var(--font-family-base);
+  font-size: var(--type-p4-size);
+  font-weight: 500;
+  line-height: var(--type-p4-line-height);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.catalog-page__title {
+  margin: 0;
+}
+
+.catalog-page__description {
+  max-width: 680px;
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.catalog-page__breadcrumbs {
+  margin-bottom: 24px;
+}
+
+.catalog-page__layout {
+  display: grid;
+  gap: 32px;
+}
+
+.catalog-page__sidebar {
+  min-width: 0;
+}
+
+.catalog-page__content {
+  min-width: 0;
+}
+
+.catalog-page__content-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.catalog-page__result-count {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--type-p3-size);
+  line-height: var(--type-p3-line-height);
+}
+
+.catalog-page__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+}
+
+.catalog-page__pagination {
+  margin-top: 32px;
+}
+
+@include media-up(tablet) {
+  .catalog-page__header {
+    margin-bottom: 40px;
+  }
+
+  .catalog-page__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+}
+
+@include media-up(desktop) {
+  .catalog-page__layout {
+    grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+    align-items: start;
+    gap: 40px;
+  }
+
+  .catalog-page__sidebar {
+    position: sticky;
+    top: 96px;
+  }
+
+  .catalog-page__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+}
+
+@include media-up(wide) {
+  .catalog-page__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.catalog-page__content-header {
+  flex-wrap: wrap;
+}
+
+.catalog-page__order-summary {
+  margin: 0;
+  color: var(--color-text);
+  font-size: var(--type-p3-size);
+  line-height: var(--type-p3-line-height);
+}
+
+.catalog-page__order-summary strong {
+  color: var(--color-accent);
+  font-weight: 500;
+}
+
+.catalog-page__empty {
+  margin: 0;
+  padding: 32px;
+  color: var(--color-text-muted);
+  text-align: center;
+  background-color: var(--color-background-muted);
+  border: 1px solid var(--color-border);
+}
+
+.catalog-page__empty[hidden],
+.catalog-page__pagination[hidden] {
+  display: none;
+}
+
+=== C:\Projects\red-anchor\src\styles\pages\_home.scss ===
+
+@use '../abstracts' as *;
+
+.hero {
+  display: grid;
+  min-height: calc(100vh - 73px);
+  align-items: center;
+  padding-block: var(--section-spacing);
+  background-color: var(--color-background-muted);
+}
+
+.hero__container {
+  display: grid;
+  justify-items: start;
+  gap: fluid(18px, 32px);
+}
+
+.hero__eyebrow {
+  color: var(--color-accent);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero__title {
+  max-width: 12ch;
+}
+
+.hero__description {
+  max-width: 680px;
+  color: var(--color-text-muted);
+  font-size: fluid(18px, 24px);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+=== C:\Projects\red-anchor\src\styles\pages\_ui-kit.scss ===
+
+@use '../abstracts' as *;
+
+.ui-kit {
+  padding-block: var(--section-spacing);
+  overflow: hidden;
+}
+
+.ui-kit__header {
+  display: grid;
+  max-width: 900px;
+  gap: fluid(16px, 24px);
+  margin-bottom: var(--section-spacing);
+}
+
+.ui-kit__label,
+.ui-kit__type-label {
+  color: var(--color-accent);
+  font-family: var(--font-family-base);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ui-kit__section {
+  padding-block: fluid(32px, 64px);
+  border-top: 1px solid var(--color-border);
+}
+
+.ui-kit__section-title {
+  margin-bottom: fluid(24px, 40px);
+}
+
+.ui-kit__preview {
+  display: grid;
+  gap: fluid(32px, 64px);
+}
+
+.ui-kit__preview--short {
+  @include media-up(tablet) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.ui-kit__type-sample {
+  display: grid;
+  min-width: 0;
+  gap: 16px;
+  padding: fluid(16px, 24px);
+  background-color: var(--color-background-muted);
+  border: 1px solid var(--color-border);
+}
+
+.ui-kit__type-sample > :last-child {
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
+.ui-kit__preview--short .ui-kit__type-sample > :last-child {
+  max-width: 560px;
+}
+
+.ui-kit__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.ui-kit__component-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 16px 24px;
+}
+
+.ui-kit__file-preview {
+  max-width: 720px;
+}
+
+.ui-kit__form-preview {
+  display: grid;
+  max-width: 720px;
+  gap: 24px;
+}
+
+=== C:\Projects\red-anchor\src\styles\utilities\+.css ===
+
+@import "./_helpers.scss";
+
+=== C:\Projects\red-anchor\src\styles\utilities\_helpers.scss ===
+
+@use '../abstracts' as *;
+
+.visually-hidden {
+  @include visually-hidden;
+}
+
+.only-mobile {
+  @include media-up(desktop) {
+    display: none !important;
+  }
+}
+
+.only-desktop {
+  display: none !important;
+
+  @include media-up(desktop) {
+    display: initial !important;
+  }
+}
+
+=== C:\Projects\red-anchor\src\styles\main.scss ===
+
+@use 'base/tokens';
+@use 'base/reset';
+@use 'base/fonts';
+@use 'base/global';
+@use 'base/typography';
+
+@use 'layout/container';
+@use 'layout/grid';
+@use 'layout/site';
+
+@use 'components/button';
+@use 'components/link';
+@use 'components/field';
+@use 'components/date-field';
+@use 'components/input';
+@use 'components/select';
+@use 'components/textarea';
+@use 'components/file-upload';
+@use 'components/checkbox';
+@use 'components/radio';
+@use 'components/badge';
+@use 'components/filter';
+@use 'components/product-card';
+@use 'components/breadcrumb';
+@use 'components/pagination';
+@use 'components/header';
+@use 'components/footer';
+
+@use 'pages/home';
+@use 'pages/catalog';
+@use 'pages/ui-kit';
+
+@use 'utilities/helpers';
+
+=== C:\Projects\red-anchor\src\templates\components\common\footer.njk ===
+
+<footer class="site-footer">
+  <div class="container site-footer__container">
+    <div class="site-footer__brand">
+      <a class="site-footer__logo" href="/" aria-label="{{ site.name }} вЂ” РіР»Р°РІРЅР°СЏ">
+        {{ site.name }}
+      </a>
+
+      <p class="site-footer__description">
+        РЇРєРѕСЂРЅС‹Рµ С†РµРїРё, РєРѕРјРїР»РµРєС‚СѓСЋС‰РёРµ Рё СЂРµС€РµРЅРёСЏ РґР»СЏ РїСЂРѕС„РµСЃСЃРёРѕРЅР°Р»СЊРЅРѕРіРѕ РїСЂРёРјРµРЅРµРЅРёСЏ.
+      </p>
+    </div>
+
+    <nav class="site-footer__nav" aria-label="РќР°РІРёРіР°С†РёСЏ РІ РїРѕРґРІР°Р»Рµ">
+      <p class="site-footer__title">
+        Р Р°Р·РґРµР»С‹
+      </p>
+
+      <ul class="site-footer__list">
+        <li>
+          <a class="site-footer__link" href="/">
+            Р“Р»Р°РІРЅР°СЏ
+          </a>
+        </li>
+
+        <li>
+          <a class="site-footer__link" href="/catalog/">
+            РљР°С‚Р°Р»РѕРі
+          </a>
+        </li>
+
+        <li>
+          <a class="site-footer__link" href="/about/">
+            Рћ РєРѕРјРїР°РЅРёРё
+          </a>
+        </li>
+
+        <li>
+          <a class="site-footer__link" href="/contacts/">
+            РљРѕРЅС‚Р°РєС‚С‹
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="site-footer__action">
+      <p class="site-footer__title">
+        Р”Р»СЏ РїРѕСЃС‚Р°РІС‰РёРєРѕРІ
+      </p>
+
+      <a class="site-footer__link site-footer__link--accent" href="/contacts/">
+        РЎС‚Р°С‚СЊ РїРѕСЃС‚Р°РІС‰РёРєРѕРј
+      </a>
+    </div>
+  </div>
+
+  <div class="container site-footer__bottom">
+    <p class="site-footer__copyright">
+      В© {{ site.name }}
+    </p>
+
+    <p class="site-footer__note">
+      Р”РµРјРѕРЅСЃС‚СЂР°С†РёРѕРЅРЅР°СЏ frontend-СЂРµР°Р»РёР·Р°С†РёСЏ
+    </p>
+  </div>
+</footer>
+
+=== C:\Projects\red-anchor\src\templates\components\common\header.njk ===
+
+<header class="site-header" data-header>
+  <div class="container site-header__container">
+    <a
+      class="site-header__logo"
+      href="/"
+      aria-label="{{ site.name }} вЂ” РіР»Р°РІРЅР°СЏ"
+    >
+      <span class="site-header__logo-text">
+        {{ site.name }}
+      </span>
+    </a>
+
+    <button
+      class="site-header__menu-button"
+      type="button"
+      aria-expanded="false"
+      aria-controls="main-navigation"
+      data-menu-toggle
+    >
+      <span class="site-header__menu-button-text">
+        РњРµРЅСЋ
+      </span>
+    </button>
+
+    <nav
+      class="site-header__nav"
+      id="main-navigation"
+      aria-label="РћСЃРЅРѕРІРЅР°СЏ РЅР°РІРёРіР°С†РёСЏ"
+      data-menu
+    >
+      <ul class="site-header__nav-list">
+        <li class="site-header__nav-item">
+          <a class="site-header__nav-link" href="/">
+            Р“Р»Р°РІРЅР°СЏ
+          </a>
+        </li>
+
+        <li class="site-header__nav-item">
+          <a class="site-header__nav-link" href="/catalog/">
+            РљР°С‚Р°Р»РѕРі
+          </a>
+        </li>
+
+        <li class="site-header__nav-item">
+          <a class="site-header__nav-link" href="/about/">
+            Рћ РєРѕРјРїР°РЅРёРё
+          </a>
+        </li>
+
+        <li class="site-header__nav-item">
+          <a class="site-header__nav-link" href="/contacts/">
+            РљРѕРЅС‚Р°РєС‚С‹
+          </a>
+        </li>
+
+        <li class="site-header__nav-item site-header__nav-item--action">
+          <a class="button button--secondary" href="/contacts/">
+            РЎС‚Р°С‚СЊ РїРѕСЃС‚Р°РІС‰РёРєРѕРј
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+=== C:\Projects\red-anchor\src\templates\components\ui\badge.njk ===
+
+{% macro badge(text, variant = "") %}
+  <span class="badge{% if variant %} badge--{{ variant }}{% endif %}">
+    {{ text }}
+  </span>
+{% endmacro %}
+
+=== C:\Projects\red-anchor\src\templates\components\ui\breadcrumb.njk ===
+
+{% macro breadcrumb(items) %}
+  <nav class="breadcrumbs" aria-label="РҐР»РµР±РЅС‹Рµ РєСЂРѕС€РєРё">
+    <ol class="breadcrumbs__list">
+      {% for item in items %}
+        <li
+          class="breadcrumbs__item"
+          {% if item.current %}aria-current="page"{% endif %}
+        >
+          {% if item.current %}
+            {{ item.label }}
+          {% else %}
+            <a class="breadcrumbs__link" href="{{ item.href }}">
+              {{ item.label }}
+            </a>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ol>
+  </nav>
+{% endmacro %}
+
+=== C:\Projects\red-anchor\src\templates\components\ui\button.njk ===
+
+{% macro button(
+  text,
+  href = null,
+  variant = "primary",
+  type = "button",
+  modifier = "",
+  ariaLabel = ""
+) %}
+  {% if href %}
+    <a
+      class="button button--{{ variant }}{% if modifier %} {{ modifier }}{% endif %}"
+      href="{{ href }}"
+      {% if ariaLabel %}aria-label="{{ ariaLabel }}"{% endif %}
+    >
+      <span class="button__text">{{ text }}</span>
+    </a>
+  {% else %}
+    <button
+      class="button button--{{ variant }}{% if modifier %} {{ modifier }}{% endif %}"
+      type="{{ type }}"
+      {% if ariaLabel %}aria-label="{{ ariaLabel }}"{% endif %}
+    >
+      <span class="button__text">{{ text }}</span>
+    </button>
+  {% endif %}
+{% endmacro %}
+
+=== C:\Projects\red-anchor\src\templates\components\ui\checkbox.njk ===
+
+{% macro checkbox(
+  id,
+  name,
+  label,
+  value = "on",
+  checked = false,
+  disabled = false
+) %}
+  <label class="checkbox">
+    <input
+      class="checkbox__input"
+      id="{{ id }}"
+      name="{{ name }}"
+      type="checkbox"
+      value="{{ value }}"
+      {% if checked %}checked{% endif %}
+      {% if disabled %}disabled{% endif %}
+    >
+
+    <span class="checkbox__box" aria-hidden="true"></span>
+
+    <span class="checkbox__text">
+      {{ label }}
+    </span>
+  </label>
+{% endmacro %}
+
+=== C:\Projects\red-anchor\src\templates\components\ui\date-field.njk ===
+
+{% from "templates/components/ui/field.njk" import field %}
+
+{% macro dateField(
+  label,
+  id,
+  name,
+  value = "",
+  required = false,
+  min = "",
+  max = "",
+  hint = "",
+  error = ""
+) %}
+  {% call field(label, id, required, hint, error) %}
+    <div class="date-field">
+      <input
+        class="field__control"
+        id="{{ id }}"
+        name="{{ name }}"
+        type="date"
+        {% if value %}value="{{ value }}"{% endif %}
+        {% if min %}min="{{ min }}"{% endif %}
+        {% if max %}max="{{ max }}"{% endif %}
+        {% if required %}required{% endif %}
+        {% if error %}aria-invalid="true"{% endif %}
+      >
+    </div>
+  {% endcall %}
+{% endmacro %}
+
+=== C:\Projects\red-anchor\src\templates\components\ui\field.njk ===
+
+{% macro field(label, id, required = false, hint = "", error = "") %}
+  <div class="field{% if error %} is-invalid{% endif %}">
+    <label class="field__label" for="{{ id }}">
+      {{ label }}
+
+      {% if required %}
+        <span class="field__required" aria-hidden="true">*</span>
+      {% endif %}
+    </label>
+
+    {{ caller() }}
+
+    {% if hint %}
+      <p class="field__hint">{{ hint }}</p>
+    {% endif %}
+
+    {% if error %}
+      <p class="field__error">{{ error }}</p>
+    {% endif %}
+  </div>
+{% endmacro %}С‹
+
+=== C:\Projects\red-anchor\src\templates\components\ui\file-upload.njk ===
+
+{% macro fileUpload(
+  id,
+  name,
+  title = "Р’С‹Р±РµСЂРёС‚Рµ С„Р°Р№Р» РёР»Рё РїРµСЂРµС‚Р°С‰РёС‚Рµ РµРіРѕ СЃСЋРґР°",
+  hint = "РњР°РєСЃРёРјР°Р»СЊРЅС‹Р№ СЂР°Р·РјРµСЂ С„Р°Р№Р»Р°: 10 РњР‘",
+  accept = ".gif,.jpg,.jpeg,.png,.bmp,.tif,.txt,.rtf,.html,.pdf,.doc,.docx,.odt,.ppt,.pptx",
+  maxSize = 10485760,
+  multiple = false
+) %}
+  <div
+    class="file-upload"
+    data-file-upload
+    data-max-size="{{ maxSize }}"
+  >
+    <input
+      class="file-upload__input"
+      id="{{ id }}"
+      name="{{ name }}"
+      type="file"
+      accept="{{ accept }}"
+      {% if multiple %}multiple{% endif %}
+    >
+
+    <label class="file-upload__dropzone" for="{{ id }}">
+      <span class="file-upload__title">
+        {{ title }}
+      </span>
+
+      <span class="file-upload__hint">
+        {{ hint }}
+      </span>
+    </label>
+
+    <div class="file-upload__files" data-file-list></div>
+
+    <p class="file-upload__error" data-file-error role="alert"></p>
+  </div>
+{% endmacro %}
+
+=== C:\Projects\red-anchor\src\templates\components\ui\filter.njk ===
+
+{% macro filter(
+  action = "/catalog/",
+  selectedCategory = ""
+) %}
+  <form
+    class="filter"
+    action="{{ action }}"
+    method="get"
+    data-filter
+  >
+    <div class="filter__header">
+      <h2 class="filter__title">
+        Р¤РёР»СЊС‚СЂ
+      </h2>
+
+      <button class="filter__reset" type="reset">
+        РЎР±СЂРѕСЃРёС‚СЊ
+      </button>
+    </div>
+
+    <div class="filter__body">
+      <div class="filter__group">
+        <label class="filter__label" for="caliber-from">
+          РљР°Р»РёР±СЂ С†РµРїРё
+        </label>
+
+        <div class="filter__range">
+          <input
+            class="filter__control"
+            id="caliber-from"
+            name="caliberFrom"
+            type="number"
+            min="11"
+            max="120"
+            placeholder="РћС‚"
+            inputmode="numeric"
+          >
+
+          <span class="filter__range-separator" aria-hidden="true">
+            вЂ”
+          </span>
+
+          <input
+            class="filter__control"
+            id="caliber-to"
+            name="caliberTo"
+            type="number"
+            min="11"
+            max="120"
+            placeholder="Р”Рѕ"
+            inputmode="numeric"
+          >
+        </div>
+      </div>
+
+      <div class="filter__group">
+        <label class="filter__label" for="chain-category">
+          РљР°С‚РµРіРѕСЂРёСЏ С†РµРїРё
+        </label>
+
+        <div class="filter__select-wrapper">
+          <select
+            class="filter__control filter__select"
+            id="chain-category"
+            name="category"
+          >
+            <option value="">Р’СЃРµ РєР°С‚РµРіРѕСЂРёРё</option>
+            <option
+              value="anchor-chains"
+              {% if selectedCategory == "anchor-chains" %}selected{% endif %}
+            >
+              РЇРєРѕСЂРЅС‹Рµ С†РµРїРё
+            </option>
+            <option
+              value="components"
+              {% if selectedCategory == "components" %}selected{% endif %}
+            >
+              РљРѕРјРїР»РµРєС‚СѓСЋС‰РёРµ
+            </option>
+            <option
+              value="accessories"
+              {% if selectedCategory == "accessories" %}selected{% endif %}
+            >
+              РћСЃРЅР°СЃС‚РєР°
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <button class="button button--primary filter__submit" type="submit">
+        РџСЂРёРјРµРЅРёС‚СЊ С„РёР»СЊС‚СЂ
+      </button>
+    </div>
+  </form>
+{% endmacro %}
+
+=== C:\Projects\red-anchor\src\templates\components\ui\input.njk ===
+
+{% from "templates/components/ui/field.njk" import field %}
+
+{% macro input(
+  label,
+  id,
+  name,
+  type = "text",
+  placeholder = "",
+  value = "",
+  required = false,
+  hint = "",
+  error = ""
+) %}
+  {% call field(label, id, required, hint, error) %}
+    <input
+      class="field__control"
+      id="{{ id }}"
+      name="{{ name }}"
+      type="{{ type }}"
+      {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}
+      {% if value %}value="{{ value }}"{% endif %}
+      {% if required %}required{% endif %}
+      {% if error %}aria-invalid="true"{% endif %}
+    >
+  {% endcall %}
+{% endmacro %}
+
+=== C:\Projects\red-anchor\src\templates\components\ui\link.njk ===
+
+{% macro link(text, href = "#", variant = "") %}
+  <a
+    class="link{% if variant %} link--{{ variant }}{% endif %}"
+    href="{{ href }}"
+  >
+    {{ text }}
+  </a>
+{% endmacro %}
+
+=== C:\Projects\red-anchor\src\templates\components\ui\pagination.njk ===
+
+{% macro pagination(current = 1, total = 8) %}
+  <nav class="pagination" aria-label="РќР°РІРёРіР°С†РёСЏ РїРѕ СЃС‚СЂР°РЅРёС†Р°Рј">
+    {% for pageNumber in range(1, total + 1) %}
+      <a
+        class="pagination__link{% if pageNumber == current %} pagination__link--current{% endif %}"
+        href="?page={{ pageNumber }}"
+        {% if pageNumber == current %}aria-current="page"{% endif %}
+      >
+        {{ pageNumber }}
+      </a>
+    {% endfor %}
+  </nav>
+{% endmacro %}
+
+=== C:\Projects\red-anchor\src\templates\components\ui\product-card.njk ===
+
+{% macro productCard(
+  id,
+  title,
+  url = "#",
+  category = "",
+  unit = "",
+  quantity = "",
+  image = "",
+  imageAlt = "",
+  canOrder = true,
+  categoryCode = "",
+  caliber = ""
+) %}
+  <article
+    class="product-card"
+    data-product-card
+    data-product-id="{{ id }}"
+    data-product-category="{{ categoryCode }}"
+    {% if caliber != "" %}
+      data-product-caliber="{{ caliber }}"
+    {% endif %}
+  >
+    <div class="product-card__media">
+      {% if image %}
+        <img
+          class="product-card__image"
+          src="{{ image }}"
+          alt="{{ imageAlt or title }}"
+          loading="lazy"
+        >
+      {% else %}
+        <span
+          class="product-card__media-placeholder"
+          aria-hidden="true"
+        >
+          РР·РѕР±СЂР°Р¶РµРЅРёРµ С‚РѕРІР°СЂР°
+        </span>
+      {% endif %}
+    </div>
+
+    <div class="product-card__body">
+      {% if category %}
+        <p class="product-card__category">
+          {{ category }}
+        </p>
+      {% endif %}
+
+      <h3 class="product-card__title">
+        <a
+          class="product-card__title-link"
+          href="{{ url }}"
+        >
+          {{ title }}
+        </a>
+      </h3>
+
+      {% if unit or quantity %}
+        <dl class="product-card__meta">
+          {% if unit %}
+            <div class="product-card__meta-row">
+              <dt class="product-card__meta-label">
+                Р•РґРёРЅРёС†Р° РёР·РјРµСЂРµРЅРёСЏ
+              </dt>
+
+              <dd class="product-card__meta-value">
+                {{ unit }}
+              </dd>
+            </div>
+          {% endif %}
+
+          {% if quantity %}
+            <div class="product-card__meta-row">
+              <dt class="product-card__meta-label">
+                РњРёРЅРёРјР°Р»СЊРЅС‹Р№ Р·Р°РєР°Р·
+              </dt>
+
+              <dd class="product-card__meta-value">
+                {{ quantity }}
+              </dd>
+            </div>
+          {% endif %}
+        </dl>
+      {% endif %}
+
+      <div class="product-card__actions">
+        <a
+          class="button button--secondary product-card__action"
+          href="{{ url }}"
+        >
+          РџРѕРґСЂРѕР±РЅРµРµ
+        </a>
+
+        {% if canOrder %}
+          <button
+            class="button button--primary product-card__action"
+            type="button"
+            aria-pressed="false"
+            data-add-to-order
+            data-product-id="{{ id }}"
+          >
+            <span data-order-button-text>
+              Р”РѕР±Р°РІРёС‚СЊ РІ Р·Р°РєР°Р·
+            </span>
+          </button>
+        {% else %}
+          <button
+            class="button button--primary product-card__action"
+            type="button"
+            disabled
+          >
+            РќРµРґРѕСЃС‚СѓРїРЅРѕ
+          </button>
+        {% endif %}
+      </div>
+    </div>
+  </article>
+{% endmacro %}
+
+=== C:\Projects\red-anchor\src\templates\components\ui\radio.njk ===
+
+{% macro radio(
+  id,
+  name,
+  label,
+  value,
+  checked = false,
+  disabled = false
+) %}
+  <label class="radio">
+    <input
+      class="radio__input"
+      id="{{ id }}"
+      name="{{ name }}"
+      type="radio"
+      value="{{ value }}"
+      {% if checked %}checked{% endif %}
+      {% if disabled %}disabled{% endif %}
+    >
+
+    <span class="radio__circle" aria-hidden="true"></span>
+
+    <span class="radio__text">
+      {{ label }}
+    </span>
+  </label>
+{% endmacro %}
+
+=== C:\Projects\red-anchor\src\templates\components\ui\select.njk ===
+
+{% from "templates/components/ui/field.njk" import field %}
+
+{% macro select(
+  label,
+  id,
+  name,
+  options,
+  required = false,
+  selectedValue = "",
+  hint = "",
+  error = ""
+) %}
+  {% call field(label, id, required, hint, error) %}
+    <div class="select">
+      <select
+        class="field__control"
+        id="{{ id }}"
+        name="{{ name }}"
+        {% if required %}required{% endif %}
+        {% if error %}aria-invalid="true"{% endif %}
+      >
+        {% for option in options %}
+          <option
+            value="{{ option.value }}"
+            {% if option.value == selectedValue %}selected{% endif %}
+          >
+            {{ option.label }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+  {% endcall %}
+{% endmacro %}
+
+=== C:\Projects\red-anchor\src\templates\components\ui\textarea.njk ===
+
+{% from "templates/components/ui/field.njk" import field %}
+
+{% macro textarea(
+  label,
+  id,
+  name,
+  placeholder = "",
+  required = false,
+  hint = "",
+  error = ""
+) %}
+  {% call field(label, id, required, hint, error) %}
+    <textarea
+      class="field__control"
+      id="{{ id }}"
+      name="{{ name }}"
+      {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}
+      {% if required %}required{% endif %}
+      {% if error %}aria-invalid="true"{% endif %}
+    ></textarea>
+  {% endcall %}
+{% endmacro %}
+
+=== C:\Projects\red-anchor\src\templates\layouts\base.njk ===
+
+<!doctype html>
+<html lang="{{ site.lang | default('ru') }}">
+  <head>
+    <meta charset="UTF-8">
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+      {% block title %}
+        {{ page.title | default(site.defaultTitle) }} вЂ” {{ site.name }}
+      {% endblock %}
+    </title>
+
+    <meta
+      name="description"
+      content="{{ page.description | default(site.defaultDescription) }}"
+    >
+  </head>
+
+  <body class="{{ page.bodyClass | default('') }}">
+    <a class="skip-link" href="#main-content">
+      РџРµСЂРµР№С‚Рё Рє СЃРѕРґРµСЂР¶РёРјРѕРјСѓ
+    </a>
+
+    <div class="site">
+      {% include "templates/components/common/header.njk" %}
+
+      <main id="main-content" class="site__main">
+        {% block content %}{% endblock %}
+      </main>
+
+      {% include "templates/components/common/footer.njk" %}
+    </div>
+
+    <script type="module" src="/src/scripts/main.ts"></script>
+  </body>
+</html>
+

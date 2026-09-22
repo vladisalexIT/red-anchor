@@ -1,56 +1,34 @@
-import {
-  demoOrderAdapter,
-  type OrderAdapter,
-} from '../adapters/demo-order-adapter';
+import { demoOrderAdapter, type OrderAdapter } from '../adapters/demo-order-adapter';
 
 const DEFAULT_LABEL = 'Добавить в заказ';
 const ADDED_LABEL = 'Добавлено в заказ';
 
-function updateButton(
-  button: HTMLButtonElement,
-  adapter: OrderAdapter,
-): void {
+function updateButton(button: HTMLButtonElement, adapter: OrderAdapter): void {
   const productId = button.dataset.productId ?? '';
   const isAdded = adapter.has(productId);
 
-  const label = button.querySelector<HTMLElement>(
-    '[data-order-button-text]',
-  );
+  const label = button.querySelector<HTMLElement>('[data-order-button-text]');
 
   button.classList.toggle('is-added', isAdded);
-  button.setAttribute(
-    'aria-pressed',
-    isAdded ? 'true' : 'false',
-  );
+  button.setAttribute('aria-pressed', isAdded ? 'true' : 'false');
 
   if (label) {
-    label.textContent = isAdded
-      ? ADDED_LABEL
-      : DEFAULT_LABEL;
+    label.textContent = isAdded ? ADDED_LABEL : DEFAULT_LABEL;
   }
 }
 
-function updateCounters(
-  root: ParentNode,
-  adapter: OrderAdapter,
-): void {
+function updateCounters(root: ParentNode, adapter: OrderAdapter): void {
   const count = adapter.getCount();
 
-  const counters =
-    root.querySelectorAll<HTMLElement>('[data-order-count]');
+  const counters = root.querySelectorAll<HTMLElement>('[data-order-count]');
 
   counters.forEach((counter) => {
     counter.textContent = String(count);
   });
 }
 
-export function initOrder(
-  adapter: OrderAdapter = demoOrderAdapter,
-): void {
-  const buttons =
-    document.querySelectorAll<HTMLButtonElement>(
-      '[data-add-to-order]',
-    );
+export function initOrder(adapter: OrderAdapter = demoOrderAdapter): void {
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-add-to-order]');
 
   const updateInterface = (): void => {
     buttons.forEach((button) => {

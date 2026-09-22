@@ -1,0 +1,34 @@
+{% macro navigation(kind = "main") %}
+  {% if kind == "main" %}
+    {% set items = [
+      { label: "Отрасли", href: "/industries/" },
+      { label: "Завод", href: "/plant/" },
+      { label: "Производство", href: "/production/" },
+      { label: "Услуги", href: "/services/" },
+      { label: "Закупки", href: "/purchases/" },
+      { label: "Карьера", href: "/career/" },
+      { label: "Контакты", href: "/contacts/" }
+    ] %}
+  {% else %}
+    {% set items = [
+      { label: "Продукция", href: "/catalog/" },
+      { label: "Отрасли", href: "/industries/" },
+      { label: "Завод", href: "/plant/" },
+      { label: "Производство", href: "/production/" },
+      { label: "Услуги", href: "/services/" },
+      { label: "Закупки", href: "/purchases/" },
+      { label: "Карьера", href: "/career/" },
+      { label: "Контакты", href: "/contacts/" }
+    ] %}
+  {% endif %}
+
+  <ul class="site-navigation site-navigation--{{ kind }}">
+    {% for item in items %}
+      <li class="site-navigation__item">
+        <a class="site-navigation__link" href="{{ item.href }}">
+          {{ item.label }}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endmacro %}

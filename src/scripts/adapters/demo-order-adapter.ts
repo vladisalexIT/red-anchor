@@ -1,6 +1,4 @@
-export type OrderChangeListener = (
-  productIds: readonly string[],
-) => void;
+export type OrderChangeListener = (productIds: readonly string[]) => void;
 
 export interface OrderAdapter {
   getProductIds(): readonly string[];
@@ -16,8 +14,7 @@ const STORAGE_KEY = 'red-anchor-demo-order';
 export class DemoOrderAdapter implements OrderAdapter {
   private productIds: Set<string>;
 
-  private readonly listeners =
-    new Set<OrderChangeListener>();
+  private readonly listeners = new Set<OrderChangeListener>();
 
   constructor() {
     this.productIds = this.readStorage();
@@ -60,9 +57,7 @@ export class DemoOrderAdapter implements OrderAdapter {
     this.notify();
   }
 
-  public subscribe(
-    listener: OrderChangeListener,
-  ): () => void {
+  public subscribe(listener: OrderChangeListener): () => void {
     this.listeners.add(listener);
 
     return () => {
@@ -72,23 +67,20 @@ export class DemoOrderAdapter implements OrderAdapter {
 
   private readStorage(): Set<string> {
     try {
-      const storedValue =
-        window.localStorage.getItem(STORAGE_KEY);
+      const storedValue = window.localStorage.getItem(STORAGE_KEY);
 
       if (!storedValue) {
         return new Set();
       }
 
-      const parsedValue: unknown =
-        JSON.parse(storedValue);
+      const parsedValue: unknown = JSON.parse(storedValue);
 
       if (!Array.isArray(parsedValue)) {
         return new Set();
       }
 
       const productIds = parsedValue.filter(
-        (value): value is string =>
-          typeof value === 'string' && value.length > 0,
+        (value): value is string => typeof value === 'string' && value.length > 0,
       );
 
       return new Set(productIds);
@@ -99,10 +91,7 @@ export class DemoOrderAdapter implements OrderAdapter {
 
   private save(): void {
     try {
-      window.localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(this.getProductIds()),
-      );
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(this.getProductIds()));
     } catch {
       /*
        * Если localStorage недоступен, заказ продолжит
@@ -120,5 +109,4 @@ export class DemoOrderAdapter implements OrderAdapter {
   }
 }
 
-export const demoOrderAdapter =
-  new DemoOrderAdapter();
+export const demoOrderAdapter = new DemoOrderAdapter();

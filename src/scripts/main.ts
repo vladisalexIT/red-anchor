@@ -5,7 +5,6 @@ import { initFilters } from './components/filter';
 import { initMobileMenu } from './components/mobile-menu';
 import { initOrder } from './components/order';
 
-
 function initApp(): void {
   initMobileMenu();
   initFileUploads();

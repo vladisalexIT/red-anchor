@@ -1,64 +1,148 @@
+{% from "templates/components/common/navigation.njk" import navigation %}
+
 <header class="site-header" data-header>
-  <div class="container site-header__container">
+  <div class="site-header__top">
+    <div class="container site-header__top-inner">
+      <a class="site-header__sitemap" href="/sitemap/">Карта сайта</a>
+
+      <nav class="site-header__primary" aria-label="Основная навигация">
+        {{ navigation("main") }}
+      </nav>
+
+      <div class="site-header__contacts">
+        <a href="mailto:info@redanchor.ru">info@redanchor.ru</a>
+        <a href="tel:+78312115511">+7 831 211-55-11</a>
+        <a
+          href="mailto:info@redanchor.ru?subject=Обратный%20звонок"
+        >
+          Перезвоните мне
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container site-header__main">
     <a
       class="site-header__logo"
       href="/"
       aria-label="{{ site.name }} — главная"
     >
-      <span class="site-header__logo-text">
-        {{ site.name }}
-      </span>
+      <span class="site-header__logo-mark" aria-hidden="true">Я</span>
+      <span class="site-header__logo-name">Красный<br>якорь</span>
     </a>
+
+    <nav class="site-header__actions" aria-label="Навигация по продукции">
+      <details class="site-header__catalog">
+        <summary class="site-header__action site-header__action--catalog">
+          Продукция
+        </summary>
+
+        <div class="site-header__catalog-content">
+          <a href="/catalog/">Вся продукция</a>
+          <a href="/catalog/">Якорные цепи и комплектующие</a>
+          <a href="/catalog/">Цепи и комплектующие для горно-шахтного оборудования</a>
+          <a href="/catalog/">Такелажные изделия</a>
+          <a href="/catalog/">Грузоподъёмные цепи</a>
+        </div>
+      </details>
+
+      <form
+        class="site-header__search"
+        action="/catalog/"
+        method="get"
+        role="search"
+      >
+        <label class="visually-hidden" for="site-search">
+          Поиск по каталогу
+        </label>
+        <input
+          id="site-search"
+          name="q"
+          type="search"
+          placeholder="Поиск по каталогу"
+          autocomplete="off"
+        >
+        <button type="submit" aria-label="Искать по каталогу">
+          Найти
+        </button>
+      </form>
+
+      <a class="site-header__action" href="/buyers/">
+        Покупателю
+      </a>
+
+      <a class="site-header__action site-header__order" href="/order/">
+        Ваш заказ
+        <span class="site-header__count" data-order-count>0</span>
+      </a>
+    </nav>
 
     <button
       class="site-header__menu-button"
       type="button"
+      aria-label="Открыть меню"
       aria-expanded="false"
-      aria-controls="main-navigation"
+      aria-controls="site-mobile-menu"
       data-menu-toggle
     >
-      <span class="site-header__menu-button-text">
-        Меню
-      </span>
+      <span class="site-header__menu-icon" aria-hidden="true"></span>
     </button>
+  </div>
 
-    <nav
-      class="site-header__nav"
-      id="main-navigation"
-      aria-label="Основная навигация"
-      data-menu
-    >
-      <ul class="site-header__nav-list">
-        <li class="site-header__nav-item">
-          <a class="site-header__nav-link" href="/">
-            Главная
-          </a>
-        </li>
+  <div
+    class="site-header__mobile"
+    id="site-mobile-menu"
+    data-menu
+    hidden
+  >
+    <div class="container site-header__mobile-inner">
+      <form
+        class="site-header__mobile-search"
+        action="/catalog/"
+        method="get"
+        role="search"
+      >
+        <label class="visually-hidden" for="site-mobile-search">
+          Поиск по каталогу
+        </label>
+        <input
+          id="site-mobile-search"
+          name="q"
+          type="search"
+          placeholder="Поиск по каталогу"
+        >
+        <button type="submit">Найти</button>
+      </form>
 
-        <li class="site-header__nav-item">
-          <a class="site-header__nav-link" href="/catalog/">
-            Каталог
-          </a>
-        </li>
+      <nav aria-label="Мобильная навигация">
+        <details class="site-header__mobile-catalog">
+          <summary>Продукция</summary>
+          <div class="site-header__mobile-submenu">
+            <a href="/catalog/">Вся продукция</a>
+            <a href="/catalog/">Якорные цепи и комплектующие</a>
+            <a href="/catalog/">Цепи и комплектующие для горно-шахтного оборудования</a>
+            <a href="/catalog/">Такелажные изделия</a>
+            <a href="/catalog/">Грузоподъёмные цепи</a>
+          </div>
+        </details>
 
-        <li class="site-header__nav-item">
-          <a class="site-header__nav-link" href="/about/">
-            О компании
-          </a>
-        </li>
+        <a class="site-header__mobile-link" href="/buyers/">Покупателю</a>
 
-        <li class="site-header__nav-item">
-          <a class="site-header__nav-link" href="/contacts/">
-            Контакты
-          </a>
-        </li>
+        <a class="site-header__mobile-link" href="/order/">
+          Ваш заказ
+          <span data-order-count>0</span>
+        </a>
 
-        <li class="site-header__nav-item site-header__nav-item--action">
-          <a class="button button--secondary" href="/contacts/">
-            Стать поставщиком
-          </a>
-        </li>
-      </ul>
-    </nav>
+        {{ navigation("main") }}
+      </nav>
+
+      <div class="site-header__mobile-contacts">
+        <a href="mailto:info@redanchor.ru">info@redanchor.ru</a>
+        <a href="tel:+78312115511">+7 831 211-55-11</a>
+        <a href="mailto:info@redanchor.ru?subject=Обратный%20звонок">
+          Перезвоните мне
+        </a>
+      </div>
+    </div>
   </div>
 </header>

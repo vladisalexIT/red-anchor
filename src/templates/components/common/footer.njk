@@ -1,65 +1,44 @@
+{% from "templates/components/common/navigation.njk" import navigation %}
+
 <footer class="site-footer">
-  <div class="container site-footer__container">
+  <div class="container site-footer__main">
     <div class="site-footer__brand">
       <a class="site-footer__logo" href="/" aria-label="{{ site.name }} — главная">
-        {{ site.name }}
+        Красный<br>якорь
       </a>
 
-      <p class="site-footer__description">
-        Якорные цепи, комплектующие и решения для профессионального применения.
+      <p class="site-footer__company">
+        АО «Завод Красный Якорь»
       </p>
     </div>
 
-    <nav class="site-footer__nav" aria-label="Навигация в подвале">
-      <p class="site-footer__title">
-        Разделы
-      </p>
-
-      <ul class="site-footer__list">
-        <li>
-          <a class="site-footer__link" href="/">
-            Главная
-          </a>
-        </li>
-
-        <li>
-          <a class="site-footer__link" href="/catalog/">
-            Каталог
-          </a>
-        </li>
-
-        <li>
-          <a class="site-footer__link" href="/about/">
-            О компании
-          </a>
-        </li>
-
-        <li>
-          <a class="site-footer__link" href="/contacts/">
-            Контакты
-          </a>
-        </li>
-      </ul>
+    <nav class="site-footer__map" aria-label="Карта сайта">
+      <h2 class="site-footer__title">Карта сайта</h2>
+      {{ navigation("footer") }}
     </nav>
 
-    <div class="site-footer__action">
-      <p class="site-footer__title">
-        Для поставщиков
+    <div class="site-footer__contacts">
+      <h2 class="site-footer__title">Контакты</h2>
+
+      <a href="tel:+78312115511">+7 831 211-55-11</a>
+      <a href="mailto:info@redanchor.ru">info@redanchor.ru</a>
+
+      <p>
+        Россия, г. Нижний Новгород,<br>
+        Московское шоссе, д. 120
       </p>
 
-      <a class="site-footer__link site-footer__link--accent" href="/contacts/">
-        Стать поставщиком
+      <a
+        class="site-footer__callback"
+        href="mailto:info@redanchor.ru?subject=Обратный%20звонок"
+      >
+        Перезвоните мне
       </a>
     </div>
   </div>
 
   <div class="container site-footer__bottom">
-    <p class="site-footer__copyright">
-      © {{ site.name }}
-    </p>
-
-    <p class="site-footer__note">
-      Демонстрационная frontend-реализация
-    </p>
+    <p>© АО «Завод Красный Якорь»</p>
+    <a href="/privacy/">Политика конфиденциальности</a>
   </div>
 </footer>

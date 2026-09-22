@@ -13,9 +13,7 @@ export class DemoCatalogAdapter implements CatalogAdapter {
   private readonly cards: HTMLElement[];
 
   constructor(root: ParentNode) {
-    this.cards = Array.from(
-      root.querySelectorAll<HTMLElement>('[data-product-card]'),
-    );
+    this.cards = Array.from(root.querySelectorAll<HTMLElement>('[data-product-card]'));
   }
 
   public apply(filters: CatalogFilters): number {
@@ -26,26 +24,17 @@ export class DemoCatalogAdapter implements CatalogAdapter {
       const caliberValue = card.dataset.productCaliber ?? '';
       const parsedCaliber = Number(caliberValue);
 
-      const caliber =
-        caliberValue && Number.isFinite(parsedCaliber)
-          ? parsedCaliber
-          : null;
+      const caliber = caliberValue && Number.isFinite(parsedCaliber) ? parsedCaliber : null;
 
-      const matchesCategory =
-        !filters.category || category === filters.category;
+      const matchesCategory = !filters.category || category === filters.category;
 
       const matchesCaliberFrom =
-        filters.caliberFrom === null ||
-        (caliber !== null && caliber >= filters.caliberFrom);
+        filters.caliberFrom === null || (caliber !== null && caliber >= filters.caliberFrom);
 
       const matchesCaliberTo =
-        filters.caliberTo === null ||
-        (caliber !== null && caliber <= filters.caliberTo);
+        filters.caliberTo === null || (caliber !== null && caliber <= filters.caliberTo);
 
-      const isVisible =
-        matchesCategory &&
-        matchesCaliberFrom &&
-        matchesCaliberTo;
+      const isVisible = matchesCategory && matchesCaliberFrom && matchesCaliberTo;
 
       card.hidden = !isVisible;
 

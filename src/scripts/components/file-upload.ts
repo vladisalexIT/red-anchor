@@ -62,11 +62,7 @@ function setInputFile(input: HTMLInputElement, file: File): void {
   }
 }
 
-function renderFile(
-  root: HTMLElement,
-  input: HTMLInputElement,
-  file: File,
-): void {
+function renderFile(root: HTMLElement, input: HTMLInputElement, file: File): void {
   const list = root.querySelector<HTMLElement>('[data-file-list]');
 
   if (!list) {
@@ -114,11 +110,7 @@ function showError(root: HTMLElement, message: string): void {
   root.classList.toggle('is-invalid', Boolean(message));
 }
 
-function handleFile(
-  root: HTMLElement,
-  input: HTMLInputElement,
-  file: File | undefined,
-): void {
+function handleFile(root: HTMLElement, input: HTMLInputElement, file: File | undefined): void {
   const maxSize = Number(root.dataset.maxSize) || DEFAULT_MAX_SIZE;
   const accept = input.getAttribute('accept') ?? '';
 
@@ -137,10 +129,7 @@ function handleFile(
 
   if (file.size > maxSize) {
     input.value = '';
-    showError(
-      root,
-      `Файл слишком большой. Максимальный размер: ${formatFileSize(maxSize)}.`,
-    );
+    showError(root, `Файл слишком большой. Максимальный размер: ${formatFileSize(maxSize)}.`);
     return;
   }
 
@@ -152,13 +141,9 @@ export function initFileUploads(): void {
   const roots = document.querySelectorAll<HTMLElement>('[data-file-upload]');
 
   roots.forEach((root) => {
-    const input = root.querySelector<HTMLInputElement>(
-      '.file-upload__input',
-    );
+    const input = root.querySelector<HTMLInputElement>('.file-upload__input');
 
-    const dropzone = root.querySelector<HTMLElement>(
-      '.file-upload__dropzone',
-    );
+    const dropzone = root.querySelector<HTMLElement>('.file-upload__dropzone');
 
     if (!input || !dropzone) {
       return;
