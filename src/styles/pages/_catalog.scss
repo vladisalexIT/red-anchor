@@ -35,6 +35,14 @@
   margin-bottom: 24px;
 }
 
+.catalog-page__categories {
+  margin-bottom: fluid(40px, 72px);
+}
+
+.catalog-page__categories-title {
+  margin-bottom: fluid(24px, 40px);
+}
+
 .catalog-page__layout {
   display: grid;
   gap: 32px;

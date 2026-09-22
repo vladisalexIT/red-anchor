@@ -1,0 +1,166 @@
+{% extends "templates/layouts/base.njk" %}
+
+{% from "templates/components/ui/breadcrumb.njk" import breadcrumb %}
+
+{% block content %}
+  <main class="order-page" data-order-page>
+    <div class="container">
+      <div class="order-page__breadcrumbs">
+        {{ breadcrumb([
+          { label: "Главная", href: "/" },
+          { label: "Ваш заказ", current: true }
+        ]) }}
+      </div>
+
+      <header class="order-page__header">
+        <div>
+          <p class="order-page__eyebrow">
+            Выбранная продукция
+          </p>
+
+          <h1 class="order-page__title">
+            Ваш заказ
+          </h1>
+        </div>
+
+        <p class="order-page__count" aria-live="polite">
+          Позиций:
+          <strong data-order-page-count>0</strong>
+        </p>
+      </header>
+
+      <p class="order-page__intro">
+        Проверьте состав заказа и укажите необходимое количество.
+        Стоимость и срок поставки будут рассчитаны после обработки
+        заявки специалистом завода.
+      </p>
+
+      <p class="order-page__loading" data-order-page-loading>
+        Загружаем выбранную продукцию…
+      </p>
+
+      <section
+        class="order-page__empty"
+        data-order-page-empty
+        hidden
+      >
+        <h2 class="order-page__empty-title">
+          В заказе пока нет товаров
+        </h2>
+
+        <p class="order-page__empty-text">
+          Добавьте продукцию из каталога или со страницы товара.
+          Выбранные позиции появятся здесь.
+        </p>
+
+        <a
+          class="button button--primary"
+          href="/catalog/"
+        >
+          Перейти в каталог
+        </a>
+      </section>
+
+      <section
+        class="order-page__content"
+        aria-label="Состав заказа"
+        data-order-page-content
+        hidden
+      >
+        <ul
+          class="order-page__items"
+          data-order-page-list
+        ></ul>
+
+        <div class="order-page__footer">
+          <button
+            class="order-page__clear"
+            type="button"
+            data-order-page-clear
+          >
+            Очистить заказ
+          </button>
+
+          <div class="order-page__submit">
+            <p class="order-page__submit-note">
+              Состав заказа будет автоматически приложен
+              к форме заявки.
+            </p>
+
+            <a
+              class="button button--primary"
+              href="/request/#nonstandard-request"
+            >
+              Продолжить оформление
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <p
+        class="order-page__status"
+        data-order-page-status
+        aria-live="polite"
+        hidden
+      ></p>
+
+      <template data-order-page-item-template>
+        <li
+          class="order-item"
+          data-order-page-item
+        >
+          <div
+            class="order-item__marker"
+            aria-hidden="true"
+          >
+            Я
+          </div>
+
+          <div class="order-item__content">
+            <p
+              class="order-item__category"
+              data-order-item-category
+            ></p>
+
+            <h2 class="order-item__title">
+              <a
+                class="order-item__title-link"
+                href="/catalog/"
+                data-order-item-link
+              ></a>
+            </h2>
+
+            <p
+              class="order-item__details"
+              data-order-item-details
+            ></p>
+          </div>
+
+          <div class="order-item__quantity">
+            <label data-order-item-quantity-label>
+              Количество
+            </label>
+
+            <input
+              class="order-item__quantity-control"
+              type="number"
+              min="1"
+              max="999999"
+              step="1"
+              inputmode="numeric"
+              data-order-item-quantity
+            >
+          </div>
+
+          <button
+            class="order-item__remove"
+            type="button"
+            data-order-item-remove
+          >
+            Удалить
+          </button>
+        </li>
+      </template>
+    </div>
+  </main>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% macro notice(title, text, detail = "") %}
+  <aside class="notice" aria-label="{{ title }}">
+    <p class="notice__title">{{ title }}</p>
+    <p class="notice__text">{{ text }}</p>
+
+    {% if detail %}
+      <p class="notice__detail">{{ detail }}</p>
+    {% endif %}
+  </aside>
+{% endmacro %}

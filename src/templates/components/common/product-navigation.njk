@@ -1,0 +1,204 @@
+{% macro productNavigation(
+  modifier = "",
+  showChildren = true
+) %}
+  {% set groups = [
+    {
+      title: "Якорные цепи и комплектующие",
+      href: "/catalog/anchor-chains/",
+      code: "anchor-chains",
+      items: [
+        {
+          title: "Якорные цепи",
+          href: "/catalog/anchor-chains/chains/"
+        },
+        {
+          title: "Комплектующие якорных цепей",
+          href: "/catalog/anchor-chains/components/"
+        },
+        {
+          title: "Такелажные изделия",
+          href: "/catalog/anchor-chains/rigging/"
+        },
+        {
+          title: "Стопоры цепные якорных устройств",
+          href: "/catalog/anchor-chains/stoppers/"
+        },
+        {
+          title: "Цепи для оффшорных платформ",
+          href: "/catalog/anchor-chains/offshore/"
+        },
+        {
+          title: "Якоря",
+          href: "/catalog/anchor-chains/anchors/"
+        },
+        {
+          title: "Цепи для крепления отбойных устройств причальных сооружений",
+          href: "/catalog/anchor-chains/fender-chains/"
+        }
+      ]
+    },
+    {
+      title: "Цепи и комплектующие для горно-шахтного оборудования",
+      href: "/catalog/mining/",
+      code: "mining",
+      items: [
+        {
+          title: "Цепи с овальными звеньями для крепления навесных цепей",
+          href: "/catalog/mining/oval-link-chains/"
+        },
+        {
+          title: "Цепи с кольцевыми звеньями",
+          href: "/catalog/mining/round-link-chains/"
+        },
+        {
+          title: "Комплектующие",
+          href: "/catalog/mining/components/"
+        }
+      ]
+    },
+    {
+      title: "Грузоподъёмные цепи",
+      href: "/catalog/lifting/",
+      code: "lifting",
+      items: [
+        {
+          title: "Цепи грузоподъёмные нормальной прочности. Класс 3",
+          href: "/catalog/lifting/class-3/"
+        },
+        {
+          title: "Цепи грузоподъёмные. Класс прочности 8",
+          href: "/catalog/lifting/class-8/"
+        },
+        {
+          title: "Цепи грузоподъёмные. Класс прочности 10",
+          href: "/catalog/lifting/class-10/"
+        },
+        {
+          title: "Стропы грузоподъёмные",
+          href: "/catalog/lifting/slings/"
+        }
+      ]
+    },
+    {
+      title: "Цепи и комплектующие для цементной промышленности",
+      href: "/catalog/cement/",
+      code: "cement",
+      items: [
+        {
+          title: "Цепи для цементной промышленности",
+          href: "/catalog/cement/chains/"
+        },
+        {
+          title: "Комплектующие",
+          href: "/catalog/cement/components/"
+        }
+      ]
+    },
+    {
+      title: "Цепи общего назначения",
+      href: "/catalog/general-purpose/",
+      code: "general-purpose",
+      items: [
+        {
+          title: "Цепи нормальной прочности короткозвенные. Класс 2,5",
+          href: "/catalog/general-purpose/short-link/"
+        },
+        {
+          title: "Цепи нормальной прочности длиннозвенные. Класс 2",
+          href: "/catalog/general-purpose/long-link/"
+        },
+        {
+          title: "Цепи для авиационной промышленности",
+          href: "/catalog/general-purpose/aviation/"
+        },
+        {
+          title: "Устройства для крепления при перевозке грузов",
+          href: "/catalog/general-purpose/cargo-fastening/"
+        },
+        {
+          title: "Цепи для изготовления многооборотных систем крепления",
+          href: "/catalog/general-purpose/reusable-fastening/"
+        },
+        {
+          title: "Цепи для конвейеров и транспортёров",
+          href: "/catalog/general-purpose/conveyors/"
+        },
+        {
+          title: "Цепи по DIN 763",
+          href: "/catalog/general-purpose/din-763/"
+        },
+        {
+          title: "Цепи для рыболовной промышленности",
+          href: "/catalog/general-purpose/fishing/"
+        }
+      ]
+    },
+    {
+      title: "Несерийная продукция",
+      href: "/catalog/nonstandard/",
+      code: "nonstandard",
+      items: [
+        {
+          title: "Оборудование для монтажа и демонтажа цепей и скребков",
+          href: "/catalog/nonstandard/installation-equipment/"
+        },
+        {
+          title: "Цепи шинозащитные",
+          href: "/catalog/nonstandard/tire-protection/"
+        },
+        {
+          title: "Цепи противоскольжения",
+          href: "/catalog/nonstandard/anti-skid/"
+        },
+        {
+          title: "Заклёпки HUCK и метизы",
+          href: "/catalog/nonstandard/fasteners/"
+        }
+      ]
+    }
+  ] %}
+
+  <div
+    class="product-navigation{% if modifier %} product-navigation--{{ modifier }}{% endif %}"
+    data-product-navigation
+  >
+    <ul class="product-navigation__groups">
+      {% for group in groups %}
+        <li
+          class="product-navigation__group"
+          data-product-navigation-group="{{ group.code }}"
+        >
+          <a
+            class="product-navigation__group-link"
+            href="{{ group.href }}"
+          >
+            <span>{{ group.title }}</span>
+
+            <span
+              class="product-navigation__arrow"
+              aria-hidden="true"
+            >
+              →
+            </span>
+          </a>
+
+          {% if showChildren %}
+            <ul class="product-navigation__children">
+              {% for item in group.items %}
+                <li class="product-navigation__child">
+                  <a
+                    class="product-navigation__child-link"
+                    href="{{ item.href }}"
+                  >
+                    {{ item.title }}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endmacro %}

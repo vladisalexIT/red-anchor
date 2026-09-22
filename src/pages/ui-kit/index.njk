@@ -10,6 +10,11 @@
 {% from "templates/components/ui/textarea.njk" import textarea %}
 {% from "templates/components/ui/breadcrumb.njk" import breadcrumb %}
 {% from "templates/components/ui/pagination.njk" import pagination %}
+{% from "templates/components/common/help-cta.njk" import helpCta %}
+{% from "templates/components/common/notice.njk" import notice %}
+{% from "templates/components/common/product-navigation.njk" import productNavigation %}
+{% from "templates/components/common/nonstandard-request-form.njk" import nonstandardRequestForm %}
+{% from "templates/components/product/document-list.njk" import documentList %}
 
 {% block content %}
   <section class="ui-kit">
@@ -206,4 +211,90 @@
       </section>
     </div>
   </section>
+  <section class="ui-kit__section">
+  <h2 class="type-h4 ui-kit__section-title">Помощь с подбором продукции</h2>
+  {{ helpCta("ui-kit-help") }}
+</section>
+
+<section class="ui-kit__section">
+  <h2 class="type-h4 ui-kit__section-title">Предупреждение</h2>
+  {{ notice(
+    "Внимание",
+    "Для обеспечения длительного срока безаварийной эксплуатации, предотвращения деформации и поломки элементов якорной цепи и якорно-швартового устройства необходимо следить, чтобы нагрузка на изделия прилагалась исключительно по линии каната, в соответствии с направлением, при котором производятся испытания элементов изделия.",
+    "Приложение нагрузки под углом к длине каната приводит к выходу изделия из строя."
+  ) }}
+</section>
+<section class="ui-kit__section">
+  <h2 class="type-h4 ui-kit__section-title">
+    Навигация по продукции
+  </h2>
+
+  <nav aria-label="Демонстрация категорий продукции">
+    {{ productNavigation("catalog", true) }}
+  </nav>
+</section>
+<section class="ui-kit__section">
+  <h2 class="type-h4 ui-kit__section-title">
+    Форма нестандартного заказа
+  </h2>
+
+  {{ nonstandardRequestForm(
+    "ui-kit-nonstandard-request"
+  ) }}
+</section>
+{% set demoDocuments = [
+  {
+    title: "Пример технического документа № 1",
+    description: "Документ без ссылки используется только для проверки интерфейса",
+    format: "PDF",
+    size: "6,3 МБ"
+  },
+  {
+    title: "Пример технического документа № 2",
+    format: "PDF",
+    size: "2,1 МБ"
+  },
+  {
+    title: "Пример технического документа № 3",
+    format: "DOCX",
+    size: "840 КБ"
+  },
+  {
+    title: "Пример технического документа № 4",
+    format: "XLSX",
+    size: "310 КБ"
+  },
+  {
+    title: "Пример технического документа № 5",
+    format: "PDF",
+    size: "4,8 МБ"
+  },
+  {
+    title: "Пример технического документа № 6",
+    format: "PDF",
+    size: "1,4 МБ"
+  },
+  {
+    title: "Пример технического документа № 7",
+    format: "PDF",
+    size: "970 КБ"
+  },
+  {
+    title: "Пример технического документа № 8",
+    format: "PDF",
+    size: "3,2 МБ"
+  }
+] %}
+
+<section class="ui-kit__section">
+  <h2 class="type-h4 ui-kit__section-title">
+    Документы и запрос ТУ
+  </h2>
+
+  {{ documentList(
+    "ui-kit-documents",
+    demoDocuments,
+    4
+  ) }}
+</section>
 {% endblock %}

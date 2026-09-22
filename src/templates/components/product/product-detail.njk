@@ -1,0 +1,190 @@
+{% from "templates/components/product/document-list.njk" import documentList %}
+
+{% macro productDetail(product, id = "product-detail") %}
+  {% set gallery = product.gallery or [] %}
+  {% set specifications = product.specifications or [] %}
+  {% set documents = product.documents or [] %}
+
+  <article
+    class="product-detail"
+    data-product-detail
+    data-product-card
+    data-product-id="{{ product.id }}"
+    aria-labelledby="{{ id }}-title"
+  >
+    <div class="product-detail__toolbar">
+      {% if product.category %}
+        <p class="product-detail__category">
+          {{ product.category }}
+        </p>
+      {% endif %}
+
+      <button
+        class="product-detail__print"
+        type="button"
+        data-product-print
+      >
+        Распечатать
+      </button>
+    </div>
+
+    <div class="product-detail__hero">
+      <div class="product-gallery" data-product-gallery>
+        <div class="product-gallery__main">
+          {% if gallery | length %}
+            <img
+              class="product-gallery__image"
+              src="{{ gallery[0].src }}"
+              alt="{{ gallery[0].alt or product.title }}"
+              data-product-gallery-image
+            >
+          {% else %}
+            <div class="product-gallery__placeholder">
+              <span>Изображение продукции</span>
+            </div>
+          {% endif %}
+        </div>
+
+        {% if gallery | length > 1 %}
+          <div
+            class="product-gallery__thumbnails"
+            aria-label="Изображения товара"
+          >
+            {% for image in gallery %}
+              <button
+                class="product-gallery__thumbnail{% if loop.first %} is-active{% endif %}"
+                type="button"
+                data-product-gallery-thumbnail
+                data-image-src="{{ image.src }}"
+                data-image-alt="{{ image.alt or product.title }}"
+                aria-label="Показать изображение {{ loop.index }}"
+                aria-pressed="{{ "true" if loop.first else "false" }}"
+              >
+                <img
+                  src="{{ image.thumbnail or image.src }}"
+                  alt=""
+                  loading="lazy"
+                >
+              </button>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="product-detail__summary">
+        <h1 class="product-detail__title" id="{{ id }}-title">
+          {{ product.title }}
+        </h1>
+
+        {% if product.lead %}
+          <p class="product-detail__lead">
+            {{ product.lead }}
+          </p>
+        {% endif %}
+
+        {% if product.shortSpecifications %}
+          <dl class="product-detail__short-specifications">
+            {% for item in product.shortSpecifications %}
+              <div class="product-detail__short-row">
+                <dt>{{ item.label }}</dt>
+                <dd>{{ item.value }}</dd>
+              </div>
+            {% endfor %}
+          </dl>
+        {% endif %}
+
+        <div class="product-detail__actions">
+          {% if product.canOrder is not defined or product.canOrder %}
+            <button
+              class="button button--primary product-detail__order-button"
+              type="button"
+              aria-label="Добавить «{{ product.title }}» в заказ"
+              aria-pressed="false"
+              data-add-to-order
+              data-product-id="{{ product.id }}"
+            >
+              <span data-order-button-text>
+                Добавить в заказ
+              </span>
+            </button>
+          {% endif %}
+
+          <a
+            class="button button--secondary product-detail__quick-order"
+            href="{{ product.orderUrl or '/request/#nonstandard-request' }}"
+          >
+            Быстрый заказ
+          </a>
+        </div>
+
+        <p class="product-detail__order-note">
+          Итоговые характеристики, количество, стоимость и срок
+          изготовления уточняются при оформлении заявки.
+        </p>
+      </div>
+    </div>
+
+    {% if product.description %}
+      <section
+        class="product-detail__section"
+        aria-labelledby="{{ id }}-description-title"
+      >
+        <h2
+          class="product-detail__section-title"
+          id="{{ id }}-description-title"
+        >
+          Описание
+        </h2>
+
+        <div class="product-detail__description">
+          {% if product.description is iterable and product.description is not string %}
+            {% for paragraph in product.description %}
+              <p>{{ paragraph }}</p>
+            {% endfor %}
+          {% else %}
+            <p>{{ product.description }}</p>
+          {% endif %}
+        </div>
+      </section>
+    {% endif %}
+
+    {% if specifications | length %}
+      <section
+        class="product-detail__section"
+        aria-labelledby="{{ id }}-specifications-title"
+      >
+        <h2
+          class="product-detail__section-title"
+          id="{{ id }}-specifications-title"
+        >
+          Характеристики
+        </h2>
+
+        <div class="product-specifications">
+          <dl class="product-specifications__list">
+            {% for item in specifications %}
+              <div class="product-specifications__row">
+                <dt class="product-specifications__label">
+                  {{ item.label }}
+                </dt>
+
+                <dd class="product-specifications__value">
+                  {{ item.value }}
+                </dd>
+              </div>
+            {% endfor %}
+          </dl>
+        </div>
+      </section>
+    {% endif %}
+
+    <div class="product-detail__section">
+      {{ documentList(
+        id ~ "-documents",
+        documents,
+        4,
+        product.technicalRequestUrl or product.orderUrl or "/request/#nonstandard-request"
+      ) }}
+    </div>
+  </article>
+{% endmacro %}

@@ -1,0 +1,128 @@
+{% macro documentList(
+  id,
+  documents = [],
+  initialVisible = 4,
+  requestUrl = "/request/#nonstandard-request",
+  title = "Документы"
+) %}
+  <section
+    class="document-list"
+    aria-labelledby="{{ id }}-title"
+    data-documents
+    data-documents-initial="{{ initialVisible }}"
+  >
+    <header class="document-list__header">
+      <h2 class="document-list__title" id="{{ id }}-title">
+        {{ title }}
+      </h2>
+
+      {% if documents | length %}
+        <p class="document-list__count">
+          Документов: {{ documents | length }}
+        </p>
+      {% endif %}
+    </header>
+
+    {% if documents | length %}
+      <ul
+        class="document-list__items"
+        id="{{ id }}-items"
+        data-documents-list
+      >
+        {% for document in documents %}
+          <li
+            class="document-list__item"
+            data-documents-item
+          >
+            {% if document.href %}
+              <a
+                class="document-list__document"
+                href="{{ document.href }}"
+                {% if document.download %}
+                  download
+                {% endif %}
+              >
+            {% else %}
+              <div class="document-list__document">
+            {% endif %}
+
+              <span
+                class="document-list__format"
+                aria-hidden="true"
+              >
+                {{ document.format or "Файл" }}
+              </span>
+
+              <span class="document-list__content">
+                <span class="document-list__name">
+                  {{ document.title }}
+                </span>
+
+                {% if document.description %}
+                  <span class="document-list__description">
+                    {{ document.description }}
+                  </span>
+                {% endif %}
+              </span>
+
+              {% if document.size %}
+                <span class="document-list__size">
+                  {{ document.size }}
+                </span>
+              {% endif %}
+
+              {% if document.href %}
+                <span
+                  class="document-list__download"
+                  aria-hidden="true"
+                >
+                  Скачать
+                </span>
+              {% endif %}
+
+            {% if document.href %}
+              </a>
+            {% else %}
+              </div>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+
+      <button
+        class="document-list__toggle"
+        type="button"
+        aria-controls="{{ id }}-items"
+        aria-expanded="false"
+        data-documents-toggle
+        hidden
+      >
+        Показать ещё документы
+      </button>
+    {% else %}
+      <p class="document-list__empty">
+        Техническая документация предоставляется по запросу.
+      </p>
+    {% endif %}
+
+    <div class="document-list__request">
+      <div class="document-list__request-content">
+        <h3 class="document-list__request-title">
+          Нужны технические условия?
+        </h3>
+
+        <p class="document-list__request-text">
+          Свяжитесь с нами, если вам нужны технические условия
+          по этой категории продукции.
+        </p>
+      </div>
+
+      <a
+        class="button button--primary document-list__request-link"
+        href="{{ requestUrl }}"
+      >
+        Запросить ТУ
+      </a>
+    </div>
+  </section>
+{% endmacro %}

@@ -20,42 +20,58 @@
       data-product-caliber="{{ caliber }}"
     {% endif %}
   >
-    <div class="product-card__media">
+    <a
+      class="product-card__media"
+      href="{{ url }}"
+      tabindex="-1"
+      aria-hidden="true"
+    >
       {% if image %}
         <img
           class="product-card__image"
           src="{{ image }}"
-          alt="{{ imageAlt or title }}"
+          alt="{{ imageAlt }}"
           loading="lazy"
         >
       {% else %}
-        <span
-          class="product-card__media-placeholder"
-          aria-hidden="true"
-        >
+        <span class="product-card__media-placeholder">
           Изображение товара
         </span>
       {% endif %}
-    </div>
+    </a>
 
     <div class="product-card__body">
-      {% if category %}
-        <p class="product-card__category">
-          {{ category }}
-        </p>
-      {% endif %}
+      <div class="product-card__heading">
+        {% if category %}
+          <p class="product-card__category">
+            {{ category }}
+          </p>
+        {% endif %}
 
-      <h3 class="product-card__title">
-        <a
-          class="product-card__title-link"
-          href="{{ url }}"
-        >
-          {{ title }}
-        </a>
-      </h3>
+        <h3 class="product-card__title">
+          <a
+            class="product-card__title-link"
+            href="{{ url }}"
+          >
+            {{ title }}
+          </a>
+        </h3>
+      </div>
 
-      {% if unit or quantity %}
+      {% if caliber != "" or unit or quantity %}
         <dl class="product-card__meta">
+          {% if caliber != "" %}
+            <div class="product-card__meta-row">
+              <dt class="product-card__meta-label">
+                Калибр
+              </dt>
+
+              <dd class="product-card__meta-value">
+                {{ caliber }} мм
+              </dd>
+            </div>
+          {% endif %}
+
           {% if unit %}
             <div class="product-card__meta-row">
               <dt class="product-card__meta-label">
@@ -94,6 +110,7 @@
           <button
             class="button button--primary product-card__action"
             type="button"
+            aria-label="Добавить «{{ title }}» в заказ"
             aria-pressed="false"
             data-add-to-order
             data-product-id="{{ id }}"
@@ -108,7 +125,7 @@
             type="button"
             disabled
           >
-            Недоступно
+            Недоступно для заказа
           </button>
         {% endif %}
       </div>

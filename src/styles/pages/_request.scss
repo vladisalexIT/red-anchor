@@ -1,0 +1,9 @@
+@use '../abstracts' as *;
+
+.request-page {
+  padding-block: fluid(24px, 80px) fluid(64px, 120px);
+}
+
+.request-page__breadcrumbs {
+  margin-bottom: fluid(32px, 64px);
+}

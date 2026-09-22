@@ -1,0 +1,22 @@
+{% macro helpCta(
+  id,
+  href = "/request/#nonstandard-request",
+  linkText = "Оставить заявку"
+) %}
+  <section class="help-cta" aria-labelledby="{{ id }}-title">
+    <div class="help-cta__content">
+      <h2 class="help-cta__title" id="{{ id }}-title">
+        Не нашли, что искали?
+      </h2>
+
+      <p class="help-cta__text">
+        Опишите нам вашу задачу, и мы подберём вам нужную продукцию
+        или разместим заказ на производство.
+      </p>
+    </div>
+
+    <a class="help-cta__link" href="{{ href }}">
+      {{ linkText }}
+    </a>
+  </section>
+{% endmacro %}

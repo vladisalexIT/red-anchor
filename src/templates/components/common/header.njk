@@ -1,4 +1,5 @@
 {% from "templates/components/common/navigation.njk" import navigation %}
+{% from "templates/components/common/product-navigation.njk" import productNavigation %}
 
 <header class="site-header" data-header>
   <div class="site-header__top">
@@ -23,12 +24,15 @@
 
   <div class="container site-header__main">
     <a
-      class="site-header__logo"
+      class="site-header__logo logo"
       href="/"
       aria-label="{{ site.name }} — главная"
     >
-      <span class="site-header__logo-mark" aria-hidden="true">Я</span>
-      <span class="site-header__logo-name">Красный<br>якорь</span>
+      <span class="logo__image">
+          <img src="/logo.svg" alt="Красный якорь" width="154" height="48">
+      </span>
+      <span class="site-header__logo-mark visually-hidden" aria-hidden="true">Я</span>
+      <span class="site-header__logo-name visually-hidden">Красный<br>якорь</span>
     </a>
 
     <nav class="site-header__actions" aria-label="Навигация по продукции">
@@ -38,11 +42,7 @@
         </summary>
 
         <div class="site-header__catalog-content">
-          <a href="/catalog/">Вся продукция</a>
-          <a href="/catalog/">Якорные цепи и комплектующие</a>
-          <a href="/catalog/">Цепи и комплектующие для горно-шахтного оборудования</a>
-          <a href="/catalog/">Такелажные изделия</a>
-          <a href="/catalog/">Грузоподъёмные цепи</a>
+         {{ productNavigation("header", false) }}
         </div>
       </details>
 
@@ -118,11 +118,7 @@
         <details class="site-header__mobile-catalog">
           <summary>Продукция</summary>
           <div class="site-header__mobile-submenu">
-            <a href="/catalog/">Вся продукция</a>
-            <a href="/catalog/">Якорные цепи и комплектующие</a>
-            <a href="/catalog/">Цепи и комплектующие для горно-шахтного оборудования</a>
-            <a href="/catalog/">Такелажные изделия</a>
-            <a href="/catalog/">Грузоподъёмные цепи</a>
+            {{ productNavigation("mobile", false) }}
           </div>
         </details>
 

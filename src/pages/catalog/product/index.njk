@@ -1,0 +1,100 @@
+{% extends "templates/layouts/base.njk" %}
+
+{% from "templates/components/ui/breadcrumb.njk" import breadcrumb %}
+{% from "templates/components/product/product-detail.njk" import productDetail %}
+{% from "templates/components/product/product-delivery.njk" import productDelivery %}
+{% from "templates/components/common/notice.njk" import notice %}
+{% from "templates/components/common/help-cta.njk" import helpCta %}
+
+{% set product = {
+  id: "anchor-shackle-11-category-1",
+  category: "Якорные цепи и комплектующие",
+  title: "Якорная смычка с распорками, калибр 11 мм, категория 1",
+  lead: "С якорной смычкой, скобой и коренной смычкой",
+  canOrder: true,
+  orderUrl: "/request/#nonstandard-request",
+  technicalRequestUrl: "/request/#nonstandard-request",
+  gallery: [],
+  shortSpecifications: [
+    {
+      label: "Калибр",
+      value: "11 мм"
+    },
+    {
+      label: "Категория",
+      value: "1"
+    }
+  ],
+  description: [
+    "Для изготовления якорных цепей используются как стандартные комплектующие, так и нестандартные изделия по чертежам заказчика либо изделия, спроектированные конструкторско-технологическим бюро предприятия.",
+    "Точная комплектация и технические характеристики изделия согласовываются при оформлении заказа."
+  ],
+  specifications: [
+    {
+      label: "Наименование",
+      value: "Якорная смычка с распорками"
+    },
+    {
+      label: "Калибр",
+      value: "11 мм"
+    },
+    {
+      label: "Категория",
+      value: "1"
+    },
+    {
+      label: "Комплектация",
+      value: "Якорная смычка, скоба и коренная смычка"
+    }
+  ],
+  documents: []
+} %}
+
+{% block content %}
+  <main class="product-page">
+    <div class="container">
+      <div class="product-page__breadcrumbs">
+        {{ breadcrumb([
+          {
+            label: "Главная",
+            href: "/"
+          },
+          {
+            label: "Продукция",
+            href: "/catalog/"
+          },
+          {
+            label: "Якорные цепи и комплектующие",
+            href: "/catalog/"
+          },
+          {
+            label: product.title,
+            current: true
+          }
+        ]) }}
+      </div>
+
+      {{ productDetail(product, "anchor-shackle-product") }}
+
+      <div class="product-page__notice">
+        {{ notice(
+          "Внимание",
+          "Для обеспечения длительного срока безаварийной эксплуатации, предотвращения деформации и поломки элементов якорной цепи и якорно-швартового устройства необходимо следить, чтобы нагрузка на изделия прилагалась исключительно по линии каната, в соответствии с направлением, при котором производятся испытания элементов изделия.",
+          "Приложение нагрузки под углом к длине каната приводит к выходу изделия из строя."
+        ) }}
+      </div>
+
+      <div class="product-page__delivery">
+        {{ productDelivery() }}
+      </div>
+
+      <div class="product-page__help">
+        {{ helpCta(
+          "product-help",
+          "/request/#nonstandard-request",
+          "Оставить заявку"
+        ) }}
+      </div>
+    </div>
+  </main>
+{% endblock %}

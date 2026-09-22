@@ -1,0 +1,589 @@
+{% macro nonstandardRequestForm(
+  id = "nonstandard-request",
+  title = "Заявка на нестандартную продукцию"
+) %}
+  <section
+    class="request-form"
+    id="{{ id }}"
+    aria-labelledby="{{ id }}-title"
+  >
+    <header class="request-form__header">
+      <p class="request-form__eyebrow">Индивидуальный заказ</p>
+
+      <h2 class="request-form__title" id="{{ id }}-title">
+        {{ title }}
+      </h2>
+
+      <p class="request-form__description">
+        Опишите задачу и требования к продукции. Специалисты завода
+        уточнят возможность изготовления и свяжутся с вами.
+      </p>
+    </header>
+
+    <form
+      class="request-form__form"
+      action="/request/"
+      method="post"
+      enctype="multipart/form-data"
+      data-nonstandard-request
+    >
+      <section
+        class="request-form__selected-order"
+        data-request-order-summary
+        hidden
+      >
+        <header class="request-form__selected-header">
+          <div>
+            <p class="request-form__selected-eyebrow">
+              Состав заказа
+            </p>
+
+            <h3 class="request-form__selected-title">
+              Выбранная продукция
+            </h3>
+          </div>
+
+          <a
+            class="request-form__selected-edit"
+            href="/order/"
+          >
+            Изменить заказ
+          </a>
+        </header>
+
+        <ul
+          class="request-form__selected-items"
+          data-request-order-items
+        ></ul>
+
+        <div data-request-order-fields></div>
+      </section>
+      <fieldset class="request-form__section">
+        <legend class="request-form__legend">
+          <span class="request-form__step">1</span>
+          Продукция
+        </legend>
+
+        <div class="request-form__grid">
+          <div class="request-form__field request-form__field--wide">
+            <label
+              class="request-form__label"
+              for="{{ id }}-description"
+            >
+              Опишите необходимую продукцию
+              <span
+                aria-hidden="true"
+                data-request-description-required
+              >
+                *
+              </span>
+            </label>
+
+            <textarea
+              class="request-form__control request-form__textarea"
+              id="{{ id }}-description"
+              name="productDescription"
+              rows="6"
+              required
+              data-request-product-description
+              placeholder="Назначение, характеристики, условия эксплуатации"
+            ></textarea>
+          </div>
+
+          <div class="request-form__field">
+            <label
+              class="request-form__label"
+              for="{{ id }}-category"
+            >
+              Раздел продукции
+            </label>
+
+            <select
+              class="request-form__control"
+              id="{{ id }}-category"
+              name="productCategory"
+            >
+              <option value="">Не определён</option>
+              <option value="anchor-chains">
+                Якорные цепи и комплектующие
+              </option>
+              <option value="mining">
+                Для горно-шахтного оборудования
+              </option>
+              <option value="lifting">
+                Грузоподъёмные цепи
+              </option>
+              <option value="cement">
+                Для цементной промышленности
+              </option>
+              <option value="general-purpose">
+                Цепи общего назначения
+              </option>
+              <option value="nonstandard">
+                Несерийная продукция
+              </option>
+            </select>
+          </div>
+
+          <div class="request-form__field">
+            <label
+              class="request-form__label"
+              for="{{ id }}-quantity"
+            >
+              Необходимое количество
+            </label>
+
+            <div class="request-form__quantity">
+              <input
+                class="request-form__control"
+                id="{{ id }}-quantity"
+                name="quantity"
+                type="number"
+                min="1"
+                step="1"
+                inputmode="numeric"
+                placeholder="Количество"
+              >
+
+              <select
+                class="request-form__control"
+                name="unit"
+                aria-label="Единица измерения"
+              >
+                <option value="pieces">шт.</option>
+                <option value="meters">м</option>
+                <option value="sets">компл.</option>
+                <option value="tons">т</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="request-form__field request-form__field--wide">
+            <label
+              class="request-form__label"
+              for="{{ id }}-attachment"
+            >
+              Чертежи и техническая документация
+            </label>
+
+            <div class="request-form__file">
+              <input
+                class="request-form__file-input"
+                id="{{ id }}-attachment"
+                name="attachments"
+                type="file"
+                multiple
+                accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png"
+                data-request-files
+              >
+
+              <label
+                class="button button--secondary request-form__file-button"
+                for="{{ id }}-attachment"
+              >
+                Выбрать файлы
+              </label>
+
+              <button
+                class="request-form__file-clear"
+                type="button"
+                data-request-files-clear
+                hidden
+              >
+                Очистить
+              </button>
+            </div>
+
+            <p class="request-form__hint">
+              PDF, DOC, DOCX, XLS, XLSX, JPG или PNG. Не более 10 МБ
+              на один файл.
+            </p>
+
+            <ul
+              class="request-form__file-list"
+              data-request-file-list
+              aria-live="polite"
+            ></ul>
+
+            <p
+              class="request-form__file-error"
+              data-request-file-error
+              role="alert"
+              hidden
+            ></p>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="request-form__section">
+        <legend class="request-form__legend">
+          <span class="request-form__step">2</span>
+          Поставка
+        </legend>
+
+        <div class="request-form__grid">
+          <div class="request-form__field request-form__field--wide">
+            <span class="request-form__label">
+              Условия поставки
+              <span aria-hidden="true">*</span>
+            </span>
+
+            <div class="request-form__options">
+              <label class="request-form__option">
+                <input
+                  name="deliveryType"
+                  type="radio"
+                  value="pickup"
+                  checked
+                  required
+                >
+                <span>Самовывоз</span>
+              </label>
+
+              <label class="request-form__option">
+                <input
+                  name="deliveryType"
+                  type="radio"
+                  value="warehouse"
+                >
+                <span>Доставка до склада грузополучателя</span>
+              </label>
+
+              <label class="request-form__option">
+                <input
+                  name="deliveryType"
+                  type="radio"
+                  value="terminal"
+                >
+                <span>Доставка до терминала транспортной компании</span>
+              </label>
+
+              <label class="request-form__option">
+                <input
+                  name="deliveryType"
+                  type="radio"
+                  value="other"
+                >
+                <span>Другое</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="request-form__field">
+            <label
+              class="request-form__label"
+              for="{{ id }}-date"
+            >
+              Желаемый срок
+            </label>
+
+            <input
+              class="request-form__control"
+              id="{{ id }}-date"
+              name="desiredDate"
+              type="date"
+              data-request-date
+            >
+
+            <p class="request-form__hint">
+              Не ранее трёх дней с текущей даты.
+            </p>
+          </div>
+
+          <div
+            class="request-form__field"
+            data-delivery-panel="pickup"
+          >
+            <span class="request-form__label">Склад самовывоза</span>
+
+            <div class="request-form__options">
+              <label class="request-form__option">
+                <input
+                  name="pickupLocation"
+                  type="radio"
+                  value="nizhny-novgorod"
+                  checked
+                >
+                <span>
+                  Нижний Новгород, Московское шоссе, д. 120
+                </span>
+              </label>
+
+              <label class="request-form__option">
+                <input
+                  name="pickupLocation"
+                  type="radio"
+                  value="kemerovo"
+                >
+                <span>
+                  Кемерово, ул. Проездная, д. 22
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <div
+            class="request-form__field request-form__field--wide"
+            data-delivery-panel="warehouse terminal"
+            hidden
+          >
+            <div class="request-form__grid request-form__grid--nested">
+              <div class="request-form__field">
+                <label
+                  class="request-form__label"
+                  for="{{ id }}-country"
+                >
+                  Страна
+                  <span aria-hidden="true">*</span>
+                </label>
+
+                <input
+                  class="request-form__control"
+                  id="{{ id }}-country"
+                  name="country"
+                  type="text"
+                  value="Россия"
+                  data-required-when-visible
+                  disabled
+                >
+              </div>
+
+              <div class="request-form__field">
+                <label
+                  class="request-form__label"
+                  for="{{ id }}-city"
+                >
+                  Город
+                  <span aria-hidden="true">*</span>
+                </label>
+
+                <input
+                  class="request-form__control"
+                  id="{{ id }}-city"
+                  name="city"
+                  type="text"
+                  autocomplete="address-level2"
+                  data-required-when-visible
+                  disabled
+                >
+              </div>
+
+              <div class="request-form__field request-form__field--wide">
+                <label
+                  class="request-form__label"
+                  for="{{ id }}-address"
+                >
+                  Адрес или терминал
+                  <span aria-hidden="true">*</span>
+                </label>
+
+                <input
+                  class="request-form__control"
+                  id="{{ id }}-address"
+                  name="address"
+                  type="text"
+                  autocomplete="street-address"
+                  data-required-when-visible
+                  disabled
+                >
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="request-form__field request-form__field--wide"
+            data-delivery-panel="other"
+            hidden
+          >
+            <label
+              class="request-form__label"
+              for="{{ id }}-delivery-comment"
+            >
+              Комментарий к поставке
+              <span aria-hidden="true">*</span>
+            </label>
+
+            <textarea
+              class="request-form__control request-form__textarea"
+              id="{{ id }}-delivery-comment"
+              name="deliveryComment"
+              rows="4"
+              data-required-when-visible
+              disabled
+            ></textarea>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="request-form__section">
+        <legend class="request-form__legend">
+          <span class="request-form__step">3</span>
+          Заказчик
+        </legend>
+
+        <div class="request-form__grid">
+          <div class="request-form__field">
+            <label
+              class="request-form__label"
+              for="{{ id }}-name"
+            >
+              Ваше имя
+              <span aria-hidden="true">*</span>
+            </label>
+
+            <input
+              class="request-form__control"
+              id="{{ id }}-name"
+              name="customerName"
+              type="text"
+              autocomplete="name"
+              required
+            >
+          </div>
+
+          <div class="request-form__field">
+            <label
+              class="request-form__label"
+              for="{{ id }}-position"
+            >
+              Должность
+            </label>
+
+            <input
+              class="request-form__control"
+              id="{{ id }}-position"
+              name="position"
+              type="text"
+              autocomplete="organization-title"
+            >
+          </div>
+
+          <div class="request-form__field">
+            <label
+              class="request-form__label"
+              for="{{ id }}-company"
+            >
+              Компания
+            </label>
+
+            <input
+              class="request-form__control"
+              id="{{ id }}-company"
+              name="company"
+              type="text"
+              autocomplete="organization"
+            >
+          </div>
+
+          <div class="request-form__field">
+            <label
+              class="request-form__label"
+              for="{{ id }}-status"
+            >
+              Статус заказчика
+              <span aria-hidden="true">*</span>
+            </label>
+
+            <select
+              class="request-form__control"
+              id="{{ id }}-status"
+              name="customerStatus"
+              required
+            >
+              <option value="">Выберите статус</option>
+              <option value="company">
+                Покупка для нужд компании
+              </option>
+              <option value="resale">
+                Покупка для перепродажи
+              </option>
+              <option value="individual">
+                Частное лицо
+              </option>
+              <option value="other">
+                Другое
+              </option>
+            </select>
+          </div>
+
+          <div class="request-form__field">
+            <label
+              class="request-form__label"
+              for="{{ id }}-phone"
+            >
+              Телефон
+              <span aria-hidden="true">*</span>
+            </label>
+
+            <input
+              class="request-form__control"
+              id="{{ id }}-phone"
+              name="phone"
+              type="tel"
+              autocomplete="tel"
+              inputmode="tel"
+              required
+              placeholder="+7 999 999-99-99"
+            >
+          </div>
+
+          <div class="request-form__field">
+            <label
+              class="request-form__label"
+              for="{{ id }}-email"
+            >
+              Электронная почта
+              <span aria-hidden="true">*</span>
+            </label>
+
+            <input
+              class="request-form__control"
+              id="{{ id }}-email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              required
+            >
+          </div>
+
+          <div class="request-form__field request-form__field--wide">
+            <label class="request-form__consent">
+              <input
+                name="consent"
+                type="checkbox"
+                value="accepted"
+                required
+              >
+
+              <span>
+                Я согласен на обработку персональных данных в соответствии
+                с политикой конфиденциальности.
+              </span>
+            </label>
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="request-form__footer">
+        <button
+          class="button button--primary request-form__submit"
+          type="submit"
+          data-request-submit
+        >
+          Отправить заявку
+        </button>
+
+        <p class="request-form__required">
+          Поля, отмеченные *, обязательны для заполнения.
+        </p>
+      </div>
+
+      <div
+        class="request-form__status"
+        data-request-status
+        aria-live="polite"
+        hidden
+      ></div>
+    </form>
+  </section>
+{% endmacro %}

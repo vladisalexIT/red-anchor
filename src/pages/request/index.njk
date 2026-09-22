@@ -1,0 +1,23 @@
+{% extends "templates/layouts/base.njk" %}
+
+{% from "templates/components/ui/breadcrumb.njk" import breadcrumb %}
+{% from "templates/components/common/nonstandard-request-form.njk" import nonstandardRequestForm %}
+
+{% block content %}
+  <main class="request-page">
+    <div class="container">
+      <div class="request-page__breadcrumbs">
+        {{ breadcrumb([
+          { label: "Главная", href: "/" },
+          { label: "Ваш заказ", href: "/order/" },
+          { label: "Заявка на продукцию", current: true }
+        ]) }}
+      </div>
+
+      {{ nonstandardRequestForm(
+        "nonstandard-request",
+        "Не нашли, что искали?"
+      ) }}
+    </div>
+  </main>
+{% endblock %}

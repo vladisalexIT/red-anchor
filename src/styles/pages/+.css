@@ -1,3 +1,6 @@
 @import "./_catalog.scss";
 @import "./_home.scss";
+@import "./_order.scss";
+@import "./_product.scss";
+@import "./_request.scss";
 @import "./_ui-kit.scss";

@@ -4,6 +4,7 @@
 {% from "templates/components/ui/product-card.njk" import productCard %}
 {% from "templates/components/ui/breadcrumb.njk" import breadcrumb %}
 {% from "templates/components/ui/pagination.njk" import pagination %}
+{% from "templates/components/common/product-navigation.njk" import productNavigation %}
 
 {% set products = [
   {
@@ -37,7 +38,7 @@
     title: "Цепь якорная калибра 20 мм",
     url: "#product-chain-3",
     category: "Якорные цепи",
-    categoryCode: "anchor-chains",
+    categoryCode: "general-purpose",
     caliber: 20,
     unit: "метр",
     quantity: "от 5 м",
@@ -50,7 +51,7 @@
     title: "Скоба соединительная",
     url: "#product-component-1",
     category: "Комплектующие",
-    categoryCode: "components",
+    categoryCode: "anchor-chains",
     caliber: 32,
     unit: "штука",
     quantity: "от 1 шт.",
@@ -63,7 +64,7 @@
     title: "Вертлюг якорный",
     url: "#product-component-2",
     category: "Комплектующие",
-    categoryCode: "components",
+    categoryCode: "mining",
     caliber: 44,
     unit: "штука",
     quantity: "от 1 шт.",
@@ -76,7 +77,7 @@
     title: "Комплект якорной оснастки",
     url: "#product-accessory-1",
     category: "Оснастка",
-    categoryCode: "accessories",
+    categoryCode: "lifting",
     caliber: 60,
     unit: "комплект",
     quantity: "от 1 компл.",
@@ -110,6 +111,21 @@
           для профессионального применения.
         </p>
       </header>
+      <section
+        class="catalog-page__categories"
+        aria-labelledby="catalog-categories-title"
+      >
+        <h2
+          class="catalog-page__categories-title"
+          id="catalog-categories-title"
+        >
+          Категории продукции
+        </h2>
+
+        <nav aria-label="Категории продукции">
+          {{ productNavigation("catalog", true) }}
+        </nav>
+      </section>
 
       <div class="catalog-page__layout">
         <aside class="catalog-page__sidebar">
