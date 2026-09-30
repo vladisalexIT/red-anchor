@@ -1,0 +1,158 @@
+{% macro callbackDialog(id = "callback-dialog") %}
+  <dialog
+    class="callback-dialog"
+    id="{{ id }}"
+    aria-labelledby="{{ id }}-title"
+    data-callback-dialog
+  >
+    <div class="callback-dialog__panel">
+      <button
+        class="callback-dialog__close"
+        type="button"
+        aria-label="Закрыть окно"
+        data-callback-close
+      >
+        <span aria-hidden="true">×</span>
+      </button>
+
+      <header class="callback-dialog__header">
+        <p class="callback-dialog__eyebrow">
+          Обратная связь
+        </p>
+
+        <h2
+          class="callback-dialog__title"
+          id="{{ id }}-title"
+        >
+          Перезвоните мне
+        </h2>
+
+        <p class="callback-dialog__description">
+          Оставьте контактные данные. Специалист завода свяжется
+          с вами и ответит на вопросы.
+        </p>
+      </header>
+
+      <form
+        class="callback-dialog__form"
+        action="/callback/"
+        method="post"
+        data-callback-form
+      >
+        <div class="callback-dialog__field">
+          <label
+            class="callback-dialog__label"
+            for="{{ id }}-name"
+          >
+            Ваше имя
+            <span aria-hidden="true">*</span>
+          </label>
+
+          <input
+            class="callback-dialog__control"
+            id="{{ id }}-name"
+            name="name"
+            type="text"
+            autocomplete="name"
+            required
+          >
+        </div>
+
+        <div class="callback-dialog__field">
+          <label
+            class="callback-dialog__label"
+            for="{{ id }}-phone"
+          >
+            Телефон
+            <span aria-hidden="true">*</span>
+          </label>
+
+          <input
+            class="callback-dialog__control"
+            id="{{ id }}-phone"
+            name="phone"
+            type="tel"
+            autocomplete="tel"
+            inputmode="tel"
+            placeholder="+7 999 999-99-99"
+            required
+            data-callback-phone
+          >
+        </div>
+
+        <div class="callback-dialog__field">
+          <label
+            class="callback-dialog__label"
+            for="{{ id }}-time"
+          >
+            Удобное время для звонка
+          </label>
+
+          <select
+            class="callback-dialog__control"
+            id="{{ id }}-time"
+            name="preferredTime"
+          >
+            <option value="">В любое рабочее время</option>
+            <option value="09:00-12:00">С 09:00 до 12:00</option>
+            <option value="12:00-15:00">С 12:00 до 15:00</option>
+            <option value="15:00-18:00">С 15:00 до 18:00</option>
+          </select>
+        </div>
+
+        <div class="callback-dialog__field">
+          <label
+            class="callback-dialog__label"
+            for="{{ id }}-comment"
+          >
+            Комментарий
+          </label>
+
+          <textarea
+            class="callback-dialog__control callback-dialog__textarea"
+            id="{{ id }}-comment"
+            name="comment"
+            rows="4"
+            placeholder="Кратко опишите ваш вопрос"
+          ></textarea>
+        </div>
+
+        <label class="callback-dialog__consent">
+          <input
+            name="consent"
+            type="checkbox"
+            value="accepted"
+            required
+          >
+
+          <span>
+            Я согласен на обработку персональных данных
+            в соответствии с
+            <a href="/privacy/">политикой конфиденциальности</a>.
+          </span>
+        </label>
+
+        <button
+          class="button button--primary callback-dialog__submit"
+          type="submit"
+          data-callback-submit
+        >
+          Заказать звонок
+        </button>
+
+        <p class="callback-dialog__required">
+          Поля, отмеченные *, обязательны для заполнения.
+        </p>
+
+        <div
+          class="callback-dialog__status"
+          role="status"
+          aria-live="polite"
+          tabindex="-1"
+          data-callback-status
+          hidden
+        ></div>
+      </form>
+    </div>
+  </dialog>
+{% endmacro %}

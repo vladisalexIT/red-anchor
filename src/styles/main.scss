@@ -28,8 +28,12 @@
 @use 'components/product-detail';
 @use 'components/product-delivery';
 @use 'components/document-list';
+@use 'components/process-steps';
+@use 'components/article-card';
+@use 'components/article-list';
 @use 'components/header';
 @use 'components/footer';
+@use 'components/callback-dialog';
 @use 'pages/home';
 @use 'pages/catalog';
 @use 'pages/ui-kit';

@@ -1,4 +1,37 @@
+@use '../abstracts' as *;
+
 .container {
-  width: min(100% - var(--container-padding) * 2, var(--container-max-width));
+  width: min(
+    calc(100% - var(--container-padding) - var(--container-padding)),
+    var(--container-max-width)
+  );
   margin-inline: auto;
+}
+
+/*
+ * Согласно ТЗ, на вертикальных планшетах содержимое
+ * увеличивается максимум до 768px. Оставшееся пространство
+ * располагается справа.
+ */
+@include media-up(tablet) {
+  .container {
+    width: min(calc(100% - 32px), 768px);
+    margin-right: auto;
+    margin-left: 16px;
+  }
+}
+
+/*
+ * На десктопе контейнер снова центрируется.
+ * Его поля задаются токеном:
+ * 32px на Mini/Middle Desktop и 48px на Big Desktop.
+ */
+@include media-up(desktop) {
+  .container {
+    width: min(
+      calc(100% - var(--container-padding) - var(--container-padding)),
+      var(--container-max-width)
+    );
+    margin-inline: auto;
+  }
 }

@@ -28,7 +28,7 @@
     <div class="site">
       {% include "templates/components/common/header.njk" %}
 
-      <main id="main-content" class="site__main">
+      <main id="main-content" class="site__main {{ mainClass | default('') }}">
         {% block content %}{% endblock %}
       </main>
 

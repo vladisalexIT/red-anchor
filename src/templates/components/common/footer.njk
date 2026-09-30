@@ -1,10 +1,20 @@
 {% from "templates/components/common/navigation.njk" import navigation %}
+{% from "templates/components/common/callback-dialog.njk" import callbackDialog %}
 
 <footer class="site-footer">
   <div class="container site-footer__main">
     <div class="site-footer__brand">
-      <a class="site-footer__logo" href="/" aria-label="{{ site.name }} — главная">
-        Красный<br>якорь
+      <a
+        class="site-footer__logo"
+        href="/"
+        aria-label="{{ site.name }} — главная"
+      >
+        <img
+          src="/src/assets/images/logo-light.svg"
+          width="154"
+          height="48"
+          alt=""
+        >
       </a>
 
       <p class="site-footer__company">
@@ -12,33 +22,64 @@
       </p>
     </div>
 
-    <nav class="site-footer__map" aria-label="Карта сайта">
-      <h2 class="site-footer__title">Карта сайта</h2>
+    <nav
+      class="site-footer__map"
+      aria-labelledby="footer-map-title"
+    >
+      <h2
+        class="site-footer__title"
+        id="footer-map-title"
+      >
+        Карта сайта
+      </h2>
+
       {{ navigation("footer") }}
     </nav>
 
     <div class="site-footer__contacts">
-      <h2 class="site-footer__title">Контакты</h2>
-
-      <a href="tel:+78312115511">+7 831 211-55-11</a>
-      <a href="mailto:info@redanchor.ru">info@redanchor.ru</a>
-
-      <p>
-        Россия, г. Нижний Новгород,<br>
-        Московское шоссе, д. 120
-      </p>
+      <h2 class="site-footer__title">
+        Контакты
+      </h2>
 
       <a
+        class="site-footer__contact-link"
+        href="tel:+78312115511"
+      >
+        +7 831 211-55-11
+      </a>
+
+      <a
+        class="site-footer__contact-link"
+        href="mailto:info@redanchor.ru"
+      >
+        info@redanchor.ru
+      </a>
+
+      <address class="site-footer__address">
+        Россия, г. Нижний Новгород,<br>
+        Московское шоссе, д. 120
+      </address>
+
+      <button
         class="site-footer__callback"
-        href="mailto:info@redanchor.ru?subject=Обратный%20звонок"
+        type="button"
+        aria-controls="callback-dialog"
+        data-callback-open
       >
         Перезвоните мне
-      </a>
+      </button>
     </div>
   </div>
 
   <div class="container site-footer__bottom">
-    <p>© АО «Завод Красный Якорь»</p>
-    <a href="/privacy/">Политика конфиденциальности</a>
+    <p>
+      © АО «Завод Красный Якорь»
+    </p>
+
+    <a href="/privacy/">
+      Политика конфиденциальности
+    </a>
   </div>
 </footer>
+
+{{ callbackDialog() }}

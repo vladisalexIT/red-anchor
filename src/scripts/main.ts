@@ -9,6 +9,7 @@ import { initProductDetails } from './components/product-detail';
 import { initDocumentLists } from './components/document-list';
 import { initOrderPages } from './components/order-page';
 import { initRequestOrderSummaries } from './components/request-order-summary';
+import { initCallbackDialogs } from './components/callback-dialog';
 
 function initApp(): void {
   initMobileMenu();
@@ -20,6 +21,7 @@ function initApp(): void {
   initNonstandardRequestForms();
   initProductDetails();
   initDocumentLists();
+  initCallbackDialogs();
 }
 
 if (document.readyState === 'loading') {

@@ -1,48 +1,117 @@
-{% from "templates/components/common/navigation.njk" import navigation %}
 {% from "templates/components/common/product-navigation.njk" import productNavigation %}
 
 <header class="site-header" data-header>
   <div class="site-header__top">
     <div class="container site-header__top-inner">
-      <a class="site-header__sitemap" href="/sitemap/">Карта сайта</a>
+      <a class="site-header__sitemap" href="/sitemap/">
+        Карта сайта
+      </a>
 
-      <nav class="site-header__primary" aria-label="Основная навигация">
-        {{ navigation("main") }}
+      <nav
+        class="site-header__primary"
+        aria-label="Основная навигация"
+      >
+        <ul class="site-header__top-navigation">
+          <li>
+            <a href="/industries/">Отрасли</a>
+          </li>
+
+          <li>
+            <a href="/plant/">Завод</a>
+          </li>
+
+          <li>
+            <a href="/production/">Производство</a>
+          </li>
+
+          <li>
+            <a href="/services/">Услуги</a>
+          </li>
+
+          <li class="site-header__top-item--wide">
+            <a href="/purchases/">Закупки</a>
+          </li>
+
+          <li class="site-header__top-item--wide">
+            <a href="/career/">Карьера</a>
+          </li>
+
+          <li>
+            <a href="/contacts/">Контакты</a>
+          </li>
+
+          <li class="site-header__top-item--compact">
+            <details
+              class="site-header__more"
+              data-header-details
+            >
+              <summary>Ещё</summary>
+
+              <ul class="site-header__more-menu">
+                <li>
+                  <a href="/purchases/">Закупки</a>
+                </li>
+
+                <li>
+                  <a href="/career/">Карьера</a>
+                </li>
+              </ul>
+            </details>
+          </li>
+        </ul>
       </nav>
 
       <div class="site-header__contacts">
-        <a href="mailto:info@redanchor.ru">info@redanchor.ru</a>
-        <a href="tel:+78312115511">+7 831 211-55-11</a>
-        <a
-          href="mailto:info@redanchor.ru?subject=Обратный%20звонок"
+        <a href="mailto:info@redanchor.ru">
+          info@redanchor.ru
+        </a>
+
+        <a href="tel:+78312115511">
+          +7 831 211-55-11
+        </a>
+
+        <button
+          class="site-header__callback"
+          type="button"
+          aria-controls="callback-dialog"
+          data-callback-open
         >
           Перезвоните мне
-        </a>
+        </button>
       </div>
     </div>
   </div>
 
   <div class="container site-header__main">
     <a
-      class="site-header__logo logo"
+      class="site-header__logo"
       href="/"
       aria-label="{{ site.name }} — главная"
     >
-      <span class="logo__image">
-          <img src="/logo.svg" alt="Красный якорь" width="154" height="48">
-      </span>
-      <span class="site-header__logo-mark visually-hidden" aria-hidden="true">Я</span>
-      <span class="site-header__logo-name visually-hidden">Красный<br>якорь</span>
+      <img
+        src="/src/assets/images/logo.svg"
+        width="154"
+        height="48"
+        alt=""
+      >
     </a>
 
-    <nav class="site-header__actions" aria-label="Навигация по продукции">
-      <details class="site-header__catalog">
+    <nav
+      class="site-header__actions"
+      aria-label="Навигация по продукции"
+    >
+      <details
+        class="site-header__catalog"
+        data-header-details
+      >
         <summary class="site-header__action site-header__action--catalog">
           Продукция
         </summary>
 
         <div class="site-header__catalog-content">
-         {{ productNavigation("header", false) }}
+          <div class="site-header__catalog-scroll">
+            {{ productNavigation("header", false) }}
+          </div>
         </div>
       </details>
 
@@ -55,6 +124,7 @@
         <label class="visually-hidden" for="site-search">
           Поиск по каталогу
         </label>
+
         <input
           id="site-search"
           name="q"
@@ -62,18 +132,31 @@
           placeholder="Поиск по каталогу"
           autocomplete="off"
         >
-        <button type="submit" aria-label="Искать по каталогу">
+
+        <button type="submit">
           Найти
         </button>
       </form>
 
-      <a class="site-header__action" href="/buyers/">
+      <a
+        class="site-header__action"
+        href="/buyers/"
+      >
         Покупателю
       </a>
 
-      <a class="site-header__action site-header__order" href="/order/">
+      <a
+        class="site-header__action site-header__order"
+        href="/order/"
+      >
         Ваш заказ
-        <span class="site-header__count" data-order-count>0</span>
+
+        <span
+          class="site-header__count"
+          data-order-count
+        >
+          0
+        </span>
       </a>
     </nav>
 
@@ -85,7 +168,10 @@
       aria-controls="site-mobile-menu"
       data-menu-toggle
     >
-      <span class="site-header__menu-icon" aria-hidden="true"></span>
+      <span
+        class="site-header__menu-icon"
+        aria-hidden="true"
+      ></span>
     </button>
   </div>
 
@@ -102,42 +188,131 @@
         method="get"
         role="search"
       >
-        <label class="visually-hidden" for="site-mobile-search">
+        <label
+          class="visually-hidden"
+          for="site-mobile-search"
+        >
           Поиск по каталогу
         </label>
+
         <input
           id="site-mobile-search"
           name="q"
           type="search"
           placeholder="Поиск по каталогу"
+          autocomplete="off"
         >
-        <button type="submit">Найти</button>
+
+        <button type="submit">
+          Найти
+        </button>
       </form>
 
-      <nav aria-label="Мобильная навигация">
-        <details class="site-header__mobile-catalog">
-          <summary>Продукция</summary>
+      <nav
+        class="site-header__mobile-navigation"
+        aria-label="Мобильная навигация"
+      >
+        <details
+          class="site-header__mobile-catalog"
+          data-header-details
+        >
+          <summary>
+            Продукция
+          </summary>
+
           <div class="site-header__mobile-submenu">
             {{ productNavigation("mobile", false) }}
           </div>
         </details>
 
-        <a class="site-header__mobile-link" href="/buyers/">Покупателю</a>
-
-        <a class="site-header__mobile-link" href="/order/">
-          Ваш заказ
-          <span data-order-count>0</span>
+        <a
+          class="site-header__mobile-link"
+          href="/buyers/"
+        >
+          Покупателю
         </a>
 
-        {{ navigation("main") }}
+        <a
+          class="site-header__mobile-link"
+          href="/order/"
+        >
+          <span>Ваш заказ</span>
+
+          <span
+            class="site-header__mobile-count"
+            data-order-count
+          >
+            0
+          </span>
+        </a>
+
+        <a
+          class="site-header__mobile-link"
+          href="/industries/"
+        >
+          Отрасли
+        </a>
+
+        <a
+          class="site-header__mobile-link"
+          href="/plant/"
+        >
+          Завод
+        </a>
+
+        <a
+          class="site-header__mobile-link"
+          href="/production/"
+        >
+          Производство
+        </a>
+
+        <a
+          class="site-header__mobile-link"
+          href="/services/"
+        >
+          Услуги
+        </a>
+
+        <a
+          class="site-header__mobile-link"
+          href="/purchases/"
+        >
+          Закупки
+        </a>
+
+        <a
+          class="site-header__mobile-link"
+          href="/career/"
+        >
+          Карьера
+        </a>
+
+        <a
+          class="site-header__mobile-link"
+          href="/contacts/"
+        >
+          Контакты
+        </a>
       </nav>
 
       <div class="site-header__mobile-contacts">
-        <a href="mailto:info@redanchor.ru">info@redanchor.ru</a>
-        <a href="tel:+78312115511">+7 831 211-55-11</a>
-        <a href="mailto:info@redanchor.ru?subject=Обратный%20звонок">
-          Перезвоните мне
+        <a href="mailto:info@redanchor.ru">
+          info@redanchor.ru
         </a>
+
+        <a href="tel:+78312115511">
+          +7 831 211-55-11
+        </a>
+
+        <button
+          class="site-header__callback"
+          type="button"
+          aria-controls="callback-dialog"
+          data-callback-open
+        >
+          Перезвоните мне
+        </button>
       </div>
     </div>
   </div>

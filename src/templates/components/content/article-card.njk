@@ -1,0 +1,84 @@
+{% macro articleCard(article, headingLevel = 3) %}
+  <article class="article-card">
+    {% if article.href %}
+      <a
+        class="article-card__media"
+        href="{{ article.href }}"
+        tabindex="-1"
+        aria-hidden="true"
+      >
+    {% else %}
+      <div class="article-card__media">
+    {% endif %}
+
+      {% if article.image %}
+        <img
+          class="article-card__image"
+          src="{{ article.image }}"
+          alt="{{ article.imageAlt or "" }}"
+          loading="lazy"
+        >
+      {% else %}
+        <span class="article-card__placeholder" aria-hidden="true">
+          Красный<br>якорь
+        </span>
+      {% endif %}
+
+    {% if article.href %}
+      </a>
+    {% else %}
+      </div>
+    {% endif %}
+
+    <div class="article-card__body">
+      <div class="article-card__meta">
+        {% if article.category %}
+          <span class="article-card__category">
+            {{ article.category }}
+          </span>
+        {% endif %}
+
+        {% if article.date %}
+          <time
+            class="article-card__date"
+            {% if article.dateTime %}
+              datetime="{{ article.dateTime }}"
+            {% endif %}
+          >
+            {{ article.date }}
+          </time>
+        {% endif %}
+      </div>
+
+      <h{{ headingLevel }} class="article-card__title">
+        {% if article.href %}
+          <a
+            class="article-card__title-link"
+            href="{{ article.href }}"
+          >
+            {{ article.title }}
+          </a>
+        {% else %}
+          {{ article.title }}
+        {% endif %}
+      </h{{ headingLevel }}>
+
+      {% if article.description %}
+        <p class="article-card__description">
+          {{ article.description }}
+        </p>
+      {% endif %}
+
+      {% if article.href %}
+        <a
+          class="article-card__more"
+          href="{{ article.href }}"
+          aria-label="Читать: {{ article.title }}"
+        >
+          Читать статью
+          <span aria-hidden="true">→</span>
+        </a>
+      {% endif %}
+    </div>
+  </article>
+{% endmacro %}

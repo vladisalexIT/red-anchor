@@ -1,0 +1,55 @@
+{% from "templates/components/content/article-card.njk" import articleCard %}
+
+{% macro articleList(
+  id,
+  articles = [],
+  title = "Полезные статьи",
+  eyebrow = "",
+  description = "",
+  allUrl = "",
+  allText = "Все статьи"
+) %}
+  <section
+    class="article-list"
+    aria-labelledby="{{ id }}-title"
+  >
+    <header class="article-list__header">
+      <div class="article-list__heading">
+        {% if eyebrow %}
+          <p class="article-list__eyebrow">
+            {{ eyebrow }}
+          </p>
+        {% endif %}
+
+        <h2 class="article-list__title" id="{{ id }}-title">
+          {{ title }}
+        </h2>
+
+        {% if description %}
+          <p class="article-list__description">
+            {{ description }}
+          </p>
+        {% endif %}
+      </div>
+
+      {% if allUrl %}
+        <a class="article-list__all" href="{{ allUrl }}">
+          {{ allText }}
+          <span aria-hidden="true">→</span>
+        </a>
+      {% endif %}
+    </header>
+
+    {% if articles | length %}
+      <div class="article-list__grid">
+        {% for article in articles %}
+          {{ articleCard(article, 3) }}
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="article-list__empty">
+        Материалы пока не опубликованы.
+      </p>
+    {% endif %}
+  </section>
+{% endmacro %}

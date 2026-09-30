@@ -40,7 +40,7 @@
   --font-family-base: #{$font-family-base};
   --font-family-heading: #{$font-family-heading};
   --container-max-width: #{$container-max-width};
-  --container-padding: #{fluid(16px, 40px)};
+  --container-padding: 16px;
   --section-spacing: #{fluid(48px, 112px)};
   --block-spacing: #{fluid(24px, 48px)};
 
@@ -109,7 +109,7 @@
   --z-index-modal: #{$z-index-modal};
 
   /*
-  * Tablet: от 768 px
+  * Tablet: от 600 px
   */
 
   @include media-up(tablet) {
@@ -155,6 +155,7 @@
   */
 
   @include media-up(desktop) {
+    --container-padding: 32px;
     --type-display-size: 114px;
     --type-display-line-height: 114px;
     --type-display-letter-spacing: 0.03em;
@@ -193,7 +194,7 @@
   }
 
   /*
-  * Wide: от 1440 px
+  * Middle Desktop: от 1340 px
   */
 
   @include media-up(wide) {
@@ -235,10 +236,11 @@
   }
 
   /*
-  * Large: от 1920 px
+  * Big Desktop: от 1600 px
   */
 
   @include media-up(large) {
+    --container-padding: 48px;
     --type-display-size: 200px;
     --type-display-line-height: 200px;
     --type-display-letter-spacing: 0.02em;

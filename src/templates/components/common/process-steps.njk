@@ -1,0 +1,68 @@
+{% macro processSteps(
+  id,
+  steps = [],
+  title = "Как мы работаем",
+  eyebrow = "",
+  description = "",
+  modifier = ""
+) %}
+  <section
+    class="process-steps{% if modifier %} process-steps--{{ modifier }}{% endif %}"
+    aria-labelledby="{{ id }}-title"
+  >
+    <header class="process-steps__header">
+      <div class="process-steps__heading">
+        {% if eyebrow %}
+          <p class="process-steps__eyebrow">
+            {{ eyebrow }}
+          </p>
+        {% endif %}
+
+        <h2 class="process-steps__title" id="{{ id }}-title">
+          {{ title }}
+        </h2>
+      </div>
+
+      {% if description %}
+        <p class="process-steps__description">
+          {{ description }}
+        </p>
+      {% endif %}
+    </header>
+
+    {% if steps | length %}
+      <ol class="process-steps__list">
+        {% for step in steps %}
+          <li class="process-steps__item">
+            <div class="process-steps__number" aria-hidden="true">
+              {{ loop.index.toString().padStart(2, '0') }}
+            </div>
+
+            <div class="process-steps__content">
+              <h3 class="process-steps__item-title">
+                {{ step.title }}
+              </h3>
+
+              {% if step.text %}
+                <p class="process-steps__text">
+                  {{ step.text }}
+                </p>
+              {% endif %}
+
+              {% if step.href and step.linkText %}
+                <a
+                  class="process-steps__link"
+                  href="{{ step.href }}"
+                >
+                  {{ step.linkText }}
+
+                  <span aria-hidden="true">→</span>
+                </a>
+              {% endif %}
+            </div>
+          </li>
+        {% endfor %}
+      </ol>
+    {% endif %}
+  </section>
+{% endmacro %}

@@ -10,10 +10,8 @@
   transition:
     border-color var(--transition-duration) var(--transition-timing-function),
     box-shadow var(--transition-duration) var(--transition-timing-function);
-}
 
-@include hover {
-  .product-card:hover {
+  @include hover {
     border-color: var(--color-text-muted);
     box-shadow: 0 12px 32px rgb(17 1 1 / 8%);
   }

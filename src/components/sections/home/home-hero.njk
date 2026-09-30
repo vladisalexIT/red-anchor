@@ -1,0 +1,61 @@
+<section
+  class="home-hero"
+  aria-labelledby="home-hero-title"
+>
+  <div class="container home-hero__container">
+    <h1
+      class="home-hero__title"
+      id="home-hero-title"
+    >
+      {{ hero.title }}
+    </h1>
+
+    <div class="home-hero__content">
+      <p class="home-hero__caption">
+        {{ hero.caption }}
+      </p>
+
+      <a
+        class="home-hero__link"
+        href="{{ hero.linkUrl }}"
+      >
+        <span class="home-hero__link-text">
+          {{ hero.linkText }}
+        </span>
+
+        <svg
+          class="home-hero__link-icon"
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          aria-hidden="true"
+        >
+          <path
+            d="M4 10h12M11 5l5 5-5 5"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </a>
+    </div>
+
+    <picture class="home-hero__picture">
+      <source
+        media="(max-width: 767px)"
+        srcset="/images/home/hero-chain-mobile.webp"
+      >
+
+      <img
+        class="home-hero__image"
+        src="/images/home/hero-chain-desktop.webp"
+        width="1600"
+        height="900"
+        alt=""
+        fetchpriority="high"
+        decoding="async"
+      >
+    </picture>
+  </div>
+</section>

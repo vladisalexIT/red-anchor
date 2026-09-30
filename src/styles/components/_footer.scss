@@ -2,47 +2,68 @@
 
 .site-footer {
   color: var(--color-white);
-  background: var(--color-black);
+  background-color: var(--color-black);
 }
 
-.site-footer a {
+.site-footer a,
+.site-footer button {
   @include focus-ring;
-
-  @include hover {
-    color: var(--color-accent);
-  }
 }
 
 .site-footer__main {
   display: grid;
   gap: 36px;
-  padding-block: 48px;
+  padding-block: 44px;
+}
+
+.site-footer__brand {
+  align-self: start;
 }
 
 .site-footer__logo {
-  display: inline-block;
-  font-family: var(--font-family-heading);
-  font-size: 36px;
-  font-weight: 700;
-  line-height: 0.9;
-  text-transform: uppercase;
+  display: inline-flex;
+  width: 154px;
+  align-items: center;
+}
+
+.site-footer__logo img {
+  width: 154px;
+  height: 48px;
 }
 
 .site-footer__company {
-  margin: 16px 0 0;
+  margin-top: 16px;
   color: var(--color-ui-white-40);
+  font-size: var(--type-p4-size);
 }
 
 .site-footer__title {
   margin: 0 0 20px;
+  color: var(--color-white);
+  font-family: var(--font-family-base);
   font-size: var(--type-p2-size);
   font-weight: 500;
+  line-height: var(--type-p2-line-height);
+  text-transform: none;
 }
 
 .site-footer .site-navigation {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px 20px;
+  gap: 12px 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-footer .site-navigation__link {
+  display: inline-block;
+  color: var(--color-ui-white-40);
+  transition: color var(--transition-duration) var(--transition-timing-function);
+
+  @include hover {
+    color: var(--color-accent);
+  }
 }
 
 .site-footer__contacts {
@@ -56,14 +77,30 @@
   margin-bottom: 8px;
 }
 
-.site-footer__contacts p {
-  margin: 8px 0 0;
+.site-footer__contact-link {
+  transition: color var(--transition-duration) var(--transition-timing-function);
+
+  @include hover {
+    color: var(--color-accent);
+  }
+}
+
+.site-footer__address {
+  margin-top: 4px;
   color: var(--color-ui-white-40);
+  font-style: normal;
 }
 
 .site-footer__callback {
   margin-top: 8px;
   color: var(--color-accent);
+  text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+
+  @include hover {
+    color: var(--color-white);
+  }
 }
 
 .site-footer__bottom {
@@ -71,17 +108,30 @@
   flex-direction: column;
   gap: 8px;
   padding-block: 20px 28px;
-  border-top: 1px solid var(--color-ui-white-20);
   color: var(--color-ui-white-40);
+  border-top: 1px solid var(--color-ui-white-20);
+  font-size: var(--type-p4-size);
 }
 
 .site-footer__bottom p {
   margin: 0;
 }
 
+.site-footer__bottom a {
+  transition: color var(--transition-duration) var(--transition-timing-function);
+
+  @include hover {
+    color: var(--color-white);
+  }
+}
+
 @include media-up(tablet) {
   .site-footer__main {
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns:
+      minmax(180px, 0.8fr)
+      minmax(0, 1.5fr);
+    gap: 44px;
+    padding-block: 56px;
   }
 
   .site-footer__contacts {
@@ -90,19 +140,34 @@
 
   .site-footer__bottom {
     flex-direction: row;
+    align-items: center;
     justify-content: space-between;
-    gap: 20px;
+    gap: 24px;
   }
 }
 
 @include media-up(desktop) {
   .site-footer__main {
-    grid-template-columns: 1fr 1.5fr 1fr;
-    gap: 48px;
+    grid-template-columns:
+      minmax(180px, 0.8fr)
+      minmax(360px, 1.5fr)
+      minmax(220px, 0.8fr);
+    gap: 56px;
     padding-block: 72px;
   }
 
   .site-footer__contacts {
     grid-column: auto;
+  }
+}
+
+@include media-up(wide) {
+  .site-footer__main {
+    gap: 80px;
+    padding-block: 88px;
+  }
+
+  .site-footer .site-navigation {
+    gap: 16px 32px;
   }
 }
