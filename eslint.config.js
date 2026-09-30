@@ -12,13 +12,23 @@ export default tseslint.config(
 
   {
     files: ['src/**/*.ts'],
-
     languageOptions: {
       globals: {
         ...globals.browser,
       },
     },
+    rules: {
+      'no-console': ['warn', { allow: ['warn', 'error'] }],
+    },
+  },
 
+  {
+    files: ['src/**/*.js'],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+      },
+    },
     rules: {
       'no-console': ['warn', { allow: ['warn', 'error'] }],
     },

@@ -1,61 +1,93 @@
-<section
-  class="home-hero"
-  aria-labelledby="home-hero-title"
->
-  <div class="container home-hero__container">
-    <h1
-      class="home-hero__title"
-      id="home-hero-title"
-    >
-      {{ hero.title }}
-    </h1>
+<section class='home-hero' data-home-hero aria-labelledby='home-hero-title'>
+  <div class='home-hero__stage'>
+    <div class='home-hero__media' aria-hidden='true'>
+      <div class='home-hero__production'>
+        <img
+          class='home-hero__production-image'
+          src='/src/assets/images/home/hero/hero-production.webp'
+          width='1920'
+          height='2160'
+          alt=''
+          fetchpriority='high'
+          decoding='async'
+        />
+      </div>
 
-    <div class="home-hero__content">
-      <p class="home-hero__caption">
-        {{ hero.caption }}
-      </p>
+      <picture class='home-hero__ship'>
+        <source
+          media='(max-width: 1023px)'
+          srcset='/src/assets/images/home/hero/hero-ship-mobile.webp'
+        />
 
-      <a
-        class="home-hero__link"
-        href="{{ hero.linkUrl }}"
-      >
-        <span class="home-hero__link-text">
-          {{ hero.linkText }}
-        </span>
-
-        <svg
-          class="home-hero__link-icon"
-          width="20"
-          height="20"
-          viewBox="0 0 20 20"
-          aria-hidden="true"
-        >
-          <path
-            d="M4 10h12M11 5l5 5-5 5"
-            fill="none"
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-      </a>
-    </div>
-
-    <picture class="home-hero__picture">
-      <source
-        media="(max-width: 767px)"
-        srcset="/images/home/hero-chain-mobile.webp"
-      >
+        <img
+          class='home-hero__ship-image'
+          src='/src/assets/images/home/hero/hero-ship.webp'
+          width='1920'
+          height='2160'
+          alt=''
+          fetchpriority='high'
+          decoding='async'
+        />
+      </picture>
 
       <img
-        class="home-hero__image"
-        src="/images/home/hero-chain-desktop.webp"
-        width="1600"
-        height="900"
-        alt=""
-        fetchpriority="high"
-        decoding="async"
-      >
-    </picture>
+        class='home-hero__chain-poster'
+        src='/images/home/hero/chain/1.webp'
+        width='1280'
+        height='1280'
+        alt=''
+        fetchpriority='high'
+        decoding='async'
+      />
+
+      <canvas class='home-hero__chain-canvas' width='1280' height='1280'></canvas>
+
+      <img
+        class='home-hero__mobile-anchor'
+        src='/src/assets/images/home/hero/hero-mobile-anchor.png'
+        width='640'
+        height='1853'
+        alt=''
+        fetchpriority='high'
+        decoding='async'
+      />
+
+      <div class='home-hero__production-shadow'></div>
+      <div class='home-hero__mobile-shadow'></div>
+    </div>
+
+    <div class='home-hero__container'>
+      <h1 id='home-hero-title' class='home-hero__title'>
+        Современное
+        <br />
+        <span>производство</span>
+        <br />
+        цепей для
+        <br />
+        любых задач
+      </h1>
+
+      <div class='home-hero__content'>
+        <p class='home-hero__caption'>
+          «Завод Красный Якорь»&nbsp;— производитель цепей и&nbsp;комплектующих для разных отраслей
+        </p>
+
+        <a class='home-hero__link' href='#catalog'>
+          <span class='home-hero__link-text'>Все отрасли</span>
+
+          <svg
+            class='home-hero__link-icon'
+            width='28'
+            height='28'
+            viewBox='0 0 28 28'
+            aria-hidden='true'
+          >
+            <path d='M6 6L22 22M9 22H22V9' fill='none' stroke='currentColor' stroke-width='1.5' />
+          </svg>
+        </a>
+      </div>
+    </div>
   </div>
 </section>
+
+<script type='module' src='/src/scripts/home-hero.js'></script>

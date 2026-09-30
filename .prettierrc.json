@@ -5,5 +5,14 @@
   "useTabs": false,
   "trailingComma": "all",
   "printWidth": 100,
-  "endOfLine": "lf"
+  "endOfLine": "lf",
+  "plugins": ["prettier-plugin-nunjucks"],
+  "overrides": [
+    {
+      "files": ["*.njk", "*.nunjucks"],
+      "options": {
+        "parser": "nunjucks"
+      }
+    }
+  ]
 }

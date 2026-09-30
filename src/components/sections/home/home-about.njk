@@ -8,25 +8,23 @@
       class="home-about__title"
       id="home-about-title"
     >
-      О нас
+      {{ about.title }}
     </h2>
 
     <div class="home-about__stat">
-      <strong class="home-about__stat-value">2000</strong>
+      <strong class="home-about__stat-value">
+        {{ about.value }}
+      </strong>
 
       <p class="home-about__stat-label">
-        видов продукции в ассортименте
+        {{ about.label }}
       </p>
     </div>
 
-    <p class="home-about__description">
-      Красный якорь располагает производственной базой, которая оснащена
-      европейскими автоматическими цепеделательными линиями
-    </p>
+    
 
-    <div
-      class="home-about__media"
-      aria-hidden="true"
-    ></div>
+    <p class="home-about__description">
+      {{ about.description }}
+    </p>
   </div>
 </section>
