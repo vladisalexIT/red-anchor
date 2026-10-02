@@ -7,12 +7,21 @@
 {% endblock %}
 
 {% block content %}
-  {% include "components/sections/home/home-hero.njk" %}
-  {% include "components/sections/home/home-about.njk" %}
-  {% include "components/sections/home/home-technologies.njk" %}
-  {% include "components/sections/home/home-quality.njk" %}
-  {% include "components/sections/home/home-partner.njk" %}
-  {% include "components/sections/home/home-catalog.njk" %}
+  <div class="home-scene" data-home-scene>
+    {% include "components/sections/home/home-scene-media.njk" %}
+
+    <div class="home-scene__content">
+      {% include "components/sections/home/home-hero.njk" %}
+      {% include "components/sections/home/home-about.njk" %}
+      {% include "components/sections/home/home-technologies.njk" %}
+      {% include "components/sections/home/home-quality.njk" %}
+      {% include "components/sections/home/home-partner.njk" %}
+      {% include "components/sections/home/home-catalog.njk" %}
+    </div>
+  </div>
+
   {% include "components/sections/home/home-purchase.njk" %}
   {% include "components/sections/home/home-questions.njk" %}
+
+  <script type="module" src="/src/scripts/home-hero.js"></script>
 {% endblock %}
