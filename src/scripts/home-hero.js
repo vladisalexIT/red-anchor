@@ -2,17 +2,12 @@ function initHomeHero() {
   const scene = document.querySelector('[data-home-scene]');
   const hero = scene?.querySelector('[data-home-hero]');
   const stage = scene?.querySelector('.home-scene__stage');
-  const canvas = scene?.querySelector('.home-hero__chain-canvas');
+  const content = scene?.querySelector('.home-scene__content');
+  const sequence = scene?.querySelector('[data-home-sequence]');
+  const media = scene?.querySelector('.home-hero__media');
+  const fallbackImages = [...(scene?.querySelectorAll('img.home-hero__chain') ?? [])];
 
-  if (!scene || !hero || !stage || !canvas) {
-    return;
-  }
-
-  const context = canvas.getContext('2d', {
-    alpha: true,
-  });
-
-  if (!context) {
+  if (!scene || !hero || !stage || !content || !sequence || !media || fallbackImages.length === 0) {
     return;
   }
 
@@ -20,263 +15,325 @@ function initHomeHero() {
   const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   const FRAME_COUNT = 385;
-  const MAX_LOADED_FRAMES = 12;
-  const MAX_PARALLEL_LOADS = 3;
-  const SMOOTHING_MS = 150;
 
-  // Производство полностью открывается за одну высоту Hero.
-  // Этот параметр будем уточнять по визуальной проверке.
-  const REVEAL_HERO_HEIGHTS = 1;
+  const FIRST_SCROLL_FRAME = 20;
 
-  const frameCache = new Map();
-  const failedFrames = new Set();
+  // Значения из официального main-page.js.
+  const FRAME_OFFSET_MULTIPLIER = 1.1;
+  const FRAME_TRIGGER_SHIFT = 200;
+  const LEFT_SHADOW_DISTANCE = 1100;
+  const RIGHT_COVER_DISTANCE = 2050;
 
-  let queue = [];
-  let loadingCount = 0;
+  const PRELOAD_RADIUS = 12;
+  const KEEP_RADIUS = 20;
+  const MAX_PARALLEL_LOADS = 4;
+  const SMOOTHING_TIME = 140;
+  const ACTIVE_CLASS = 'home-hero__chain--active';
+
+  const records = new Map();
+
+  const canvas = document.createElement('canvas');
+
+  canvas.className = `home-hero__chain ${ACTIVE_CLASS}`;
+  canvas.width = 1280;
+  canvas.height = 1280;
+  canvas.hidden = true;
+  canvas.setAttribute('aria-hidden', 'true');
+
+  media.append(canvas);
+
+  const context = canvas.getContext('2d');
+
+  if (!context) {
+    canvas.remove();
+    return;
+  }
 
   let enabled = false;
   let animationId = 0;
-  let previousTime = 0;
-
+  let loadingCount = 0;
   let sceneTop = 0;
-  let sceneHeight = 0;
-  let viewportHeight = 1;
+  let sequenceTop = 0;
+  let frameScrollStep = 1;
   let animationDistance = 1;
-  let revealDistance = 1;
-
-  let progress = 0;
-  let requestedFrame = 1;
-  let drawnFrame = 0;
+  let renderedScroll = 0;
+  let requestedFrame = FIRST_SCROLL_FRAME;
+  let displayedFrame = 0;
+  let lastTimestamp = 0;
+  let loadWarningShown = false;
 
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
-  const getFrameUrl = (frame) => `/images/home/hero/chain/${frame}.webp`;
+  const getFrameUrl = (frameNumber) => `/images/home/hero/chain/${frameNumber}.webp`;
 
-  const isSceneVisible = () => {
-    const scrollTop = window.scrollY;
+  const getTargetScroll = () => clamp(window.scrollY - sceneTop, 0, animationDistance);
 
-    return scrollTop + viewportHeight > sceneTop && scrollTop < sceneTop + sceneHeight;
-  };
+  function getFrameForScroll(scrollDistance) {
+    const documentScroll = sceneTop + scrollDistance;
 
-  const getTargetProgress = () => clamp((window.scrollY - sceneTop) / animationDistance, 0, 1);
+    const passedThresholds = Math.floor(
+      (documentScroll - sequenceTop + FRAME_TRIGGER_SHIFT) / frameScrollStep,
+    );
 
-  const paintFrame = (frame, image) => {
-    if (!enabled || !isSceneVisible() || frame !== requestedFrame || frame === drawnFrame) {
+    return clamp(passedThresholds + 19, FIRST_SCROLL_FRAME, FRAME_COUNT);
+  }
+
+  function requestTick() {
+    if (!enabled || animationId) {
       return;
+    }
+
+    animationId = window.requestAnimationFrame(tick);
+  }
+
+  function drawFrame(frameNumber) {
+    const record = records.get(frameNumber);
+
+    if (!enabled || record?.status !== 'ready' || displayedFrame === frameNumber) {
+      return;
+    }
+
+    const image = record.image;
+
+    // Размер холста определяется настоящим изображением.
+    // Геометрию на странице по-прежнему задаёт существующий CSS.
+    if (canvas.width !== image.naturalWidth || canvas.height !== image.naturalHeight) {
+      canvas.width = image.naturalWidth;
+      canvas.height = image.naturalHeight;
     }
 
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.drawImage(image, 0, 0, canvas.width, canvas.height);
 
-    drawnFrame = frame;
-    scene.classList.add('is-chain-ready');
-  };
+    displayedFrame = frameNumber;
 
-  const trimCache = () => {
-    const loadedFrames = [...frameCache.entries()]
-      .filter(([, record]) => record.status === 'ready')
-      .sort(
-        ([first], [second]) => Math.abs(first - requestedFrame) - Math.abs(second - requestedFrame),
-      );
+    canvas.hidden = false;
 
-    loadedFrames.slice(MAX_LOADED_FRAMES).forEach(([frame]) => {
-      frameCache.delete(frame);
+    fallbackImages.forEach((fallbackImage) => {
+      fallbackImage.hidden = true;
     });
-  };
 
-  const pumpQueue = () => {
+    scene.dataset.chainDisplayedFrame = String(frameNumber);
+  }
+
+  function drawBestAvailableFrame() {
+    if (records.get(requestedFrame)?.status === 'ready') {
+      drawFrame(requestedFrame);
+      return;
+    }
+
+    let nearestFrame = 0;
+    let nearestDistance = Infinity;
+
+    records.forEach((record, frameNumber) => {
+      if (record.status !== 'ready') {
+        return;
+      }
+
+      const distance = Math.abs(frameNumber - requestedFrame);
+
+      if (distance < nearestDistance) {
+        nearestFrame = frameNumber;
+        nearestDistance = distance;
+      }
+    });
+
+    if (nearestFrame) {
+      drawFrame(nearestFrame);
+    }
+  }
+
+  function trimCache() {
+    records.forEach((record, frameNumber) => {
+      const shouldKeep =
+        frameNumber === FIRST_SCROLL_FRAME ||
+        frameNumber === displayedFrame ||
+        Math.abs(frameNumber - requestedFrame) <= KEEP_RADIUS;
+
+      if (shouldKeep || record.status === 'loading') {
+        return;
+      }
+
+      records.delete(frameNumber);
+    });
+  }
+
+  function ensureRecord(frameNumber) {
+    if (records.has(frameNumber)) {
+      return;
+    }
+
+    const image = new Image();
+
+    image.decoding = 'async';
+
+    records.set(frameNumber, {
+      image,
+      status: 'queued',
+    });
+  }
+
+  function startLoading(frameNumber) {
+    const record = records.get(frameNumber);
+
+    if (!record || record.status !== 'queued') {
+      return;
+    }
+
+    record.status = 'loading';
+    loadingCount += 1;
+
+    const finish = (success) => {
+      record.image.onload = null;
+      record.image.onerror = null;
+      record.status = success ? 'ready' : 'failed';
+
+      loadingCount -= 1;
+
+      if (!success && !loadWarningShown) {
+        loadWarningShown = true;
+
+        console.warn(
+          'Не удалось подготовить один из кадров цепи. Проверьте запросы /images/home/hero/chain/.',
+        );
+      }
+
+      trimCache();
+      requestTick();
+      pumpQueue();
+    };
+
+    record.image.onload = async () => {
+      try {
+        if (typeof record.image.decode === 'function') {
+          await record.image.decode();
+        }
+
+        finish(record.image.naturalWidth > 0);
+      } catch {
+        finish(false);
+      }
+    };
+
+    record.image.onerror = () => {
+      finish(false);
+    };
+
+    record.image.src = getFrameUrl(frameNumber);
+  }
+
+  function pumpQueue() {
     if (!enabled) {
       return;
     }
 
-    while (loadingCount < MAX_PARALLEL_LOADS && queue.length > 0) {
-      const frame = queue.shift();
-      const record = frameCache.get(frame);
+    const queuedFrames = [...records]
+      .filter(([, record]) => record.status === 'queued')
+      .map(([frameNumber]) => frameNumber)
+      .sort(
+        (firstFrame, secondFrame) =>
+          Math.abs(firstFrame - requestedFrame) - Math.abs(secondFrame - requestedFrame),
+      );
 
-      if (!record || record.status !== 'queued') {
-        continue;
-      }
-
-      record.status = 'loading';
-      loadingCount += 1;
-
-      const image = record.image;
-
-      const finish = (success) => {
-        image.onload = null;
-        image.onerror = null;
-
-        loadingCount -= 1;
-
-        if (success) {
-          record.status = 'ready';
-
-          if (enabled) {
-            paintFrame(frame, image);
-          } else {
-            frameCache.delete(frame);
-          }
-        } else {
-          failedFrames.add(frame);
-          frameCache.delete(frame);
-        }
-
-        trimCache();
-        pumpQueue();
-      };
-
-      image.onload = () => {
-        finish(image.naturalWidth > 0);
-      };
-
-      image.onerror = () => {
-        finish(false);
-      };
-
-      image.src = getFrameUrl(frame);
+    while (loadingCount < MAX_PARALLEL_LOADS && queuedFrames.length > 0) {
+      startLoading(queuedFrames.shift());
     }
-  };
+  }
 
-  const requestFrame = (frame, direction) => {
-    requestedFrame = frame;
+  function prepareFrameWindow() {
+    const firstFrame = Math.max(1, requestedFrame - PRELOAD_RADIUS);
+    const lastFrame = Math.min(FRAME_COUNT, requestedFrame + PRELOAD_RADIUS);
 
-    const desiredFrames = [
-      frame,
-      frame + direction,
-      frame - direction,
-      frame + direction * 2,
-    ].filter(
-      (number, index, numbers) =>
-        number >= 1 && number <= FRAME_COUNT && numbers.indexOf(number) === index,
-    );
+    ensureRecord(FIRST_SCROLL_FRAME);
+    ensureRecord(requestedFrame);
 
-    const desiredSet = new Set(desiredFrames);
-
-    // Не накапливаем очередь кадров, которые уже не нужны.
-    queue = queue.filter((number) => {
-      if (desiredSet.has(number)) {
-        return true;
-      }
-
-      const record = frameCache.get(number);
-
-      if (record?.status === 'queued') {
-        frameCache.delete(number);
-      }
-
-      return false;
-    });
-
-    desiredFrames.forEach((number) => {
-      if (frameCache.has(number) || failedFrames.has(number)) {
-        return;
-      }
-
-      const image = new Image();
-      image.decoding = 'async';
-
-      frameCache.set(number, {
-        image,
-        status: 'queued',
-      });
-
-      queue.push(number);
-    });
-
-    queue.sort((first, second) => desiredFrames.indexOf(first) - desiredFrames.indexOf(second));
-
-    const currentRecord = frameCache.get(frame);
-
-    if (currentRecord?.status === 'ready') {
-      paintFrame(frame, currentRecord.image);
+    for (let frameNumber = firstFrame; frameNumber <= lastFrame; frameNumber += 1) {
+      ensureRecord(frameNumber);
     }
 
     trimCache();
     pumpQueue();
-  };
+  }
 
-  const updateReveal = () => {
-    const scrollDistance = progress * animationDistance;
+  function updateReveal() {
+    const shadowOpacity = clamp(renderedScroll / LEFT_SHADOW_DISTANCE, 0, 1);
 
-    const revealProgress = clamp(scrollDistance / revealDistance, 0, 1);
+    const coverWidth = clamp(renderedScroll / RIGHT_COVER_DISTANCE, 0, 1) * 100;
 
-    const revealPercent = 50 + revealProgress * 50;
+    scene.style.setProperty('--home-left-shadow-opacity', shadowOpacity.toFixed(4));
 
-    scene.style.setProperty('--home-production-reveal', `${revealPercent.toFixed(3)}%`);
-  };
+    scene.style.setProperty('--home-right-cover-width', `${coverWidth.toFixed(3)}%`);
+  }
 
-  const tick = (time) => {
+  function tick(timestamp) {
     animationId = 0;
 
     if (!enabled) {
       return;
     }
 
-    const target = getTargetProgress();
+    const targetScroll = getTargetScroll();
+    const elapsed = lastTimestamp ? clamp(timestamp - lastTimestamp, 1, 50) : 16.67;
 
-    if (!isSceneVisible()) {
-      progress = target;
-      previousTime = 0;
-      return;
+    lastTimestamp = timestamp;
+
+    const smoothing = 1 - Math.exp(-elapsed / SMOOTHING_TIME);
+
+    renderedScroll += (targetScroll - renderedScroll) * smoothing;
+
+    if (Math.abs(targetScroll - renderedScroll) < 0.25) {
+      renderedScroll = targetScroll;
     }
 
-    const delta = previousTime ? Math.min(48, time - previousTime) : 16;
+    const nextFrame = getFrameForScroll(renderedScroll);
 
-    previousTime = time;
+    const frameChanged = nextFrame !== requestedFrame;
 
-    const direction = target >= progress ? 1 : -1;
-    const smoothing = 1 - Math.exp(-delta / SMOOTHING_MS);
+    requestedFrame = nextFrame;
+    scene.dataset.chainRequestedFrame = String(requestedFrame);
 
-    progress += (target - progress) * smoothing;
-
-    if (Math.abs(target - progress) < 0.00001) {
-      progress = target;
+    if (frameChanged || records.size === 0) {
+      prepareFrameWindow();
     }
 
     updateReveal();
+    drawBestAvailableFrame();
 
-    const frame = clamp(Math.round(progress * (FRAME_COUNT - 1)) + 1, 1, FRAME_COUNT);
-
-    requestFrame(frame, direction);
-
-    if (progress !== target) {
-      animationId = window.requestAnimationFrame(tick);
+    if (renderedScroll !== targetScroll) {
+      requestTick();
     } else {
-      previousTime = 0;
+      lastTimestamp = 0;
     }
-  };
+  }
 
-  const requestTick = () => {
-    if (!enabled || animationId) {
-      return;
-    }
+  function measure() {
+    // Больше не создаём дополнительную пустую высоту сцены.
+    scene.style.minHeight = '';
 
-    animationId = window.requestAnimationFrame(tick);
-  };
+    sceneTop = scene.getBoundingClientRect().top + window.scrollY;
+    sequenceTop = sequence.getBoundingClientRect().top + window.scrollY;
 
-  const measure = () => {
-    const rectangle = scene.getBoundingClientRect();
+    const stageHeight = stage.getBoundingClientRect().height;
+    const sequenceHeight = sequence.getBoundingClientRect().height;
 
-    sceneTop = rectangle.top + window.scrollY;
+    const sequenceDistance = Math.max(1, sequenceHeight - stageHeight);
 
-    // На главной перед сценой находится шапка.
-    // Убираем зависимость от жёстко заданных 136 px.
+    frameScrollStep = (sequenceDistance / FRAME_COUNT) * FRAME_OFFSET_MULTIPLIER;
+
+    const lastFrameThreshold =
+      sequenceTop - FRAME_TRIGGER_SHIFT + (FRAME_COUNT - 19) * frameScrollStep;
+
+    animationDistance = Math.max(RIGHT_COVER_DISTANCE, lastFrameThreshold - sceneTop);
+
     scene.style.setProperty('--home-header-height', `${Math.max(0, sceneTop)}px`);
+  }
 
-    viewportHeight = Math.max(1, window.innerHeight);
-    sceneHeight = scene.offsetHeight;
-
-    animationDistance = Math.max(1, sceneHeight - stage.offsetHeight);
-
-    revealDistance = Math.max(1, hero.offsetHeight * REVEAL_HERO_HEIGHTS);
-  };
-
-  const refresh = () => {
+  function refresh() {
     measure();
     requestTick();
-  };
+  }
 
-  const updateMode = () => {
+  function updateMode() {
     enabled = desktopQuery.matches && !reducedMotionQuery.matches;
 
     if (animationId) {
@@ -284,21 +341,25 @@ function initHomeHero() {
       animationId = 0;
     }
 
-    previousTime = 0;
+    lastTimestamp = 0;
 
     if (!enabled) {
-      scene.classList.remove('is-chain-ready');
+      canvas.hidden = true;
+      displayedFrame = 0;
 
-      scene.style.setProperty('--home-production-reveal', '50%');
+      fallbackImages.forEach((image, index) => {
+        image.hidden = false;
+        image.classList.toggle(ACTIVE_CLASS, index === 0);
+      });
 
-      drawnFrame = 0;
-      queue = [];
+      scene.style.minHeight = '';
+      scene.style.setProperty('--home-left-shadow-opacity', '0');
+      scene.style.setProperty('--home-right-cover-width', '0%');
 
-      // Освобождаем загруженные кадры при переходе
-      // на мобильный режим или reduced motion.
-      frameCache.forEach((record, frame) => {
+      // Незавершённые загрузки завершатся своими обработчиками.
+      records.forEach((record, frameNumber) => {
         if (record.status !== 'loading') {
-          frameCache.delete(frame);
+          records.delete(frameNumber);
         }
       });
 
@@ -307,12 +368,13 @@ function initHomeHero() {
 
     measure();
 
-    // Корректное состояние при восстановлении позиции
-    // прокрутки браузером.
-    progress = getTargetProgress();
+    renderedScroll = getTargetScroll();
 
+    requestedFrame = getFrameForScroll(renderedScroll);
+
+    prepareFrameWindow();
     requestTick();
-  };
+  }
 
   window.addEventListener('scroll', requestTick, {
     passive: true,
@@ -330,7 +392,7 @@ function initHomeHero() {
   if ('ResizeObserver' in window) {
     const resizeObserver = new ResizeObserver(refresh);
 
-    resizeObserver.observe(scene);
+    resizeObserver.observe(content);
     resizeObserver.observe(hero);
   }
 
