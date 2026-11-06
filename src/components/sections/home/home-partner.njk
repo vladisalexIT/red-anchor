@@ -1,3 +1,5 @@
+{% from "components/sections/home/home-section-link.njk" import homeSectionLink %}
+
 <section
   class="home-partner"
   aria-labelledby="home-partner-title"
@@ -12,22 +14,21 @@
       </h2>
 
       <p class="home-partner__description">
-        Красный якорь располагает производственной базой, которая оснащена
-        европейскими автоматическими цепеделательными линиями
+        «Завод Красный Якорь» имеет собственные склады
+        готовой продукции в&nbsp;Нижнем Новгороде
+        и&nbsp;Кемерове.
       </p>
     </div>
 
     <ul class="home-partner__list">
       <li class="home-partner__item">
-        Большой запас на складе
+        Запас<br>
+        на складе
       </li>
 
       <li class="home-partner__item">
-        Индивидуальное производство
-      </li>
-
-      <li class="home-partner__item">
-        Отгрузка в срок
+        Отгрузка<br>
+        в срок
       </li>
 
       <li class="home-partner__item">
@@ -35,11 +36,9 @@
       </li>
     </ul>
 
-    <a
-      class="home-partner__link"
-      href="#"
-    >
-      Как мы работаем
-    </a>
+    {{ homeSectionLink(
+      "/how-we-working/",
+      "Как мы работаем"
+    ) }}
   </div>
 </section>

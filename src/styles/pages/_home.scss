@@ -1,7 +1,9 @@
 .home-scene {
   --home-header-height: 136px;
   --home-left-shadow-opacity: 0;
+  --home-shadow-edge: 0px;
   --home-right-cover-width: 0%;
+  --home-chain-shift: 0px;
 
   position: relative;
   isolation: isolate;
@@ -105,6 +107,7 @@
 
 .home-hero__scene-cover {
   left: 50%;
+  display: block;
   width: var(--home-right-cover-width);
 }
 
@@ -123,7 +126,7 @@
   height: 100%;
   aspect-ratio: 1;
   opacity: 0;
-  transform: translate3d(-50%, -50%, 0);
+  transform: translate3d(calc(-50% + var(--home-chain-shift)), -50%, 0);
   pointer-events: none;
   transition: none;
 }

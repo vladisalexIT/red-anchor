@@ -17,17 +17,32 @@ function initHomeHero() {
   const FRAME_COUNT = 385;
 
   const FIRST_SCROLL_FRAME = 20;
+  const FIRST_PHASE_LAST_FRAME = 20;
 
   // Значения из официального main-page.js.
-  const FRAME_OFFSET_MULTIPLIER = 1.1;
-  const FRAME_TRIGGER_SHIFT = 200;
+  // Отдельные дистанции фаз.
+  //
+  // Левая тень полностью нарастает за 1100 px —
+  // это соответствует официальной странице.
   const LEFT_SHADOW_DISTANCE = 1100;
+
+  // Чёрное покрытие справа проходит от центра до правого края
+  // за 2050 px — это официальная длительность этой фазы.
   const RIGHT_COVER_DISTANCE = 2050;
+
+  // Официальная страница перемещает контейнер якоря
+  // на участке прокрутки длительностью 600 px.
+  const ANCHOR_DISTANCE = 1400;
+
+  // После завершения визуального затемнения оставляем небольшой
+  // участок прокрутки с неподвижным кадром 20.
+  const MAIN_START_GAP = 450;
+
+  const FRAME_OFFSET_MULTIPLIER = 1.1;
 
   const PRELOAD_RADIUS = 12;
   const KEEP_RADIUS = 20;
   const MAX_PARALLEL_LOADS = 4;
-  const SMOOTHING_TIME = 140;
   const ACTIVE_CLASS = 'home-hero__chain--active';
 
   const records = new Map();
@@ -53,29 +68,31 @@ function initHomeHero() {
   let animationId = 0;
   let loadingCount = 0;
   let sceneTop = 0;
-  let sequenceTop = 0;
   let frameScrollStep = 1;
+  let firstPhaseDistance = 1;
   let animationDistance = 1;
   let renderedScroll = 0;
   let requestedFrame = FIRST_SCROLL_FRAME;
   let displayedFrame = 0;
-  let lastTimestamp = 0;
   let loadWarningShown = false;
 
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+  const smoothStep = (value) => value * value * (3 - 2 * value);
 
   const getFrameUrl = (frameNumber) => `/images/home/hero/chain/${frameNumber}.webp`;
 
   const getTargetScroll = () => clamp(window.scrollY - sceneTop, 0, animationDistance);
 
   function getFrameForScroll(scrollDistance) {
-    const documentScroll = sceneTop + scrollDistance;
+    if (scrollDistance <= firstPhaseDistance) {
+      return FIRST_SCROLL_FRAME;
+    }
 
-    const passedThresholds = Math.floor(
-      (documentScroll - sequenceTop + FRAME_TRIGGER_SHIFT) / frameScrollStep,
-    );
+    const mainPhaseDistance = scrollDistance - firstPhaseDistance;
+    const mainPhaseFrame = Math.floor(mainPhaseDistance / frameScrollStep);
 
-    return clamp(passedThresholds + 19, FIRST_SCROLL_FRAME, FRAME_COUNT);
+    return clamp(FIRST_PHASE_LAST_FRAME + mainPhaseFrame, FIRST_SCROLL_FRAME, FRAME_COUNT);
   }
 
   function requestTick() {
@@ -117,7 +134,9 @@ function initHomeHero() {
   }
 
   function drawBestAvailableFrame() {
-    if (records.get(requestedFrame)?.status === 'ready') {
+    const requestedRecord = records.get(requestedFrame);
+
+    if (requestedRecord?.status === 'ready') {
       drawFrame(requestedFrame);
       return;
     }
@@ -245,6 +264,7 @@ function initHomeHero() {
     const lastFrame = Math.min(FRAME_COUNT, requestedFrame + PRELOAD_RADIUS);
 
     ensureRecord(FIRST_SCROLL_FRAME);
+    ensureRecord(FIRST_PHASE_LAST_FRAME);
     ensureRecord(requestedFrame);
 
     for (let frameNumber = firstFrame; frameNumber <= lastFrame; frameNumber += 1) {
@@ -255,17 +275,49 @@ function initHomeHero() {
     pumpQueue();
   }
 
-  function updateReveal() {
-    const shadowOpacity = clamp(renderedScroll / LEFT_SHADOW_DISTANCE, 0, 1);
+  function updateFirstPhase() {
+    const shadowProgress = clamp(renderedScroll / LEFT_SHADOW_DISTANCE, 0, 1);
 
-    const coverWidth = clamp(renderedScroll / RIGHT_COVER_DISTANCE, 0, 1) * 100;
+    const coverProgress = clamp(renderedScroll / RIGHT_COVER_DISTANCE, 0, 1);
+
+    const anchorProgress = clamp(renderedScroll / ANCHOR_DISTANCE, 0, 1);
+
+    const mediaWidth = media.clientWidth;
+    const mediaHeight = media.clientHeight;
+
+    if (mediaWidth <= 0 || mediaHeight <= 0) {
+      return;
+    }
+
+    // В официальной версии смещается полноэкранный контейнер
+    // #preloadImagesContainer, поэтому процент берётся
+    // от ширины медиа-контейнера, а не от его высоты.
+    //
+    // До ширины 1920 px используется 28%.
+    // На более широких экранах официальная версия использует 35%.
+    const anchorShiftRatio = window.innerWidth > 1920 ? 0.42 : 0.34;
+    const maximumShift = mediaWidth * anchorShiftRatio;
+
+    // Официальное движение якоря происходит на участке 600 px.
+    const easedAnchorProgress = smoothStep(anchorProgress);
+    const shift = maximumShift * easedAnchorProgress;
+
+    // Левая половина затемняется независимо от правого покрытия.
+    const shadowOpacity = shadowProgress;
+
+    // Правое покрытие начинается от центра и расширяется вправо
+    // на протяжении 2050 px.
+    const easedCoverProgress = smoothStep(coverProgress);
+    const rightCoverWidth = 60 * easedCoverProgress;
+
+    scene.style.setProperty('--home-chain-shift', `${shift.toFixed(2)}px`);
 
     scene.style.setProperty('--home-left-shadow-opacity', shadowOpacity.toFixed(4));
 
-    scene.style.setProperty('--home-right-cover-width', `${coverWidth.toFixed(3)}%`);
+    scene.style.setProperty('--home-right-cover-width', `${rightCoverWidth.toFixed(3)}%`);
   }
 
-  function tick(timestamp) {
+  function tick() {
     animationId = 0;
 
     if (!enabled) {
@@ -273,17 +325,11 @@ function initHomeHero() {
     }
 
     const targetScroll = getTargetScroll();
-    const elapsed = lastTimestamp ? clamp(timestamp - lastTimestamp, 1, 50) : 16.67;
 
-    lastTimestamp = timestamp;
-
-    const smoothing = 1 - Math.exp(-elapsed / SMOOTHING_TIME);
-
-    renderedScroll += (targetScroll - renderedScroll) * smoothing;
-
-    if (Math.abs(targetScroll - renderedScroll) < 0.25) {
-      renderedScroll = targetScroll;
-    }
+    // Анимация привязана непосредственно к положению скролла.
+    // Это устраняет заметное отставание и накопление задержки
+    // при быстрых движениях вверх и вниз.
+    renderedScroll = targetScroll;
 
     const nextFrame = getFrameForScroll(renderedScroll);
 
@@ -296,22 +342,14 @@ function initHomeHero() {
       prepareFrameWindow();
     }
 
-    updateReveal();
+    updateFirstPhase();
     drawBestAvailableFrame();
-
-    if (renderedScroll !== targetScroll) {
-      requestTick();
-    } else {
-      lastTimestamp = 0;
-    }
   }
 
   function measure() {
-    // Больше не создаём дополнительную пустую высоту сцены.
     scene.style.minHeight = '';
 
     sceneTop = scene.getBoundingClientRect().top + window.scrollY;
-    sequenceTop = sequence.getBoundingClientRect().top + window.scrollY;
 
     const stageHeight = stage.getBoundingClientRect().height;
     const sequenceHeight = sequence.getBoundingClientRect().height;
@@ -320,10 +358,24 @@ function initHomeHero() {
 
     frameScrollStep = (sequenceDistance / FRAME_COUNT) * FRAME_OFFSET_MULTIPLIER;
 
-    const lastFrameThreshold =
-      sequenceTop - FRAME_TRIGGER_SHIFT + (FRAME_COUNT - 19) * frameScrollStep;
+    // Все визуальные действия первой фазы имеют разные длительности.
+    // Кадровая последовательность начинается только после:
+    //
+    // 1. движения якоря;
+    // 2. нарастания левой тени;
+    // 3. расширения чёрного покрытия до правого края;
+    // 4. дополнительного участка с неподвижным кадром 20.
+    const visualPhaseDistance = Math.max(
+      ANCHOR_DISTANCE,
+      LEFT_SHADOW_DISTANCE,
+      RIGHT_COVER_DISTANCE,
+    );
 
-    animationDistance = Math.max(RIGHT_COVER_DISTANCE, lastFrameThreshold - sceneTop);
+    firstPhaseDistance = visualPhaseDistance + MAIN_START_GAP;
+
+    const mainPhaseDistance = Math.max(1, (FRAME_COUNT - FIRST_PHASE_LAST_FRAME) * frameScrollStep);
+
+    animationDistance = Math.max(1, firstPhaseDistance + mainPhaseDistance);
 
     scene.style.setProperty('--home-header-height', `${Math.max(0, sceneTop)}px`);
   }
@@ -341,8 +393,6 @@ function initHomeHero() {
       animationId = 0;
     }
 
-    lastTimestamp = 0;
-
     if (!enabled) {
       canvas.hidden = true;
       displayedFrame = 0;
@@ -354,7 +404,9 @@ function initHomeHero() {
 
       scene.style.minHeight = '';
       scene.style.setProperty('--home-left-shadow-opacity', '0');
+      scene.style.setProperty('--home-shadow-edge', '0px');
       scene.style.setProperty('--home-right-cover-width', '0%');
+      scene.style.setProperty('--home-chain-shift', '0px');
 
       // Незавершённые загрузки завершатся своими обработчиками.
       records.forEach((record, frameNumber) => {
