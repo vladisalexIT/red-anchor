@@ -1,19 +1,35 @@
-<section
-  class="home-purchase"
-  id="purchase"
-  aria-labelledby="home-purchase-title"
->
-  <div class="container home-purchase__container">
-    <h2
-      class="home-purchase__title"
-      id="home-purchase-title"
-    >
-      Как приобрести продукцию
-    </h2>
+{% from "templates/components/common/process-steps.njk" import processSteps %}
 
-    <div
-      class="home-purchase__content"
-      data-home-purchase
-    ></div>
+{% set purchaseSteps =[
+    {
+      title: "Выберите продукцию",
+      text: "Найдите нужные изделия в каталоге и добавьте их в заказ.",
+      href: "/catalog/",
+      linkText: "Перейти в каталог"
+    },
+    {
+      title: "Отправьте заявку",
+      text: "Укажите количество, необходимые характеристики и контактные данные.",
+      href: "/request/#nonstandard-request",
+      linkText: "Оставить заявку"
+    },
+    {
+      title: "Согласуйте условия",
+      text: "Специалист уточнит комплектацию, стоимость, сроки и способ поставки."
+    },
+    {
+      title: "Получите продукцию",
+      text: "Заберите согласованный заказ со склада или оформите доставку."
+    }
+  ]
+%}
+
+<div id='purchase' class='home-purchase'>
+  <div class='container home-purchase__container'>
+    {{ processSteps(
+      "home-purchase",
+      purchaseSteps,
+      "Как приобрести продукцию"
+    ) }}
   </div>
-</section>
+</div>

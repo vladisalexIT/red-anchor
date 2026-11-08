@@ -15,34 +15,24 @@ function initHomeHero() {
   const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   const FRAME_COUNT = 385;
-
   const FIRST_SCROLL_FRAME = 20;
-  const FIRST_PHASE_LAST_FRAME = 20;
 
-  // Значения из официального main-page.js.
-  // Отдельные дистанции фаз.
-  //
-  // Левая тень полностью нарастает за 1100 px —
-  // это соответствует официальной странице.
+  // Независимые расстояния прокрутки для фоновых эффектов.
+  const ANCHOR_DISTANCE = 600;
   const LEFT_SHADOW_DISTANCE = 1100;
-
-  // Чёрное покрытие справа проходит от центра до правого края
-  // за 2050 px — это официальная длительность этой фазы.
   const RIGHT_COVER_DISTANCE = 2050;
 
-  // Официальная страница перемещает контейнер якоря
-  // на участке прокрутки длительностью 600 px.
-  const ANCHOR_DISTANCE = 1400;
+  // Покадровая часть начинается после смещения контейнера вправо,
+  // а не после завершения всех фоновых эффектов.
+  const FRAMES_START_DISTANCE = ANCHOR_DISTANCE;
 
-  // После завершения визуального затемнения оставляем небольшой
-  // участок прокрутки с неподвижным кадром 20.
-  const MAIN_START_GAP = 450;
-
-  const FRAME_OFFSET_MULTIPLIER = 1.1;
-
-  const PRELOAD_RADIUS = 12;
-  const KEEP_RADIUS = 20;
-  const MAX_PARALLEL_LOADS = 4;
+  // Предзагрузка преимущественно в сторону движения.
+  // Это не означает последовательное воспроизведение всех кадров:
+  // положение анимации по-прежнему определяется скроллом.
+  const PRELOAD_AHEAD = 32;
+  const PRELOAD_BEHIND = 8;
+  const KEEP_RADIUS = 48;
+  const MAX_PARALLEL_LOADS = 6;
   const ACTIVE_CLASS = 'home-hero__chain--active';
 
   const records = new Map();
@@ -70,29 +60,30 @@ function initHomeHero() {
   let sceneTop = 0;
   let frameScrollStep = 1;
   let firstPhaseDistance = 1;
+  let firstPhaseScale = 1;
   let animationDistance = 1;
   let renderedScroll = 0;
   let requestedFrame = FIRST_SCROLL_FRAME;
   let displayedFrame = 0;
+  let frameDirection = 1;
   let loadWarningShown = false;
 
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
-
-  const smoothStep = (value) => value * value * (3 - 2 * value);
 
   const getFrameUrl = (frameNumber) => `/images/home/hero/chain/${frameNumber}.webp`;
 
   const getTargetScroll = () => clamp(window.scrollY - sceneTop, 0, animationDistance);
 
   function getFrameForScroll(scrollDistance) {
+    // Во время горизонтального смещения сохраняем стартовый кадр.
     if (scrollDistance <= firstPhaseDistance) {
       return FIRST_SCROLL_FRAME;
     }
 
     const mainPhaseDistance = scrollDistance - firstPhaseDistance;
-    const mainPhaseFrame = Math.floor(mainPhaseDistance / frameScrollStep);
+    const frameOffset = Math.round(mainPhaseDistance / frameScrollStep);
 
-    return clamp(FIRST_PHASE_LAST_FRAME + mainPhaseFrame, FIRST_SCROLL_FRAME, FRAME_COUNT);
+    return clamp(FIRST_SCROLL_FRAME + frameOffset, FIRST_SCROLL_FRAME, FRAME_COUNT);
   }
 
   function requestTick() {
@@ -141,24 +132,48 @@ function initHomeHero() {
       return;
     }
 
-    let nearestFrame = 0;
-    let nearestDistance = Infinity;
+    if (displayedFrame === 0) {
+      const initialRecord = records.get(FIRST_SCROLL_FRAME);
+
+      if (initialRecord?.status === 'ready') {
+        drawFrame(FIRST_SCROLL_FRAME);
+      }
+
+      return;
+    }
+
+    const direction = Math.sign(requestedFrame - displayedFrame);
+
+    if (direction === 0) {
+      return;
+    }
+
+    let bestFrame = null;
 
     records.forEach((record, frameNumber) => {
       if (record.status !== 'ready') {
         return;
       }
 
-      const distance = Math.abs(frameNumber - requestedFrame);
+      const isBetween =
+        direction > 0
+          ? frameNumber > displayedFrame && frameNumber < requestedFrame
+          : frameNumber < displayedFrame && frameNumber > requestedFrame;
 
-      if (distance < nearestDistance) {
-        nearestFrame = frameNumber;
-        nearestDistance = distance;
+      if (!isBetween) {
+        return;
+      }
+
+      if (
+        bestFrame === null ||
+        (direction > 0 ? frameNumber > bestFrame : frameNumber < bestFrame)
+      ) {
+        bestFrame = frameNumber;
       }
     });
 
-    if (nearestFrame) {
-      drawFrame(nearestFrame);
+    if (bestFrame !== null) {
+      drawFrame(bestFrame);
     }
   }
 
@@ -260,11 +275,15 @@ function initHomeHero() {
   }
 
   function prepareFrameWindow() {
-    const firstFrame = Math.max(1, requestedFrame - PRELOAD_RADIUS);
-    const lastFrame = Math.min(FRAME_COUNT, requestedFrame + PRELOAD_RADIUS);
+    const backwardRadius = frameDirection >= 0 ? PRELOAD_BEHIND : PRELOAD_AHEAD;
+
+    const forwardRadius = frameDirection >= 0 ? PRELOAD_AHEAD : PRELOAD_BEHIND;
+
+    const firstFrame = Math.max(FIRST_SCROLL_FRAME, requestedFrame - backwardRadius);
+
+    const lastFrame = Math.min(FRAME_COUNT, requestedFrame + forwardRadius);
 
     ensureRecord(FIRST_SCROLL_FRAME);
-    ensureRecord(FIRST_PHASE_LAST_FRAME);
     ensureRecord(requestedFrame);
 
     for (let frameNumber = firstFrame; frameNumber <= lastFrame; frameNumber += 1) {
@@ -276,43 +295,30 @@ function initHomeHero() {
   }
 
   function updateFirstPhase() {
-    const shadowProgress = clamp(renderedScroll / LEFT_SHADOW_DISTANCE, 0, 1);
+    const anchorProgress = clamp(renderedScroll / (ANCHOR_DISTANCE * firstPhaseScale), 0, 1);
 
-    const coverProgress = clamp(renderedScroll / RIGHT_COVER_DISTANCE, 0, 1);
+    const shadowProgress = clamp(renderedScroll / (LEFT_SHADOW_DISTANCE * firstPhaseScale), 0, 1);
 
-    const anchorProgress = clamp(renderedScroll / ANCHOR_DISTANCE, 0, 1);
+    const coverProgress = clamp(renderedScroll / (RIGHT_COVER_DISTANCE * firstPhaseScale), 0, 1);
 
     const mediaWidth = media.clientWidth;
-    const mediaHeight = media.clientHeight;
 
-    if (mediaWidth <= 0 || mediaHeight <= 0) {
+    if (mediaWidth <= 0) {
       return;
     }
 
-    // В официальной версии смещается полноэкранный контейнер
-    // #preloadImagesContainer, поэтому процент берётся
-    // от ширины медиа-контейнера, а не от его высоты.
-    //
-    // До ширины 1920 px используется 28%.
-    // На более широких экранах официальная версия использует 35%.
+    // Амплитуду сохраняем из текущей реализации.
+    // Сейчас исправляем распределение движения по скроллу,
+    // а не подбираем новое конечное положение.
     const anchorShiftRatio = window.innerWidth > 1920 ? 0.42 : 0.34;
     const maximumShift = mediaWidth * anchorShiftRatio;
 
-    // Официальное движение якоря происходит на участке 600 px.
-    const easedAnchorProgress = smoothStep(anchorProgress);
-    const shift = maximumShift * easedAnchorProgress;
-
-    // Левая половина затемняется независимо от правого покрытия.
-    const shadowOpacity = shadowProgress;
-
-    // Правое покрытие начинается от центра и расширяется вправо
-    // на протяжении 2050 px.
-    const easedCoverProgress = smoothStep(coverProgress);
-    const rightCoverWidth = 60 * easedCoverProgress;
+    const shift = maximumShift * anchorProgress;
+    const rightCoverWidth = 50 * coverProgress;
 
     scene.style.setProperty('--home-chain-shift', `${shift.toFixed(2)}px`);
 
-    scene.style.setProperty('--home-left-shadow-opacity', shadowOpacity.toFixed(4));
+    scene.style.setProperty('--home-left-shadow-opacity', shadowProgress.toFixed(4));
 
     scene.style.setProperty('--home-right-cover-width', `${rightCoverWidth.toFixed(3)}%`);
   }
@@ -324,16 +330,15 @@ function initHomeHero() {
       return;
     }
 
-    const targetScroll = getTargetScroll();
-
-    // Анимация привязана непосредственно к положению скролла.
-    // Это устраняет заметное отставание и накопление задержки
-    // при быстрых движениях вверх и вниз.
-    renderedScroll = targetScroll;
+    renderedScroll = getTargetScroll();
 
     const nextFrame = getFrameForScroll(renderedScroll);
+    const frameDelta = nextFrame - requestedFrame;
+    const frameChanged = frameDelta !== 0;
 
-    const frameChanged = nextFrame !== requestedFrame;
+    if (frameChanged) {
+      frameDirection = Math.sign(frameDelta);
+    }
 
     requestedFrame = nextFrame;
     scene.dataset.chainRequestedFrame = String(requestedFrame);
@@ -349,38 +354,77 @@ function initHomeHero() {
   function measure() {
     scene.style.minHeight = '';
 
-    sceneTop = scene.getBoundingClientRect().top + window.scrollY;
+    const sceneRect = scene.getBoundingClientRect();
+    const stageRect = stage.getBoundingClientRect();
 
-    const stageHeight = stage.getBoundingClientRect().height;
-    const sequenceHeight = sequence.getBoundingClientRect().height;
+    sceneTop = sceneRect.top + window.scrollY;
 
-    const sequenceDistance = Math.max(1, sequenceHeight - stageHeight);
+    const sceneHeight = sceneRect.height;
+    const stageHeight = stageRect.height;
+    const sceneBottom = sceneTop + sceneHeight;
 
-    frameScrollStep = (sequenceDistance / FRAME_COUNT) * FRAME_OFFSET_MULTIPLIER;
+    const catalog = document.querySelector('.home-catalog');
 
-    // Все визуальные действия первой фазы имеют разные длительности.
-    // Кадровая последовательность начинается только после:
-    //
-    // 1. движения якоря;
-    // 2. нарастания левой тени;
-    // 3. расширения чёрного покрытия до правого края;
-    // 4. дополнительного участка с неподвижным кадром 20.
+    const catalogTop = catalog ? catalog.getBoundingClientRect().top + window.scrollY : sceneBottom;
+
+    // Закреплённый фон не должен выходить за пределы сцены.
+    // Если каталог непосредственно следует за сценой,
+    // эти две границы практически совпадают.
+    const boundaryTop = Math.min(sceneBottom, catalogTop);
+
+    // В текущей sticky-архитектуре фон начинает уходить вверх,
+    // когда нижняя граница сцены достигает низа viewport.
+    const animationEndScroll = Math.max(sceneTop, boundaryTop - stageHeight);
+
+    animationDistance = Math.max(1, animationEndScroll - sceneTop);
+
     const visualPhaseDistance = Math.max(
       ANCHOR_DISTANCE,
       LEFT_SHADOW_DISTANCE,
       RIGHT_COVER_DISTANCE,
     );
 
-    firstPhaseDistance = visualPhaseDistance + MAIN_START_GAP;
+    const frameTransitions = FRAME_COUNT - FIRST_SCROLL_FRAME;
 
-    const mainPhaseDistance = Math.max(1, (FRAME_COUNT - FIRST_PHASE_LAST_FRAME) * frameScrollStep);
+    // На достаточно длинной странице используем заданные расстояния.
+    // Для короткой сцены пропорционально сокращаем фоновые переходы,
+    // сохраняя место для покадрового движения.
+    firstPhaseScale = Math.min(1, animationDistance / (visualPhaseDistance + frameTransitions));
 
-    animationDistance = Math.max(1, firstPhaseDistance + mainPhaseDistance);
+    firstPhaseDistance = FRAMES_START_DISTANCE * firstPhaseScale;
+
+    const mainPhaseDistance = Math.max(Number.EPSILON, animationDistance - firstPhaseDistance);
+
+    frameScrollStep = mainPhaseDistance / frameTransitions;
 
     scene.style.setProperty('--home-header-height', `${Math.max(0, sceneTop)}px`);
+
+    scene.dataset.chainTimeline = JSON.stringify({
+      sceneTop,
+      sceneHeight,
+      stageHeight,
+      sceneBottom,
+      catalogTop,
+      animationDistance,
+      animationEndScroll,
+      firstPhaseScale,
+      anchorEnd: ANCHOR_DISTANCE * firstPhaseScale,
+      shadowEnd: LEFT_SHADOW_DISTANCE * firstPhaseScale,
+      coverEnd: RIGHT_COVER_DISTANCE * firstPhaseScale,
+      framesStart: firstPhaseDistance,
+      framesEnd: animationDistance,
+      frameScrollStep,
+      firstFrame: FIRST_SCROLL_FRAME,
+      lastFrame: FRAME_COUNT,
+      endRule: 'boundary-top-at-stage-bottom',
+    });
   }
 
   function refresh() {
+    if (!enabled) {
+      return;
+    }
+
     measure();
     requestTick();
   }

@@ -1,24 +1,32 @@
-<section
-  class="home-questions"
-  aria-labelledby="home-questions-title"
->
-  <div class="container home-questions__container">
-    <div class="home-questions__heading">
-      <h2
-        class="home-questions__title"
-        id="home-questions-title"
-      >
-        Остались вопросы?
-      </h2>
+<section class='home-questions' aria-labelledby='home-questions-title'>
+  <div class='container home-questions__container'>
+    <div class='home-questions__heading'>
+      <h2 id='home-questions-title' class='home-questions__title'>Остались вопросы?</h2>
 
-      <p class="home-questions__description">
-        Оставьте свои контактные данные, и мы свяжемся с вами.
+      <p class='home-questions__description'>
+        Оставьте контактные данные, и специалист завода свяжется с вами.
       </p>
     </div>
 
-    <div
-      class="home-questions__form"
-      data-question-form
-    ></div>
+    <button
+      class='home-section-link home-questions__button'
+      type='button'
+      aria-controls='callback-dialog'
+      data-callback-open
+    >
+      <span class='home-section-link__text'>Связаться с нами</span>
+
+      <svg
+        class='home-section-link__icon'
+        width='28'
+        height='28'
+        viewBox='0 0 28 28'
+        fill='none'
+        aria-hidden='true'
+        focusable='false'
+      >
+        <path d='M6 6L22 22M9 22H22V9' stroke='currentColor' stroke-width='1.5' />
+      </svg>
+    </button>
   </div>
 </section>
