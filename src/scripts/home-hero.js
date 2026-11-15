@@ -17,14 +17,19 @@ function initHomeHero() {
   const FRAME_COUNT = 385;
   const FIRST_SCROLL_FRAME = 20;
 
-  // Независимые расстояния прокрутки для фоновых эффектов.
-  const ANCHOR_DISTANCE = 600;
-  const LEFT_SHADOW_DISTANCE = 1100;
-  const RIGHT_COVER_DISTANCE = 2050;
+  // Горизонтальное движение якоря
+  const ANCHOR_DISTANCE = 720;
 
-  // Покадровая часть начинается после смещения контейнера вправо,
-  // а не после завершения всех фоновых эффектов.
-  const FRAMES_START_DISTANCE = ANCHOR_DISTANCE;
+  // Левое затемнение должно немного опережать окончание
+  // движения якоря, а не отставать от него.
+  const LEFT_SHADOW_DISTANCE = 680;
+
+  // Правое покрытие движется синхронно с якорем.
+  const RIGHT_COVER_DISTANCE = ANCHOR_DISTANCE;
+
+  // Кадровая часть начинается раньше полного окончания
+  // горизонтального движения, чтобы не возвращать прежнюю задержку.
+  const FRAMES_START_DISTANCE = 600;
 
   // Предзагрузка преимущественно в сторону движения.
   // Это не означает последовательное воспроизведение всех кадров:
@@ -297,9 +302,20 @@ function initHomeHero() {
   function updateFirstPhase() {
     const anchorProgress = clamp(renderedScroll / (ANCHOR_DISTANCE * firstPhaseScale), 0, 1);
 
-    const shadowProgress = clamp(renderedScroll / (LEFT_SHADOW_DISTANCE * firstPhaseScale), 0, 1);
+    const shadowLinearProgress = clamp(
+      renderedScroll / (LEFT_SHADOW_DISTANCE * firstPhaseScale),
+      0,
+      1,
+    );
 
-    const coverProgress = clamp(renderedScroll / (RIGHT_COVER_DISTANCE * firstPhaseScale), 0, 1);
+    const shadowProgress =
+      1 - Math.pow(1 - shadowLinearProgress, 1.2);
+
+    const coverProgress = clamp(
+      renderedScroll / (RIGHT_COVER_DISTANCE * firstPhaseScale),
+      0,
+      1,
+    );
 
     const mediaWidth = media.clientWidth;
 
