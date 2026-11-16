@@ -1,35 +1,10 @@
-{% from "templates/components/common/process-steps.njk" import processSteps %}
-
-{% set purchaseSteps =[
-    {
-      title: "Выберите продукцию",
-      text: "Найдите нужные изделия в каталоге и добавьте их в заказ.",
-      href: "/catalog/",
-      linkText: "Перейти в каталог"
-    },
-    {
-      title: "Отправьте заявку",
-      text: "Укажите количество, необходимые характеристики и контактные данные.",
-      href: "/request/#nonstandard-request",
-      linkText: "Оставить заявку"
-    },
-    {
-      title: "Согласуйте условия",
-      text: "Специалист уточнит комплектацию, стоимость, сроки и способ поставки."
-    },
-    {
-      title: "Получите продукцию",
-      text: "Заберите согласованный заказ со склада или оформите доставку."
-    }
-  ]
-%}
-
-<div id='purchase' class='home-purchase'>
-  <div class='container home-purchase__container'>
-    {{ processSteps(
-      "home-purchase",
-      purchaseSteps,
-      "Как приобрести продукцию"
-    ) }}
-  </div>
+<div id="purchase" class="home-purchase">
+  <a class="home-purchase__link" href="/buyers/">
+    <span class="container home-purchase__inner">
+      <span class="home-purchase__text">Как приобрести продукцию</span>
+      <svg class="home-purchase__icon" width="32" height="32" viewBox="0 0 28 28" fill="none" aria-hidden="true" focusable="false">
+        <path d="M6 6L22 22M9 22H22V9" stroke="currentColor" stroke-width="1.5" />
+      </svg>
+    </span>
+  </a>
 </div>

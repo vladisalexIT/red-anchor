@@ -10,6 +10,7 @@ import { initDocumentLists } from './components/document-list';
 import { initOrderPages } from './components/order-page';
 import { initRequestOrderSummaries } from './components/request-order-summary';
 import { initCallbackDialogs } from './components/callback-dialog';
+import { initHomeCatalog } from './components/home-catalog';
 
 function initApp(): void {
   initMobileMenu();
@@ -22,6 +23,7 @@ function initApp(): void {
   initProductDetails();
   initDocumentLists();
   initCallbackDialogs();
+  initHomeCatalog();
 }
 
 if (document.readyState === 'loading') {

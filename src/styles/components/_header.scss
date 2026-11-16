@@ -428,9 +428,9 @@
   }
 
   .site-header__catalog-content {
-    position: fixed;
+    position: absolute;
     z-index: 3;
-    top: 133px;
+    top: 100%;
     right: 183px;
     left: 183px;
     height: 440px;
