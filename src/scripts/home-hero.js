@@ -17,18 +17,18 @@ function initHomeHero() {
   const FRAME_COUNT = 385;
   const FIRST_SCROLL_FRAME = 20;
 
-  // Независимые расстояния прокрутки для фоновых эффектов.
-  const ANCHOR_DISTANCE = 600;
-  const LEFT_SHADOW_DISTANCE = 1100;
-  const RIGHT_COVER_DISTANCE = 2050;
+  const ANCHOR_DISTANCE = 720;
+  const LEFT_SHADOW_DISTANCE = 680;
+  const RIGHT_COVER_DISTANCE = 720;
 
-  // Покадровая часть начинается после смещения контейнера вправо,
-  // а не после завершения всех фоновых эффектов.
-  const FRAMES_START_DISTANCE = ANCHOR_DISTANCE;
+  const FRAME_HOLD_DISTANCE = 120;
+  const FRAMES_START_DISTANCE = ANCHOR_DISTANCE + FRAME_HOLD_DISTANCE;
 
-  // Предзагрузка преимущественно в сторону движения.
-  // Это не означает последовательное воспроизведение всех кадров:
-  // положение анимации по-прежнему определяется скроллом.
+  const VISUAL_ANCHOR_DISTANCE = 900;
+
+  const VISUAL_LEFT_SHADOW_DISTANCE = 1100;
+  const VISUAL_RIGHT_COVER_DISTANCE = 2050;
+
   const PRELOAD_AHEAD = 32;
   const PRELOAD_BEHIND = 8;
   const KEEP_RADIUS = 48;
@@ -59,6 +59,7 @@ function initHomeHero() {
   let loadingCount = 0;
   let sceneTop = 0;
   let frameScrollStep = 1;
+  let maximumShift = 0;
   let firstPhaseDistance = 1;
   let firstPhaseScale = 1;
   let animationDistance = 1;
@@ -75,13 +76,12 @@ function initHomeHero() {
   const getTargetScroll = () => clamp(window.scrollY - sceneTop, 0, animationDistance);
 
   function getFrameForScroll(scrollDistance) {
-    // Во время горизонтального смещения сохраняем стартовый кадр.
     if (scrollDistance <= firstPhaseDistance) {
       return FIRST_SCROLL_FRAME;
     }
 
     const mainPhaseDistance = scrollDistance - firstPhaseDistance;
-    const frameOffset = Math.round(mainPhaseDistance / frameScrollStep);
+    const frameOffset = Math.floor(mainPhaseDistance / frameScrollStep);
 
     return clamp(FIRST_SCROLL_FRAME + frameOffset, FIRST_SCROLL_FRAME, FRAME_COUNT);
   }
@@ -103,8 +103,6 @@ function initHomeHero() {
 
     const image = record.image;
 
-    // Размер холста определяется настоящим изображением.
-    // Геометрию на странице по-прежнему задаёт существующий CSS.
     if (canvas.width !== image.naturalWidth || canvas.height !== image.naturalHeight) {
       canvas.width = image.naturalWidth;
       canvas.height = image.naturalHeight;
@@ -295,32 +293,60 @@ function initHomeHero() {
   }
 
   function updateFirstPhase() {
-    const anchorProgress = clamp(renderedScroll / (ANCHOR_DISTANCE * firstPhaseScale), 0, 1);
+    const visualScroll = renderedScroll;
 
-    const shadowProgress = clamp(renderedScroll / (LEFT_SHADOW_DISTANCE * firstPhaseScale), 0, 1);
+    const anchorProgress = clamp(
+      visualScroll / VISUAL_ANCHOR_DISTANCE,
+      0,
+      1,
+    );
 
-    const coverProgress = clamp(renderedScroll / (RIGHT_COVER_DISTANCE * firstPhaseScale), 0, 1);
+    const shadowProgress = clamp(
+      visualScroll / VISUAL_LEFT_SHADOW_DISTANCE,
+      0,
+      1,
+    );
 
-    const mediaWidth = media.clientWidth;
+    // У официального слоя left: 50%, а ширина растёт до 100%
+    // относительно окна.
+    //
+    // У нас видимый диапазон ширины ограничен 0–50%.
+    // Поэтому сначала рассчитываем аналог официальной ширины,
+    // затем ограничиваем её правой половиной.
+    const coverTimelineProgress = clamp(
+      visualScroll / VISUAL_RIGHT_COVER_DISTANCE,
+      0,
+      1,
+    );
 
-    if (mediaWidth <= 0) {
-      return;
-    }
-
-    // Амплитуду сохраняем из текущей реализации.
-    // Сейчас исправляем распределение движения по скроллу,
-    // а не подбираем новое конечное положение.
-    const anchorShiftRatio = window.innerWidth > 1920 ? 0.42 : 0.34;
-    const maximumShift = mediaWidth * anchorShiftRatio;
+    const coverProgress = clamp(
+      coverTimelineProgress * 2,
+      0,
+      1,
+    );
 
     const shift = maximumShift * anchorProgress;
     const rightCoverWidth = 50 * coverProgress;
 
-    scene.style.setProperty('--home-chain-shift', `${shift.toFixed(2)}px`);
+    scene.style.setProperty(
+      '--home-chain-shift',
+      `${shift.toFixed(2)}px`,
+    );
 
-    scene.style.setProperty('--home-left-shadow-opacity', shadowProgress.toFixed(4));
+    scene.style.setProperty(
+      '--home-left-shadow-opacity',
+      shadowProgress.toFixed(4),
+    );
 
-    scene.style.setProperty('--home-right-cover-width', `${rightCoverWidth.toFixed(3)}%`);
+    scene.style.setProperty(
+      '--home-right-cover-width',
+      `${rightCoverWidth.toFixed(3)}%`,
+    );
+
+    scene.style.setProperty(
+      '--home-right-cover-progress',
+      coverProgress.toFixed(6),
+    );
   }
 
   function tick() {
@@ -332,7 +358,15 @@ function initHomeHero() {
 
     renderedScroll = getTargetScroll();
 
-    const nextFrame = getFrameForScroll(renderedScroll);
+    const debugFrame = Number(scene.getAttribute('data-home-debug-frame'));
+
+    const hasDebugFrame =
+      scene.hasAttribute('data-home-debug-frame') &&
+      Number.isInteger(debugFrame) &&
+      debugFrame >= FIRST_SCROLL_FRAME &&
+      debugFrame <= FRAME_COUNT;
+
+    const nextFrame = hasDebugFrame ? debugFrame : getFrameForScroll(renderedScroll);
     const frameDelta = nextFrame - requestedFrame;
     const frameChanged = frameDelta !== 0;
 
@@ -349,6 +383,12 @@ function initHomeHero() {
 
     updateFirstPhase();
     drawBestAvailableFrame();
+
+    scene.dataset.chainFrameLag = String(requestedFrame - displayedFrame);
+
+    scene.dataset.chainCacheSize = String(records.size);
+
+    scene.dataset.chainLoading = String(loadingCount);
   }
 
   function measure() {
@@ -359,6 +399,10 @@ function initHomeHero() {
 
     sceneTop = sceneRect.top + window.scrollY;
 
+    const anchorShiftRatio = window.innerWidth > 1920 ? 0.35 : 0.34;
+
+    maximumShift = media.clientWidth * anchorShiftRatio;
+
     const sceneHeight = sceneRect.height;
     const stageHeight = stageRect.height;
     const sceneBottom = sceneTop + sceneHeight;
@@ -367,13 +411,8 @@ function initHomeHero() {
 
     const catalogTop = catalog ? catalog.getBoundingClientRect().top + window.scrollY : sceneBottom;
 
-    // Закреплённый фон не должен выходить за пределы сцены.
-    // Если каталог непосредственно следует за сценой,
-    // эти две границы практически совпадают.
     const boundaryTop = Math.min(sceneBottom, catalogTop);
 
-    // В текущей sticky-архитектуре фон начинает уходить вверх,
-    // когда нижняя граница сцены достигает низа viewport.
     const animationEndScroll = Math.max(sceneTop, boundaryTop - stageHeight);
 
     animationDistance = Math.max(1, animationEndScroll - sceneTop);
@@ -386,10 +425,9 @@ function initHomeHero() {
 
     const frameTransitions = FRAME_COUNT - FIRST_SCROLL_FRAME;
 
-    // На достаточно длинной странице используем заданные расстояния.
-    // Для короткой сцены пропорционально сокращаем фоновые переходы,
-    // сохраняя место для покадрового движения.
-    firstPhaseScale = Math.min(1, animationDistance / (visualPhaseDistance + frameTransitions));
+    const firstPhaseBudget = Math.max(visualPhaseDistance, FRAMES_START_DISTANCE);
+
+    firstPhaseScale = Math.min(1, animationDistance / (firstPhaseBudget + frameTransitions));
 
     firstPhaseDistance = FRAMES_START_DISTANCE * firstPhaseScale;
 
@@ -450,9 +488,9 @@ function initHomeHero() {
       scene.style.setProperty('--home-left-shadow-opacity', '0');
       scene.style.setProperty('--home-shadow-edge', '0px');
       scene.style.setProperty('--home-right-cover-width', '0%');
+      scene.style.setProperty('--home-right-cover-progress', '0');
       scene.style.setProperty('--home-chain-shift', '0px');
 
-      // Незавершённые загрузки завершатся своими обработчиками.
       records.forEach((record, frameNumber) => {
         if (record.status !== 'loading') {
           records.delete(frameNumber);

@@ -1,4 +1,5 @@
 .home-scene {
+  --home-right-cover-progress: 0;
   --home-header-height: 136px;
   --home-left-shadow-opacity: 0;
   --home-shadow-edge: 0px;
@@ -108,7 +109,10 @@
 .home-hero__scene-cover {
   left: 50%;
   display: block;
-  width: var(--home-right-cover-width);
+  width: 50%;
+  transform: scaleX(var(--home-right-cover-progress));
+  transform-origin: left center;
+  transition: none;
 }
 
 .home-hero__mobile-shadow {
@@ -144,20 +148,22 @@
 }
 
 .home-hero__container {
+  --home-hero-padding: clamp(32px, 3.125vw, 80px);
+
   position: absolute;
   z-index: 4;
   inset: 0;
   width: 100%;
   max-width: none;
   margin: 0;
-  padding-inline: clamp(32px, 3.125vw, 80px);
+  padding-inline: var(--home-hero-padding);
 }
 
 .home-hero__title {
   position: absolute;
   top: 50%;
-  left: var(--container-padding);
-  width: calc(50% - var(--container-padding));
+  left: var(--home-hero-padding);
+  width: calc(50% - var(--home-hero-padding));
   margin: 0;
   color: var(--color-white);
   font-family: var(--font-family-heading);
@@ -170,14 +176,14 @@
   transform: translateY(-50%);
 }
 
-.home-hero__title span {
-  color: #d52b1e;
-}
+// .home-hero__title span {
+//   color: #d52b1e;
+// }
 
 .home-hero__content {
   position: absolute;
   top: 0;
-  right: var(--container-padding);
+  right: var(--home-hero-padding);
   bottom: 0;
   display: flex;
   width: 278px;
