@@ -1,4 +1,5 @@
 .home-scene {
+  --home-right-cover-progress: 0;
   --home-header-height: 136px;
   --home-left-shadow-opacity: 0;
   --home-shadow-edge: 0px;
@@ -108,7 +109,10 @@
 .home-hero__scene-cover {
   left: 50%;
   display: block;
-  width: var(--home-right-cover-width);
+  width: 50%;
+  transform: scaleX(var(--home-right-cover-progress));
+  transform-origin: left center;
+  transition: none;
 }
 
 .home-hero__mobile-shadow {
