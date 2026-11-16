@@ -24,6 +24,11 @@ function initHomeHero() {
   const FRAME_HOLD_DISTANCE = 120;
   const FRAMES_START_DISTANCE = ANCHOR_DISTANCE + FRAME_HOLD_DISTANCE;
 
+  const VISUAL_ANCHOR_DISTANCE = 900;
+
+  const VISUAL_LEFT_SHADOW_DISTANCE = 1100;
+  const VISUAL_RIGHT_COVER_DISTANCE = 2050;
+
   const PRELOAD_AHEAD = 32;
   const PRELOAD_BEHIND = 8;
   const KEEP_RADIUS = 48;
@@ -288,24 +293,34 @@ function initHomeHero() {
   }
 
   function updateFirstPhase() {
-    const anchorProgress = clamp(renderedScroll / (ANCHOR_DISTANCE * firstPhaseScale), 0, 1);
+    const visualScroll = renderedScroll;
 
-    const shadowLinearProgress = clamp(
-      renderedScroll / (LEFT_SHADOW_DISTANCE * firstPhaseScale),
+    const anchorProgress = clamp(
+      visualScroll / VISUAL_ANCHOR_DISTANCE,
       0,
       1,
     );
 
-    const shadowProgress = 1 - Math.pow(1 - shadowLinearProgress, 1.2);
+    const shadowProgress = clamp(
+      visualScroll / VISUAL_LEFT_SHADOW_DISTANCE,
+      0,
+      1,
+    );
 
-    const coverBaseProgress = clamp(
-      renderedScroll / (RIGHT_COVER_DISTANCE * firstPhaseScale),
+    // У официального слоя left: 50%, а ширина растёт до 100%
+    // относительно окна.
+    //
+    // У нас видимый диапазон ширины ограничен 0–50%.
+    // Поэтому сначала рассчитываем аналог официальной ширины,
+    // затем ограничиваем её правой половиной.
+    const coverTimelineProgress = clamp(
+      visualScroll / VISUAL_RIGHT_COVER_DISTANCE,
       0,
       1,
     );
 
     const coverProgress = clamp(
-      coverBaseProgress + anchorProgress * 0.06,
+      coverTimelineProgress * 2,
       0,
       1,
     );
@@ -313,13 +328,25 @@ function initHomeHero() {
     const shift = maximumShift * anchorProgress;
     const rightCoverWidth = 50 * coverProgress;
 
-    scene.style.setProperty('--home-chain-shift', `${shift.toFixed(2)}px`);
+    scene.style.setProperty(
+      '--home-chain-shift',
+      `${shift.toFixed(2)}px`,
+    );
 
-    scene.style.setProperty('--home-left-shadow-opacity', shadowProgress.toFixed(4));
+    scene.style.setProperty(
+      '--home-left-shadow-opacity',
+      shadowProgress.toFixed(4),
+    );
 
-    scene.style.setProperty('--home-right-cover-width', `${rightCoverWidth.toFixed(3)}%`);
+    scene.style.setProperty(
+      '--home-right-cover-width',
+      `${rightCoverWidth.toFixed(3)}%`,
+    );
 
-    scene.style.setProperty('--home-right-cover-progress', coverProgress.toFixed(6));
+    scene.style.setProperty(
+      '--home-right-cover-progress',
+      coverProgress.toFixed(6),
+    );
   }
 
   function tick() {
