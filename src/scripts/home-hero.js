@@ -298,7 +298,17 @@ function initHomeHero() {
 
     const shadowProgress = 1 - Math.pow(1 - shadowLinearProgress, 1.2);
 
-    const coverProgress = clamp(renderedScroll / (RIGHT_COVER_DISTANCE * firstPhaseScale), 0, 1);
+    const coverBaseProgress = clamp(
+      renderedScroll / (RIGHT_COVER_DISTANCE * firstPhaseScale),
+      0,
+      1,
+    );
+
+    const coverProgress = clamp(
+      coverBaseProgress + anchorProgress * 0.06,
+      0,
+      1,
+    );
 
     const shift = maximumShift * anchorProgress;
     const rightCoverWidth = 50 * coverProgress;
@@ -362,7 +372,7 @@ function initHomeHero() {
 
     sceneTop = sceneRect.top + window.scrollY;
 
-    const anchorShiftRatio = window.innerWidth > 1920 ? 0.42 : 0.34;
+    const anchorShiftRatio = window.innerWidth > 1920 ? 0.35 : 0.34;
 
     maximumShift = media.clientWidth * anchorShiftRatio;
 
