@@ -1,5 +1,6 @@
 import '../styles/main.scss';
 
+import { initPageLayout } from './components/page-layout';
 import { initFileUploads } from './components/file-upload';
 import { initFilters } from './components/filter';
 import { initMobileMenu } from './components/mobile-menu';
@@ -13,6 +14,7 @@ import { initCallbackDialogs } from './components/callback-dialog';
 import { initHomeCatalog } from './components/home-catalog';
 
 function initApp(): void {
+  initPageLayout();
   initMobileMenu();
   initFileUploads();
   initFilters();
