@@ -17,11 +17,7 @@ function initHomeHero() {
   const FRAME_COUNT = 385;
   const FIRST_SCROLL_FRAME = 20;
 
-  const VISUAL_ANCHOR_DISTANCE = 900;
-  const VISUAL_LEFT_SHADOW_DISTANCE = 1100;
-  const VISUAL_RIGHT_COVER_DISTANCE = 2050;
-
-  const VISIBLE_RIGHT_COVER_DISTANCE = VISUAL_RIGHT_COVER_DISTANCE / 2;
+  const OPENING_SCROLL_DISTANCE = 1650;
 
   const FRAME_HOLD_DISTANCE = 160;
 
@@ -29,6 +25,8 @@ function initHomeHero() {
   const PRELOAD_BEHIND = 8;
   const KEEP_RADIUS = 48;
   const MAX_PARALLEL_LOADS = 6;
+  const MAX_FRAME_ATTEMPTS = 2;
+  const FRAME_RETRY_DELAY = 600;
   const ACTIVE_CLASS = 'home-hero__chain--active';
 
   const records = new Map();
@@ -66,6 +64,8 @@ function initHomeHero() {
   let loadWarningShown = false;
 
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+  const smoothStep = (value) => value * value * (3 - 2 * value);
 
   const getFrameUrl = (frameNumber) => `/images/home/hero/chain/${frameNumber}.webp`;
 
@@ -202,6 +202,7 @@ function initHomeHero() {
     records.set(frameNumber, {
       image,
       status: 'queued',
+      attempts: 0,
     });
   }
 
@@ -213,9 +214,17 @@ function initHomeHero() {
     }
 
     record.status = 'loading';
+    record.attempts += 1;
     loadingCount += 1;
 
+    let finished = false;
+
     const finish = (success) => {
+      if (finished) {
+        return;
+      }
+
+      finished = true;
       record.image.onload = null;
       record.image.onerror = null;
       record.status = success ? 'ready' : 'failed';
@@ -228,6 +237,17 @@ function initHomeHero() {
         console.warn(
           'Не удалось подготовить один из кадров цепи. Проверьте запросы /images/home/hero/chain/.',
         );
+      }
+
+      if (!success && record.attempts < MAX_FRAME_ATTEMPTS) {
+        window.setTimeout(() => {
+          if (!enabled || records.get(frameNumber) !== record || record.status !== 'failed') {
+            return;
+          }
+
+          record.status = 'queued';
+          pumpQueue();
+        }, FRAME_RETRY_DELAY);
       }
 
       trimCache();
@@ -243,7 +263,7 @@ function initHomeHero() {
 
         finish(record.image.naturalWidth > 0);
       } catch {
-        finish(false);
+        finish(record.image.complete && record.image.naturalWidth > 0);
       }
     };
 
@@ -281,6 +301,17 @@ function initHomeHero() {
 
     const lastFrame = Math.min(FRAME_COUNT, requestedFrame + forwardRadius);
 
+    records.forEach((record, frameNumber) => {
+      if (
+        record.status === 'queued' &&
+        frameNumber !== FIRST_SCROLL_FRAME &&
+        frameNumber !== requestedFrame &&
+        (frameNumber < firstFrame || frameNumber > lastFrame)
+      ) {
+        records.delete(frameNumber);
+      }
+    });
+
     ensureRecord(FIRST_SCROLL_FRAME);
     ensureRecord(requestedFrame);
 
@@ -293,26 +324,25 @@ function initHomeHero() {
   }
 
   function updateFirstPhase() {
-    const visualScroll = renderedScroll / firstPhaseScale;
+    const linearProgress = clamp(
+      renderedScroll / (OPENING_SCROLL_DISTANCE * firstPhaseScale),
+      0,
+      1,
+    );
+    const progress = smoothStep(linearProgress);
+    const width = Math.max(1, media.clientWidth);
+    const shift = maximumShift * progress;
 
-    const anchorProgress = clamp(visualScroll / VISUAL_ANCHOR_DISTANCE, 0, 1);
-
-    const shadowProgress = clamp(visualScroll / VISUAL_LEFT_SHADOW_DISTANCE, 0, 1);
-
-    const coverTimelineProgress = clamp(visualScroll / VISUAL_RIGHT_COVER_DISTANCE, 0, 1);
-
-    const coverProgress = clamp(coverTimelineProgress * 2, 0, 1);
-
-    const shift = maximumShift * anchorProgress;
-    const rightCoverWidth = 50 * coverProgress;
+    const remainingWidth = Math.max(0, width / 2 - maximumShift);
+    const coverWidth = shift + remainingWidth * progress ** 3;
+    const coverProgress = clamp(coverWidth / (width / 2), 0, 1);
 
     scene.style.setProperty('--home-chain-shift', `${shift.toFixed(2)}px`);
-
-    scene.style.setProperty('--home-left-shadow-opacity', shadowProgress.toFixed(4));
-
-    scene.style.setProperty('--home-right-cover-width', `${rightCoverWidth.toFixed(3)}%`);
-
+    scene.style.setProperty('--home-left-shadow-opacity', progress.toFixed(4));
+    scene.style.setProperty('--home-right-cover-width', `${(50 * coverProgress).toFixed(3)}%`);
     scene.style.setProperty('--home-right-cover-progress', coverProgress.toFixed(6));
+    scene.dataset.chainOpeningProgress = linearProgress.toFixed(6);
+    scene.dataset.chainCoverLead = (coverWidth - shift).toFixed(2);
   }
 
   function tick() {
@@ -392,11 +422,7 @@ function initHomeHero() {
 
     animationDistance = Math.max(1, animationEndScroll - sceneTop);
 
-    const visualPhaseDistance = Math.max(
-      VISUAL_ANCHOR_DISTANCE,
-      VISUAL_LEFT_SHADOW_DISTANCE,
-      VISIBLE_RIGHT_COVER_DISTANCE,
-    );
+    const visualPhaseDistance = OPENING_SCROLL_DISTANCE;
 
     const frameTransitions = FRAME_COUNT - FIRST_SCROLL_FRAME;
 
@@ -419,9 +445,9 @@ function initHomeHero() {
       animationDistance,
       animationEndScroll,
       firstPhaseScale,
-      anchorEnd: VISUAL_ANCHOR_DISTANCE * firstPhaseScale,
-      shadowEnd: VISUAL_LEFT_SHADOW_DISTANCE * firstPhaseScale,
-      coverEnd: VISIBLE_RIGHT_COVER_DISTANCE * firstPhaseScale,
+      anchorEnd: OPENING_SCROLL_DISTANCE * firstPhaseScale,
+      shadowEnd: OPENING_SCROLL_DISTANCE * firstPhaseScale,
+      coverEnd: OPENING_SCROLL_DISTANCE * firstPhaseScale,
       openingEffectsEnd: visualPhaseDistance * firstPhaseScale,
       holdDistance: FRAME_HOLD_DISTANCE * firstPhaseScale,
       framesStart: firstPhaseDistance,
@@ -429,6 +455,9 @@ function initHomeHero() {
       frameScrollStep,
       firstFrame: FIRST_SCROLL_FRAME,
       lastFrame: FRAME_COUNT,
+      maximumShift,
+      openingScrollDistance: OPENING_SCROLL_DISTANCE,
+      coverRule: 'chain-center-plus-continuous-cubic-lead',
       endRule: 'boundary-top-at-stage-bottom',
     });
   }
@@ -447,6 +476,7 @@ function initHomeHero() {
     syncHeaderHeight();
 
     enabled = desktopQuery.matches && !reducedMotionQuery.matches;
+    scene.dataset.chainMode = enabled ? 'animated' : 'static';
 
     if (animationId) {
       window.cancelAnimationFrame(animationId);
@@ -468,6 +498,8 @@ function initHomeHero() {
       scene.style.setProperty('--home-right-cover-width', '0%');
       scene.style.setProperty('--home-right-cover-progress', '0');
       scene.style.setProperty('--home-chain-shift', '0px');
+      scene.dataset.chainOpeningProgress = '0';
+      scene.dataset.chainCoverLead = '0';
 
       records.forEach((record, frameNumber) => {
         if (record.status !== 'loading') {

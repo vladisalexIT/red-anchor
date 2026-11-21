@@ -141,7 +141,7 @@
 }
 
 .home-hero__container {
-  --home-hero-padding: clamp(32px, 3.125vw, 80px);
+  --home-hero-padding: clamp(32px, 5vw, 128px);
 
   position: absolute;
   z-index: 4;
@@ -168,10 +168,6 @@
   text-wrap: initial;
   transform: translateY(-50%);
 }
-
-// .home-hero__title span {
-//   color: #d52b1e;
-// }
 
 .home-hero__content {
   position: absolute;
@@ -295,6 +291,70 @@
     padding-block: 20px;
     font-size: 60px;
     line-height: 1;
+  }
+}
+
+// Desktop reference composition: the caption and its link form one upper-right block.
+@media (min-width: 1024px) {
+  .home-hero__title {
+    line-height: 0.94;
+  }
+
+  .home-hero__content {
+    top: clamp(60px, 13svh, 150px);
+    bottom: auto;
+    justify-content: flex-start;
+    padding-block: 0;
+  }
+
+  .home-hero__link {
+    width: max-content;
+    min-width: 190px;
+    min-height: 0;
+    height: 88px;
+    margin-top: 24px;
+    padding-block: 12px;
+    font-size: clamp(36px, 2.75vw, 56px);
+    line-height: 1;
+  }
+
+  .home-hero__link:focus-visible {
+    outline: 2px solid currentcolor;
+    outline-offset: 6px;
+  }
+}
+
+// Theme only the home header. Do not change catalog/order pages or mobile menu panels.
+@media (min-width: 1024px) {
+  .site:has(.home-page) > .site-header {
+    color: #fff;
+    background-color: #171213;
+    border-color: rgb(255 255 255 / 12%);
+  }
+
+  .site:has(.home-page) .site-header__top {
+    background-color: transparent;
+    border-color: rgb(255 255 255 / 12%);
+  }
+
+  .site:has(.home-page) .site-header__top a,
+  .site:has(.home-page) .site-header__top button,
+  .site:has(.home-page) .site-header__top summary,
+  .site:has(.home-page) .site-header__actions > a,
+  .site:has(.home-page) .site-header__actions > details > summary {
+    color: inherit;
+  }
+
+  .site:has(.home-page) .site-header__search {
+    border-color: rgb(255 255 255 / 24%);
+  }
+
+  .site:has(.home-page) .site-header__search input {
+    color: #fff;
+  }
+
+  .site:has(.home-page) .site-header__search input::placeholder {
+    color: rgb(255 255 255 / 65%);
   }
 }
 
@@ -510,5 +570,18 @@
   .home-hero__link::before,
   .home-hero__link-icon {
     transition: none;
+  }
+}
+
+@media (min-width: 1024px) and (prefers-reduced-motion: reduce) {
+  .home-scene__stage {
+    position: absolute;
+    inset: 0 0 auto;
+    margin-bottom: 0;
+  }
+
+  .home-scene__sequence {
+    position: relative;
+    background-color: #110102;
   }
 }
