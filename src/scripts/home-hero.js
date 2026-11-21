@@ -17,13 +17,13 @@ function initHomeHero() {
   const FRAME_COUNT = 385;
   const FIRST_SCROLL_FRAME = 20;
 
-  const FRAMES_START_DISTANCE = 840;
-
   const VISUAL_ANCHOR_DISTANCE = 900;
   const VISUAL_LEFT_SHADOW_DISTANCE = 1100;
   const VISUAL_RIGHT_COVER_DISTANCE = 2050;
 
   const VISIBLE_RIGHT_COVER_DISTANCE = VISUAL_RIGHT_COVER_DISTANCE / 2;
+
+  const FRAME_HOLD_DISTANCE = 160;
 
   const PRELOAD_AHEAD = 32;
   const PRELOAD_BEHIND = 8;
@@ -400,11 +400,11 @@ function initHomeHero() {
 
     const frameTransitions = FRAME_COUNT - FIRST_SCROLL_FRAME;
 
-    const firstPhaseBudget = Math.max(visualPhaseDistance, FRAMES_START_DISTANCE);
+    const firstPhaseBudget = visualPhaseDistance + FRAME_HOLD_DISTANCE;
 
     firstPhaseScale = Math.min(1, animationDistance / (firstPhaseBudget + frameTransitions));
 
-    firstPhaseDistance = FRAMES_START_DISTANCE * firstPhaseScale;
+    firstPhaseDistance = firstPhaseBudget * firstPhaseScale;
 
     const mainPhaseDistance = Math.max(Number.EPSILON, animationDistance - firstPhaseDistance);
 
@@ -422,6 +422,8 @@ function initHomeHero() {
       anchorEnd: VISUAL_ANCHOR_DISTANCE * firstPhaseScale,
       shadowEnd: VISUAL_LEFT_SHADOW_DISTANCE * firstPhaseScale,
       coverEnd: VISIBLE_RIGHT_COVER_DISTANCE * firstPhaseScale,
+      openingEffectsEnd: visualPhaseDistance * firstPhaseScale,
+      holdDistance: FRAME_HOLD_DISTANCE * firstPhaseScale,
       framesStart: firstPhaseDistance,
       framesEnd: animationDistance,
       frameScrollStep,
