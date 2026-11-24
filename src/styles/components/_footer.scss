@@ -171,3 +171,26 @@
     gap: 16px 32px;
   }
 }
+
+.site--home-footer-reveal {
+  isolation: isolate;
+}
+
+.site--home-footer-reveal > .site__main {
+  position: relative;
+  z-index: 1;
+  background-color: #110102;
+}
+
+.site--home-footer-reveal > .site-footer {
+  position: sticky;
+  z-index: 0;
+  bottom: 0;
+  flex-shrink: 0;
+}
+
+@media (max-width: 1023px), (prefers-reduced-motion: reduce) {
+  .site--home-footer-reveal > .site-footer {
+    position: static;
+  }
+}

@@ -17,17 +17,13 @@ function initHomeHero() {
   const FRAME_COUNT = 385;
   const FIRST_SCROLL_FRAME = 20;
 
-  const ANCHOR_DISTANCE = 720;
-  const LEFT_SHADOW_DISTANCE = 680;
-  const RIGHT_COVER_DISTANCE = 720;
-
-  const FRAME_HOLD_DISTANCE = 120;
-  const FRAMES_START_DISTANCE = ANCHOR_DISTANCE + FRAME_HOLD_DISTANCE;
-
   const VISUAL_ANCHOR_DISTANCE = 900;
-
   const VISUAL_LEFT_SHADOW_DISTANCE = 1100;
   const VISUAL_RIGHT_COVER_DISTANCE = 2050;
+
+  const VISIBLE_RIGHT_COVER_DISTANCE = VISUAL_RIGHT_COVER_DISTANCE / 2;
+
+  const FRAME_HOLD_DISTANCE = 160;
 
   const PRELOAD_AHEAD = 32;
   const PRELOAD_BEHIND = 8;
@@ -76,6 +72,10 @@ function initHomeHero() {
   const getTargetScroll = () => clamp(window.scrollY - sceneTop, 0, animationDistance);
 
   function getFrameForScroll(scrollDistance) {
+    if (scrollDistance >= animationDistance) {
+      return FRAME_COUNT;
+    }
+
     if (scrollDistance <= firstPhaseDistance) {
       return FIRST_SCROLL_FRAME;
     }
@@ -293,60 +293,26 @@ function initHomeHero() {
   }
 
   function updateFirstPhase() {
-    const visualScroll = renderedScroll;
+    const visualScroll = renderedScroll / firstPhaseScale;
 
-    const anchorProgress = clamp(
-      visualScroll / VISUAL_ANCHOR_DISTANCE,
-      0,
-      1,
-    );
+    const anchorProgress = clamp(visualScroll / VISUAL_ANCHOR_DISTANCE, 0, 1);
 
-    const shadowProgress = clamp(
-      visualScroll / VISUAL_LEFT_SHADOW_DISTANCE,
-      0,
-      1,
-    );
+    const shadowProgress = clamp(visualScroll / VISUAL_LEFT_SHADOW_DISTANCE, 0, 1);
 
-    // У официального слоя left: 50%, а ширина растёт до 100%
-    // относительно окна.
-    //
-    // У нас видимый диапазон ширины ограничен 0–50%.
-    // Поэтому сначала рассчитываем аналог официальной ширины,
-    // затем ограничиваем её правой половиной.
-    const coverTimelineProgress = clamp(
-      visualScroll / VISUAL_RIGHT_COVER_DISTANCE,
-      0,
-      1,
-    );
+    const coverTimelineProgress = clamp(visualScroll / VISUAL_RIGHT_COVER_DISTANCE, 0, 1);
 
-    const coverProgress = clamp(
-      coverTimelineProgress * 2,
-      0,
-      1,
-    );
+    const coverProgress = clamp(coverTimelineProgress * 2, 0, 1);
 
     const shift = maximumShift * anchorProgress;
     const rightCoverWidth = 50 * coverProgress;
 
-    scene.style.setProperty(
-      '--home-chain-shift',
-      `${shift.toFixed(2)}px`,
-    );
+    scene.style.setProperty('--home-chain-shift', `${shift.toFixed(2)}px`);
 
-    scene.style.setProperty(
-      '--home-left-shadow-opacity',
-      shadowProgress.toFixed(4),
-    );
+    scene.style.setProperty('--home-left-shadow-opacity', shadowProgress.toFixed(4));
 
-    scene.style.setProperty(
-      '--home-right-cover-width',
-      `${rightCoverWidth.toFixed(3)}%`,
-    );
+    scene.style.setProperty('--home-right-cover-width', `${rightCoverWidth.toFixed(3)}%`);
 
-    scene.style.setProperty(
-      '--home-right-cover-progress',
-      coverProgress.toFixed(6),
-    );
+    scene.style.setProperty('--home-right-cover-progress', coverProgress.toFixed(6));
   }
 
   function tick() {
@@ -391,8 +357,17 @@ function initHomeHero() {
     scene.dataset.chainLoading = String(loadingCount);
   }
 
+  function syncHeaderHeight() {
+    const header = document.querySelector('[data-header]');
+    const headerHeight = header?.getBoundingClientRect().height ?? 0;
+
+    scene.style.setProperty('--home-header-height', `${headerHeight.toFixed(2)}px`);
+  }
+
   function measure() {
     scene.style.minHeight = '';
+
+    syncHeaderHeight();
 
     const sceneRect = scene.getBoundingClientRect();
     const stageRect = stage.getBoundingClientRect();
@@ -418,24 +393,22 @@ function initHomeHero() {
     animationDistance = Math.max(1, animationEndScroll - sceneTop);
 
     const visualPhaseDistance = Math.max(
-      ANCHOR_DISTANCE,
-      LEFT_SHADOW_DISTANCE,
-      RIGHT_COVER_DISTANCE,
+      VISUAL_ANCHOR_DISTANCE,
+      VISUAL_LEFT_SHADOW_DISTANCE,
+      VISIBLE_RIGHT_COVER_DISTANCE,
     );
 
     const frameTransitions = FRAME_COUNT - FIRST_SCROLL_FRAME;
 
-    const firstPhaseBudget = Math.max(visualPhaseDistance, FRAMES_START_DISTANCE);
+    const firstPhaseBudget = visualPhaseDistance + FRAME_HOLD_DISTANCE;
 
     firstPhaseScale = Math.min(1, animationDistance / (firstPhaseBudget + frameTransitions));
 
-    firstPhaseDistance = FRAMES_START_DISTANCE * firstPhaseScale;
+    firstPhaseDistance = firstPhaseBudget * firstPhaseScale;
 
     const mainPhaseDistance = Math.max(Number.EPSILON, animationDistance - firstPhaseDistance);
 
     frameScrollStep = mainPhaseDistance / frameTransitions;
-
-    scene.style.setProperty('--home-header-height', `${Math.max(0, sceneTop)}px`);
 
     scene.dataset.chainTimeline = JSON.stringify({
       sceneTop,
@@ -446,9 +419,11 @@ function initHomeHero() {
       animationDistance,
       animationEndScroll,
       firstPhaseScale,
-      anchorEnd: ANCHOR_DISTANCE * firstPhaseScale,
-      shadowEnd: LEFT_SHADOW_DISTANCE * firstPhaseScale,
-      coverEnd: RIGHT_COVER_DISTANCE * firstPhaseScale,
+      anchorEnd: VISUAL_ANCHOR_DISTANCE * firstPhaseScale,
+      shadowEnd: VISUAL_LEFT_SHADOW_DISTANCE * firstPhaseScale,
+      coverEnd: VISIBLE_RIGHT_COVER_DISTANCE * firstPhaseScale,
+      openingEffectsEnd: visualPhaseDistance * firstPhaseScale,
+      holdDistance: FRAME_HOLD_DISTANCE * firstPhaseScale,
       framesStart: firstPhaseDistance,
       framesEnd: animationDistance,
       frameScrollStep,
@@ -460,6 +435,7 @@ function initHomeHero() {
 
   function refresh() {
     if (!enabled) {
+      syncHeaderHeight();
       return;
     }
 
@@ -468,6 +444,8 @@ function initHomeHero() {
   }
 
   function updateMode() {
+    syncHeaderHeight();
+
     enabled = desktopQuery.matches && !reducedMotionQuery.matches;
 
     if (animationId) {
@@ -528,6 +506,13 @@ function initHomeHero() {
 
     resizeObserver.observe(content);
     resizeObserver.observe(hero);
+    resizeObserver.observe(stage);
+
+    const header = document.querySelector('[data-header]');
+
+    if (header) {
+      resizeObserver.observe(header);
+    }
   }
 
   if (document.fonts) {
