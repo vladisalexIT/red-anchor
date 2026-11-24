@@ -615,3 +615,27 @@
     transition: none;
   }
 }
+
+// Align the long-scene text with the hero, rather than switching to another container inset.
+@media (min-width: 1024px) {
+  .home-about__container,
+  .home-technologies__container,
+  .home-quality__container,
+  .home-partner__container {
+    width: 100%;
+    max-width: none;
+    padding-inline: clamp(32px, 5vw, 128px);
+  }
+}
+
+.home-about__video:focus-visible {
+  outline: 3px solid var(--color-white);
+  outline-offset: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-about__image,
+  .home-about__play {
+    transition: none;
+  }
+}
