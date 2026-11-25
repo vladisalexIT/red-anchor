@@ -1,9 +1,10 @@
 <div class='home-scene__stage' aria-hidden='true'>
   <div class='home-hero__media'>
-    <picture class='home-hero__ship'>
+    <picture class='home-hero__ship' data-home-hero-ship>
       <source
         media='(max-width: 1023px)'
         srcset='/src/assets/images/home/hero/hero-ship-mobile.webp'
+        sizes='100vw'
       />
 
       <img
@@ -12,6 +13,8 @@
         width='1920'
         height='2160'
         alt=''
+        sizes='50vw'
+        loading='eager'
         fetchpriority='high'
         decoding='async'
       />
@@ -53,3 +56,5 @@
     <div class='home-hero__mobile-shadow'></div>
   </div>
 </div>
+
+===== END FILE: src/components/sections/home/home-scene-media.njk =====
