@@ -19,14 +19,14 @@ function initHomeHero() {
   const FRAME_COUNT = 385;
   const FIRST_SCROLL_FRAME = 20;
 
-  const OPENING_SCROLL_DISTANCE = 2200;
+  const OPENING_SCROLL_DISTANCE = 200;
 
-  const FRAME_HOLD_DISTANCE = 160;
+  const FRAME_HOLD_DISTANCE = 260;
 
   const PRELOAD_AHEAD = 8;
   const PRELOAD_BEHIND = 2;
   const KEEP_RADIUS = 8;
-  const MAX_PARALLEL_LOADS = 2;
+  const MAX_PARALLEL_LOADS = 4;
   const MAX_FRAME_ATTEMPTS = 2;
   const FRAME_RETRY_DELAY = 600;
   const ACTIVE_CLASS = 'home-hero__chain--active';
@@ -123,13 +123,6 @@ function initHomeHero() {
   }
 
   function drawBestAvailableFrame() {
-    const requestedRecord = records.get(requestedFrame);
-
-    if (requestedRecord?.status === 'ready') {
-      drawFrame(requestedFrame);
-      return;
-    }
-
     if (displayedFrame === 0) {
       const initialRecord = records.get(FIRST_SCROLL_FRAME);
 
@@ -140,55 +133,21 @@ function initHomeHero() {
       return;
     }
 
-    const direction = Math.sign(requestedFrame - displayedFrame);
-
-    if (direction === 0) {
+    if (requestedFrame === displayedFrame) {
       return;
     }
 
-    let bestFrame = null;
+    const direction = Math.sign(requestedFrame - displayedFrame);
+    const nextFrame = displayedFrame + direction;
+    const nextRecord = records.get(nextFrame);
 
-    records.forEach((record, frameNumber) => {
-      if (record.status !== 'ready') {
-        return;
-      }
-
-      const isBetween =
-        direction > 0
-          ? frameNumber > displayedFrame && frameNumber < requestedFrame
-          : frameNumber < displayedFrame && frameNumber > requestedFrame;
-
-      if (!isBetween) {
-        return;
-      }
-
-      if (
-        bestFrame === null ||
-        (direction > 0 ? frameNumber > bestFrame : frameNumber < bestFrame)
-      ) {
-        bestFrame = frameNumber;
-      }
-    });
-
-    if (bestFrame !== null) {
-      drawFrame(bestFrame);
+    if (nextRecord?.status === 'ready') {
+      drawFrame(nextFrame);
+      requestTick();
     }
   }
 
-  function trimCache() {
-    records.forEach((record, frameNumber) => {
-      const shouldKeep =
-        frameNumber === FIRST_SCROLL_FRAME ||
-        frameNumber === displayedFrame ||
-        Math.abs(frameNumber - requestedFrame) <= KEEP_RADIUS;
-
-      if (shouldKeep || record.status === 'loading') {
-        return;
-      }
-
-      records.delete(frameNumber);
-    });
-  }
+  function trimCache() {}
 
   function ensureRecord(frameNumber) {
     if (records.has(frameNumber)) {
@@ -279,13 +238,11 @@ function initHomeHero() {
       return;
     }
 
+    const loadTarget = displayedFrame || requestedFrame;
     const queuedFrames = [...records]
       .filter(([, record]) => record.status === 'queued')
       .map(([frameNumber]) => frameNumber)
-      .sort(
-        (firstFrame, secondFrame) =>
-          Math.abs(firstFrame - requestedFrame) - Math.abs(secondFrame - requestedFrame),
-      );
+      .sort((firstFrame, secondFrame) => Math.abs(firstFrame - loadTarget) - Math.abs(secondFrame - loadTarget));
 
     while (loadingCount < MAX_PARALLEL_LOADS && queuedFrames.length > 0) {
       startLoading(queuedFrames.shift());
@@ -293,33 +250,10 @@ function initHomeHero() {
   }
 
   function prepareFrameWindow() {
-    const backwardRadius = frameDirection >= 0 ? PRELOAD_BEHIND : PRELOAD_AHEAD;
-
-    const forwardRadius = frameDirection >= 0 ? PRELOAD_AHEAD : PRELOAD_BEHIND;
-
-    const firstFrame = Math.max(FIRST_SCROLL_FRAME, requestedFrame - backwardRadius);
-
-    const lastFrame = Math.min(FRAME_COUNT, requestedFrame + forwardRadius);
-
-    records.forEach((record, frameNumber) => {
-      if (
-        record.status === 'queued' &&
-        frameNumber !== FIRST_SCROLL_FRAME &&
-        frameNumber !== requestedFrame &&
-        (frameNumber < firstFrame || frameNumber > lastFrame)
-      ) {
-        records.delete(frameNumber);
-      }
-    });
-
-    ensureRecord(FIRST_SCROLL_FRAME);
-    ensureRecord(requestedFrame);
-
-    for (let frameNumber = firstFrame; frameNumber <= lastFrame; frameNumber += 1) {
+    for (let frameNumber = FIRST_SCROLL_FRAME; frameNumber <= FRAME_COUNT; frameNumber += 1) {
       ensureRecord(frameNumber);
     }
 
-    trimCache();
     pumpQueue();
   }
 
@@ -421,13 +355,14 @@ function initHomeHero() {
 
     const firstPhaseBudget = visualPhaseDistance + FRAME_HOLD_DISTANCE;
 
-    firstPhaseScale = Math.min(1, animationDistance / (firstPhaseBudget + frameTransitions));
+    firstPhaseScale = 1;
+    firstPhaseDistance = firstPhaseBudget;
+    frameScrollStep = Math.max(8, Math.min(14, (window.innerWidth / 1920) * 11));
 
-    firstPhaseDistance = firstPhaseBudget * firstPhaseScale;
+    const requiredAnimationDistance = firstPhaseDistance + frameTransitions * frameScrollStep;
 
-    const mainPhaseDistance = Math.max(Number.EPSILON, animationDistance - firstPhaseDistance);
-
-    frameScrollStep = mainPhaseDistance / frameTransitions;
+    animationDistance = Math.max(animationDistance, requiredAnimationDistance);
+    scene.style.minHeight = `${Math.ceil(stageHeight + animationDistance)}px`;
 
     scene.dataset.chainTimeline = JSON.stringify({
       sceneTop,

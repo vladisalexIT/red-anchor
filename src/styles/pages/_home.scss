@@ -273,7 +273,7 @@
 
 @media (min-width: 1600px) {
   .home-hero__title {
-    font-size: 144px;
+    font-size: 120px;
   }
 
   .home-hero__content {
@@ -281,8 +281,8 @@
   }
 
   .home-hero__caption {
-    font-size: 24px;
-    line-height: 28px;
+    font-size: 16px;
+    line-height: 20px;
   }
 
   .home-hero__link {
@@ -291,6 +291,12 @@
     padding-block: 20px;
     font-size: 60px;
     line-height: 1;
+  }
+}
+
+@media (min-width: 1921px) {
+  .home-hero__title {
+    font-size: 144px;
   }
 }
 

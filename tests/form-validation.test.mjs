@@ -12,24 +12,47 @@ test('form observer reaches idle and updates only changed disabled state', () =>
   const queue = [];
   const events = new Map();
   const submit = {
-    get disabled() { return disabled; },
-    set disabled(value) { disabled = value; writes += 1; if (observer) queue.push(observer); },
+    get disabled() {
+      return disabled;
+    },
+    set disabled(value) {
+      disabled = value;
+      writes += 1;
+      if (observer) queue.push(observer);
+    },
   };
-  const field = { disabled: false, get validity() { return { valid }; }, addEventListener() {} };
+  const field = {
+    disabled: false,
+    get validity() {
+      return { valid };
+    },
+    addEventListener() {},
+  };
   const form = {
     querySelector: () => submit,
     querySelectorAll: () => [field],
     getAttribute: () => busy,
     addEventListener: (name, fn) => events.set(name, fn),
   };
-  let source = readFileSync(new URL('../src/scripts/components/form-validation.ts', import.meta.url), 'utf8');
-  source = source.replace('export function initFormValidation(): void', 'function initFormValidation()');
+  let source = readFileSync(
+    new URL('../src/scripts/components/form-validation.ts', import.meta.url),
+    'utf8',
+  );
+  source = source.replace(
+    'export function initFormValidation(): void',
+    'function initFormValidation()',
+  );
   source = source.replace(/\.querySelectorAll<[\s\S]*?>\(/g, '.querySelectorAll(');
   source = source.replace(/\.querySelector<[\s\S]*?>\(/g, '.querySelector(');
   const sandbox = {
     document: { querySelectorAll: () => [form] },
     HTMLInputElement: class {},
-    MutationObserver: class { constructor(fn) { observer = fn; } observe() {} },
+    MutationObserver: class {
+      constructor(fn) {
+        observer = fn;
+      }
+      observe() {}
+    },
     queueMicrotask: (fn) => queue.push(fn),
   };
   const flush = () => {

@@ -7,7 +7,13 @@
 }
 
 .site-header__top {
-  font-size: clamp(16px, 1.05vw, 20px);
+  font-size: var(--type-s3-size);
+}
+
+.site-header__sitemap,
+.site-header__top-navigation,
+.site-header__contacts {
+  font-size: var(--type-s3-size);
 }
 
 .site-header__logo {
