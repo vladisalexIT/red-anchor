@@ -1,6 +1,7 @@
 {% extends "templates/layouts/base.njk" %}
 
 {% set mainClass = "home-page" %}
+{% set isHome = true %}
 
 {% block title %}
   Завод «Красный якорь» — производство цепей
@@ -28,5 +29,3 @@
   <script type='module' src='/src/scripts/home-hero.js'></script>
   <script type='module' src='/src/scripts/home-polish.js'></script>
 {% endblock %}
-
-===== END FILE: src/pages/index.njk =====

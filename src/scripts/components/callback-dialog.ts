@@ -98,7 +98,9 @@ const initCallbackDialog = (dialog: HTMLDialogElement): void => {
       phone.setCustomValidity('');
 
       setStatus(
-        `Заявка № ${result.requestId} принята. Мы перезвоним вам в указанное время.`,
+        result.demo
+          ? 'Демонстрационный режим: данные проверены, но никуда не отправлены.'
+          : `Заявка № ${result.requestId} принята. Мы перезвоним вам в указанное время.`,
         'success',
       );
 
@@ -112,8 +114,11 @@ const initCallbackDialog = (dialog: HTMLDialogElement): void => {
           },
         }),
       );
-    } catch {
-      setStatus('Не удалось отправить заявку. Попробуйте ещё раз.', 'error');
+    } catch (error) {
+      setStatus(
+        error instanceof Error ? error.message : 'Не удалось отправить заявку. Попробуйте ещё раз.',
+        'error',
+      );
     } finally {
       submitButton.disabled = false;
       submitButton.textContent = defaultButtonText;

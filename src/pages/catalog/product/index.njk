@@ -6,54 +6,57 @@
 {% from "templates/components/common/notice.njk" import notice %}
 {% from "templates/components/common/help-cta.njk" import helpCta %}
 
-{% set product = {
-  id: "anchor-shackle-11-category-1",
-  category: "Якорные цепи и комплектующие",
-  title: "Якорная смычка с распорками, калибр 11 мм, категория 1",
-  lead: "С якорной смычкой, скобой и коренной смычкой",
-  canOrder: true,
-  orderUrl: "/request/#nonstandard-request",
-  technicalRequestUrl: "/request/#nonstandard-request",
-  gallery: [],
-  shortSpecifications: [
-    {
-      label: "Калибр",
-      value: "11 мм"
-    },
-    {
-      label: "Категория",
-      value: "1"
-    }
-  ],
-  description: [
-    "Для изготовления якорных цепей используются как стандартные комплектующие, так и нестандартные изделия по чертежам заказчика либо изделия, спроектированные конструкторско-технологическим бюро предприятия.",
-    "Точная комплектация и технические характеристики изделия согласовываются при оформлении заказа."
-  ],
-  specifications: [
-    {
-      label: "Наименование",
-      value: "Якорная смычка с распорками"
-    },
-    {
-      label: "Калибр",
-      value: "11 мм"
-    },
-    {
-      label: "Категория",
-      value: "1"
-    },
-    {
-      label: "Комплектация",
-      value: "Якорная смычка, скоба и коренная смычка"
-    }
-  ],
-  documents: []
-} %}
+{% set product ={
+    id: "anchor-shackle-11-category-1",
+    category: "Якорные цепи и комплектующие",
+    title: "Якорная смычка с распорками, калибр 11 мм, категория 1",
+    lead: "С якорной смычкой, скобой и коренной смычкой",
+    canOrder: true,
+    orderUrl: "/request/#nonstandard-request",
+    technicalRequestUrl: "/request/#nonstandard-request",
+    gallery: [
+    ],
+    shortSpecifications: [
+      {
+        label: "Калибр",
+        value: "11 мм"
+      },
+      {
+        label: "Категория",
+        value: "1"
+      }
+    ],
+    description: [
+      "Для изготовления якорных цепей используются как стандартные комплектующие, так и нестандартные изделия по чертежам заказчика либо изделия, спроектированные конструкторско-технологическим бюро предприятия.",
+      "Точная комплектация и технические характеристики изделия согласовываются при оформлении заказа."
+    ],
+    specifications: [
+      {
+        label: "Наименование",
+        value: "Якорная смычка с распорками"
+      },
+      {
+        label: "Калибр",
+        value: "11 мм"
+      },
+      {
+        label: "Категория",
+        value: "1"
+      },
+      {
+        label: "Комплектация",
+        value: "Якорная смычка, скоба и коренная смычка"
+      }
+    ],
+    documents: [
+    ]
+  }
+%}
 
 {% block content %}
-  <div class="product-page">
-    <div class="container">
-      <div class="product-page__breadcrumbs">
+  <div class='product-page'>
+    <div class='container'>
+      <div class='product-page__breadcrumbs'>
         {{ breadcrumb([
           {
             label: "Главная",
@@ -76,7 +79,7 @@
 
       {{ productDetail(product, "anchor-shackle-product") }}
 
-      <div class="product-page__notice">
+      <div class='product-page__notice'>
         {{ notice(
           "Внимание",
           "Для обеспечения длительного срока безаварийной эксплуатации, предотвращения деформации и поломки элементов якорной цепи и якорно-швартового устройства необходимо следить, чтобы нагрузка на изделия прилагалась исключительно по линии каната, в соответствии с направлением, при котором производятся испытания элементов изделия.",
@@ -84,11 +87,9 @@
         ) }}
       </div>
 
-      <div class="product-page__delivery">
-        {{ productDelivery() }}
-      </div>
+      <div class='product-page__delivery'>{{ productDelivery() }}</div>
 
-      <div class="product-page__help">
+      <div class='product-page__help'>
         {{ helpCta(
           "product-help",
           "/request/#nonstandard-request",

@@ -1,7 +1,12 @@
 {% macro link(text, href = "#", variant = "") %}
   <a
-    class="link{% if variant %} link--{{ variant }}{% endif %}"
-    href="{{ href }}"
+    class='
+      link
+      {% if variant %}
+        link--{{ variant }}
+      {% endif %}
+    '
+    href='{{ href }}'
   >
     {{ text }}
   </a>

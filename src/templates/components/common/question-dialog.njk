@@ -1,0 +1,51 @@
+<dialog
+  id='question-dialog'
+  class='question-dialog'
+  aria-labelledby='question-dialog-title'
+  data-question-dialog
+>
+  <div class='question-dialog__panel'>
+    <button
+      class='question-dialog__close'
+      type='button'
+      data-question-close
+      aria-label='Закрыть форму'
+    >
+      ×
+    </button>
+    <h2 id='question-dialog-title'>Остались вопросы?</h2>
+    <p>Расскажите, какая продукция или информация вам нужна.</p>
+    <form data-question-form>
+      <label>
+        Ваше имя
+        <input name='name' autocomplete='name' required maxlength='100' />
+      </label>
+      <label>
+        Телефон
+        <input
+          name='phone'
+          type='tel'
+          autocomplete='tel'
+          required
+          placeholder='+7 (___) ___-__-__'
+        />
+      </label>
+      <label>
+        Электронная почта
+        <input name='email' type='email' autocomplete='email' required maxlength='254' />
+      </label>
+      <label>
+        Вопрос
+        <textarea name='message' required maxlength='5000' rows='4'></textarea>
+      </label>
+      <label class='question-dialog__consent'>
+        <input name='consent' type='checkbox' required />
+        <span>Согласен с <a href='/privacy/'>условиями обработки персональных данных</a></span>
+      </label>
+      <p role='status' aria-live='polite' data-question-status tabindex='-1' hidden></p>
+      <div class='question-dialog__submit'>
+        <button class='button' type='submit'>Отправить вопрос</button>
+      </div>
+    </form>
+  </div>
+</dialog>

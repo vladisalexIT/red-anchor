@@ -1,0 +1,91 @@
+{
+  "page": {
+    "title": "Карта сайта",
+    "links": [
+      {
+        "title": "Главная",
+        "href": "/"
+      },
+      {
+        "title": "Каталог",
+        "href": "/catalog/"
+      },
+      {
+        "title": "Ваш заказ",
+        "href": "/order/"
+      },
+      {
+        "title": "Заявка",
+        "href": "/request/"
+      },
+      {
+        "title": "Контакты",
+        "href": "/contacts/"
+      },
+      {
+        "title": "О заводе",
+        "href": "/plant/"
+      },
+      {
+        "title": "Отрасли",
+        "href": "/industries/"
+      },
+      {
+        "title": "О производстве",
+        "href": "/production/"
+      },
+      {
+        "title": "Лаборатория контроля качества",
+        "href": "/laboratory/"
+      },
+      {
+        "title": "Технологический цикл",
+        "href": "/technology/"
+      },
+      {
+        "title": "Услуги",
+        "href": "/services/"
+      },
+      {
+        "title": "Закупки",
+        "href": "/purchases/"
+      },
+      {
+        "title": "Работа у нас",
+        "href": "/career/"
+      },
+      {
+        "title": "Вакансии",
+        "href": "/vacancies/"
+      },
+      {
+        "title": "История завода",
+        "href": "/history/"
+      },
+      {
+        "title": "Сертификаты",
+        "href": "/certificates/"
+      },
+      {
+        "title": "Новости",
+        "href": "/news/"
+      },
+      {
+        "title": "Доставка",
+        "href": "/delivery/"
+      },
+      {
+        "title": "Оплата",
+        "href": "/payment/"
+      },
+      {
+        "title": "Как приобрести продукцию",
+        "href": "/how-to-buy/"
+      },
+      {
+        "title": "Как мы работаем",
+        "href": "/how-we-working/"
+      }
+    ]
+  }
+}

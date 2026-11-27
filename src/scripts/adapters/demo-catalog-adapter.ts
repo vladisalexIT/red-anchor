@@ -2,6 +2,7 @@ export type CatalogFilters = {
   caliberFrom: number | null;
   caliberTo: number | null;
   category: string;
+  query?: string;
 };
 
 export interface CatalogAdapter {
@@ -27,6 +28,8 @@ export class DemoCatalogAdapter implements CatalogAdapter {
       const caliber = caliberValue && Number.isFinite(parsedCaliber) ? parsedCaliber : null;
 
       const matchesCategory = !filters.category || category === filters.category;
+      const text = (card.textContent ?? '').toLocaleLowerCase('ru');
+      const matchesQuery = !filters.query || text.includes(filters.query.toLocaleLowerCase('ru'));
 
       const matchesCaliberFrom =
         filters.caliberFrom === null || (caliber !== null && caliber >= filters.caliberFrom);
@@ -34,7 +37,7 @@ export class DemoCatalogAdapter implements CatalogAdapter {
       const matchesCaliberTo =
         filters.caliberTo === null || (caliber !== null && caliber <= filters.caliberTo);
 
-      const isVisible = matchesCategory && matchesCaliberFrom && matchesCaliberTo;
+      const isVisible = matchesQuery && matchesCategory && matchesCaliberFrom && matchesCaliberTo;
 
       card.hidden = !isVisible;
 

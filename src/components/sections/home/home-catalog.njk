@@ -1,58 +1,77 @@
-{% set catalogItems = [
-  {
-    "title": "Якорные цепи и комплектующие",
-    "href": "/catalog/yakornye-tsepi-i-komplektuyushchie/",
-    "image": "ship-main"
-  },
-  {
-    "title": "Цепи и комплектующие для горно-шахтного оборудования",
-    "href": "/catalog/tsepi-i-komplektuyushchie-dlya-gorno-shakhtnogo-oborudovaniya/",
-    "image": "gsho-main"
-  },
-  {
-    "title": "Грузоподъёмные цепи",
-    "href": "/catalog/gruzopodyemnye-tsepi/",
-    "image": "gruz-main"
-  },
-  {
-    "title": "Цепи общего назначения",
-    "href": "/catalog/tsepi-obshchego-naznacheniya/",
-    "image": "other-main"
-  },
-  {
-    "title": "Цепи и комплектующие для цементной промышленности",
-    "href": "/catalog/tsepi-i-komplektuyushchie-dlya-tsementnoy-promyshlennosti/",
-    "image": "cement-main"
-  },
-  {
-    "title": "Элеваторные цепи и комплектующие",
-    "href": "/catalog/elevatornye-tsepi-i-komplektuyushchie/",
-    "image": "main_elev"
-  },
-  {
-    "title": "Лифтовые цепи",
-    "href": "/catalog/liftovye-tsepi/",
-    "image": "main_lift"
-  }
-] %}
+{% set catalogItems =[
+    {
+      "title": "Якорные цепи и комплектующие",
+      "href": "/catalog/?category=yakornye-tsepi-i-komplektuyushchie",
+      "image": "ship-main"
+    },
+    {
+      "title": "Цепи и комплектующие для горно-шахтного оборудования",
+      "href": "/catalog/?category=tsepi-i-komplektuyushchie-dlya-gorno-shakhtnogo-oborudovaniya",
+      "image": "gsho-main"
+    },
+    {
+      "title": "Грузоподъёмные цепи",
+      "href": "/catalog/?category=gruzopodyemnye-tsepi",
+      "image": "gruz-main"
+    },
+    {
+      "title": "Цепи общего назначения",
+      "href": "/catalog/?category=tsepi-obshchego-naznacheniya",
+      "image": "other-main"
+    },
+    {
+      "title": "Цепи и комплектующие для цементной промышленности",
+      "href": "/catalog/?category=tsepi-i-komplektuyushchie-dlya-tsementnoy-promyshlennosti",
+      "image": "cement-main"
+    },
+    {
+      "title": "Элеваторные цепи и комплектующие",
+      "href": "/catalog/?category=elevatornye-tsepi-i-komplektuyushchie",
+      "image": "main_elev"
+    },
+    {
+      "title": "Лифтовые цепи",
+      "href": "/catalog/?category=liftovye-tsepi",
+      "image": "main_lift"
+    }
+  ]
+%}
 
-<section id="home-catalog" class="home-catalog" aria-labelledby="home-catalog-title">
-  <div class="container home-catalog__container">
-    <h2 id="home-catalog-title" class="home-catalog__title">Широкий ассортимент</h2>
+<section id='home-catalog' class='home-catalog' aria-labelledby='home-catalog-title'>
+  <div class='container home-catalog__container'>
+    <h2 id='home-catalog-title' class='home-catalog__title'>Широкий ассортимент</h2>
 
-    <ul class="home-catalog__list">
+    <ul class='home-catalog__list'>
       {% for item in catalogItems %}
-        <li class="home-catalog__item">
-          <a class="home-catalog__card" href="{{ item.href }}">
-            <span class="home-catalog__name">{{ item.title }}</span>
+        <li class='home-catalog__item'>
+          <a class='home-catalog__card' href='{{ item.href }}'>
+            <span class='home-catalog__name'>{{ item.title }}</span>
 
-            <span class="home-catalog__visual">
-              <picture class="home-catalog__picture" data-home-catalog-picture>
-                <source media="(min-width: 1920px)" srcset="/images/home/catalog/{{ item.image }}-1920.webp">
-                <source media="(min-width: 1600px)" srcset="/images/home/catalog/{{ item.image }}-1600.webp">
-                <source media="(min-width: 1366px)" srcset="/images/home/catalog/{{ item.image }}-1366.webp">
-                <source media="(min-width: 1024px)" srcset="/images/home/catalog/{{ item.image }}-1024.webp">
-                <img class="home-catalog__image" src="/images/home/catalog/{{ item.image }}-600.webp" alt="" loading="lazy" decoding="async">
+            <span class='home-catalog__visual'>
+              <picture class='home-catalog__picture' data-home-catalog-picture>
+                <source
+                  media='(min-width: 1920px)'
+                  srcset='/images/home/catalog/{{ item.image }}-1920.webp'
+                />
+                <source
+                  media='(min-width: 1600px)'
+                  srcset='/images/home/catalog/{{ item.image }}-1600.webp'
+                />
+                <source
+                  media='(min-width: 1366px)'
+                  srcset='/images/home/catalog/{{ item.image }}-1366.webp'
+                />
+                <source
+                  media='(min-width: 1024px)'
+                  srcset='/images/home/catalog/{{ item.image }}-1024.webp'
+                />
+                <img
+                  class='home-catalog__image'
+                  src='/images/home/catalog/{{ item.image }}-600.webp'
+                  alt=''
+                  loading='lazy'
+                  decoding='async'
+                />
               </picture>
             </span>
           </a>

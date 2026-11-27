@@ -1,38 +1,35 @@
 {% from "components/sections/home/home-section-link.njk" import homeSectionLink %}
 
-<section
-  class="home-partner"
-  aria-labelledby="home-partner-title"
->
-  <div class="container home-partner__container">
-    <div class="home-partner__heading">
-      <h2
-        class="home-partner__title"
-        id="home-partner-title"
-      >
-        Надёжный партнёр
-      </h2>
+<section class='home-partner' aria-labelledby='home-partner-title'>
+  <div class='container home-partner__container'>
+    <div class='home-partner__heading'>
+      <h2 id='home-partner-title' class='home-partner__title'>Надёжный партнёр</h2>
 
-      <p class="home-partner__description">
-        «Завод Красный Якорь» имеет собственные склады
-        готовой продукции в&nbsp;Нижнем Новгороде
-        и&nbsp;Кемерове.
+      <p class='home-partner__description'>
+        «Завод Красный Якорь» имеет собственные склады готовой продукции в&nbsp;Нижнем Новгороде и&nbsp;Кемерове.
       </p>
     </div>
 
-    <ul class="home-partner__list">
-      <li class="home-partner__item">
-        Запас<br>
+    <ul class='home-partner__list'>
+      <li class='home-partner__item' data-partner-image='/images/home/about/preview-1024.webp'>
+        Запас
+        <br />
         на складе
       </li>
 
-      <li class="home-partner__item">
-        Отгрузка<br>
+      <li class='home-partner__item' data-partner-image='/images/home/about/preview-1024.webp'>
+        Отгрузка
+        <br />
         в срок
       </li>
 
-      <li class="home-partner__item">
+      <li class='home-partner__item' data-partner-image='/images/home/about/preview-1024.webp'>
         Поставка любого количества
+      </li>
+      <li class='home-partner__item' data-partner-image='/images/home/about/preview-1024.webp'>
+        Индивидуальное
+        <br />
+        производство
       </li>
     </ul>
 
@@ -42,3 +39,5 @@
     ) }}
   </div>
 </section>
+
+<img class='home-partner-preview' data-partner-preview alt='' hidden aria-hidden='true' />

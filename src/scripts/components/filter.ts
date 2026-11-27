@@ -17,6 +17,7 @@ function readFilters(form: HTMLFormElement): CatalogFilters {
     caliberFrom: parseNumber(formData.get('caliberFrom')),
     caliberTo: parseNumber(formData.get('caliberTo')),
     category: String(formData.get('category') ?? ''),
+    query: new URLSearchParams(window.location.search).get('q')?.trim() ?? '',
   };
 }
 

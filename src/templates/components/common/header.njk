@@ -1,59 +1,113 @@
 {% from "templates/components/common/product-navigation.njk" import productNavigation %}
 
-<header class="site-header" data-header>
-  <div class="site-header__top">
-    <div class="container site-header__top-inner">
-      <a class="site-header__sitemap" href="/sitemap/">
-        Карта сайта
-      </a>
+<header class='site-header' data-header>
+  <div class='site-header__top'>
+    <div class='container site-header__top-inner'>
+      <a class='site-header__sitemap' href='/sitemap/'>Карта сайта</a>
 
-      <nav
-        class="site-header__primary"
-        aria-label="Основная навигация"
-      >
-        <ul class="site-header__top-navigation">
+      <nav class='site-header__primary' aria-label='Основная навигация'>
+        <ul class='site-header__top-navigation'>
           <li>
-            <a href="/industries/">Отрасли</a>
-          </li>
-
-          <li>
-            <a href="/plant/">Завод</a>
-          </li>
-
-          <li>
-            <a href="/production/">Производство</a>
-          </li>
-
-          <li>
-            <a href="/services/">Услуги</a>
-          </li>
-
-          <li class="site-header__top-item--wide">
-            <a href="/purchases/">Закупки</a>
-          </li>
-
-          <li class="site-header__top-item--wide">
-            <a href="/career/">Карьера</a>
+            <details class='site-header__dropdown' data-header-details>
+              <summary>Отрасли</summary>
+              <ul class='site-header__dropdown-menu'>
+                <li>
+                  <a href='/industries/'>Все отрасли</a>
+                </li>
+                <li>
+                  <a href='/industries/#shipbuilding'>Судостроение</a>
+                </li>
+                <li>
+                  <a href='/industries/#mining'>Горная промышленность</a>
+                </li>
+              </ul>
+            </details>
           </li>
 
           <li>
-            <a href="/contacts/">Контакты</a>
+            <details class='site-header__dropdown' data-header-details>
+              <summary>Завод</summary>
+              <ul class='site-header__dropdown-menu'>
+                <li>
+                  <a href='/plant/'>О заводе</a>
+                </li>
+                <li>
+                  <a href='/history/'>История</a>
+                </li>
+                <li>
+                  <a href='/certificates/'>Сертификаты</a>
+                </li>
+                <li>
+                  <a href='/news/'>Новости</a>
+                </li>
+              </ul>
+            </details>
           </li>
 
-          <li class="site-header__top-item--compact">
-            <details
-              class="site-header__more"
-              data-header-details
-            >
+          <li>
+            <details class='site-header__dropdown' data-header-details>
+              <summary>Производство</summary>
+              <ul class='site-header__dropdown-menu'>
+                <li>
+                  <a href='/production/'>О производстве</a>
+                </li>
+                <li>
+                  <a href='/laboratory/'>Лаборатория контроля качества</a>
+                </li>
+                <li>
+                  <a href='/technology/'>Технологический цикл</a>
+                </li>
+              </ul>
+            </details>
+          </li>
+
+          <li>
+            <details class='site-header__dropdown' data-header-details>
+              <summary>Услуги</summary>
+              <ul class='site-header__dropdown-menu'>
+                <li>
+                  <a href='/services/'>Услуги</a>
+                </li>
+                <li>
+                  <a href='/request/'>Несерийная продукция</a>
+                </li>
+              </ul>
+            </details>
+          </li>
+
+          <li class='site-header__top-item--wide'>
+            <a href='/purchases/'>Закупки</a>
+          </li>
+
+          <li class='site-header__top-item--wide'>
+            <details class='site-header__dropdown' data-header-details>
+              <summary>Карьера</summary>
+              <ul class='site-header__dropdown-menu'>
+                <li>
+                  <a href='/career/'>Работа у нас</a>
+                </li>
+                <li>
+                  <a href='/vacancies/'>Вакансии</a>
+                </li>
+              </ul>
+            </details>
+          </li>
+
+          <li>
+            <a href='/contacts/'>Контакты</a>
+          </li>
+
+          <li class='site-header__top-item--compact'>
+            <details class='site-header__more' data-header-details>
               <summary>Ещё</summary>
 
-              <ul class="site-header__more-menu">
+              <ul class='site-header__more-menu'>
                 <li>
-                  <a href="/purchases/">Закупки</a>
+                  <a href='/purchases/'>Закупки</a>
                 </li>
 
                 <li>
-                  <a href="/career/">Карьера</a>
+                  <a href='/career/'>Карьера</a>
                 </li>
               </ul>
             </details>
@@ -61,19 +115,15 @@
         </ul>
       </nav>
 
-      <div class="site-header__contacts">
-        <a href="mailto:info@redanchor.ru">
-          info@redanchor.ru
-        </a>
+      <div class='site-header__contacts'>
+        <a href='mailto:sales@redanchor.ru'>sales@redanchor.ru</a>
 
-        <a href="tel:+78312115511">
-          +7 831 211-55-11
-        </a>
+        <a href='tel:+78312115511'>+7 831 211-55-11</a>
 
         <button
-          class="site-header__callback"
-          type="button"
-          aria-controls="callback-dialog"
+          class='site-header__callback'
+          type='button'
+          aria-controls='callback-dialog'
           data-callback-open
         >
           Перезвоните мне
@@ -82,233 +132,117 @@
     </div>
   </div>
 
-  <div class="container site-header__main">
+  <div class='container site-header__main'>
     <a
-      class="site-header__logo"
-      href="/"
-      aria-label="{{ site.name }} — главная"
+      class='site-header__logo'
+      {% if isHome %}
+        aria-current="page"
+      {% else %}
+        href="/"
+      {% endif %}
+      aria-label='{{ site.name }} — главная'
     >
-      <img
-        src="/src/assets/images/logo.svg"
-        width="154"
-        height="48"
-        alt=""
-      >
+      <img src='/src/assets/images/logo.svg' width='154' height='48' alt='' />
     </a>
 
-    <nav
-      class="site-header__actions"
-      aria-label="Навигация по продукции"
-    >
-      <details
-        class="site-header__catalog"
-        data-header-details
-      >
-        <summary class="site-header__action site-header__action--catalog">
-          Продукция
-        </summary>
+    <nav class='site-header__actions' aria-label='Навигация по продукции'>
+      <details class='site-header__catalog' data-header-details>
+        <summary class='site-header__action site-header__action--catalog'>Продукция</summary>
 
-        <div class="site-header__catalog-content">
-          <div class="site-header__catalog-scroll">
-            {{ productNavigation("header", false) }}
-          </div>
+        <div class='site-header__catalog-content'>
+          <div class='site-header__catalog-scroll'>{{ productNavigation("header", false) }}</div>
         </div>
       </details>
 
-      <form
-        class="site-header__search"
-        action="/catalog/"
-        method="get"
-        role="search"
-      >
-        <label class="visually-hidden" for="site-search">
-          Поиск по каталогу
-        </label>
+      <form class='site-header__search' action='/catalog/' method='get' role='search'>
+        <label class='visually-hidden' for='site-search'>Поиск по каталогу</label>
 
         <input
-          id="site-search"
-          name="q"
-          type="search"
-          placeholder="Поиск по каталогу"
-          autocomplete="off"
-        >
+          id='site-search'
+          name='q'
+          type='search'
+          placeholder='Поиск по каталогу'
+          autocomplete='off'
+        />
 
-        <button type="submit">
-          Найти
-        </button>
+        <button type='submit'>Найти</button>
       </form>
 
-      <a
-        class="site-header__action"
-        href="/buyers/"
-      >
-        Покупателю
-      </a>
+      <a class='site-header__action' href='/buyers/'>Покупателю</a>
 
-      <a
-        class="site-header__action site-header__order"
-        href="/order/"
-      >
+      <a class='site-header__action site-header__order' href='/order/'>
         Ваш заказ
-
-        <span
-          class="site-header__count"
-          data-order-count
-        >
-          0
-        </span>
+        <span class='site-header__count' data-order-count>0</span>
       </a>
     </nav>
 
     <button
-      class="site-header__menu-button"
-      type="button"
-      aria-label="Открыть меню"
-      aria-expanded="false"
-      aria-controls="site-mobile-menu"
+      class='site-header__menu-button'
+      type='button'
+      aria-label='Открыть меню'
+      aria-expanded='false'
+      aria-controls='site-mobile-menu'
       data-menu-toggle
     >
-      <span
-        class="site-header__menu-icon"
-        aria-hidden="true"
-      ></span>
+      <span class='site-header__menu-icon' aria-hidden='true'></span>
     </button>
   </div>
 
-  <div
-    class="site-header__mobile"
-    id="site-mobile-menu"
-    data-menu
-    hidden
-  >
-    <div class="container site-header__mobile-inner">
-      <form
-        class="site-header__mobile-search"
-        action="/catalog/"
-        method="get"
-        role="search"
-      >
-        <label
-          class="visually-hidden"
-          for="site-mobile-search"
-        >
-          Поиск по каталогу
-        </label>
+  <div id='site-mobile-menu' class='site-header__mobile' data-menu hidden>
+    <div class='container site-header__mobile-inner'>
+      <form class='site-header__mobile-search' action='/catalog/' method='get' role='search'>
+        <label class='visually-hidden' for='site-mobile-search'>Поиск по каталогу</label>
 
         <input
-          id="site-mobile-search"
-          name="q"
-          type="search"
-          placeholder="Поиск по каталогу"
-          autocomplete="off"
-        >
+          id='site-mobile-search'
+          name='q'
+          type='search'
+          placeholder='Поиск по каталогу'
+          autocomplete='off'
+        />
 
-        <button type="submit">
-          Найти
-        </button>
+        <button type='submit'>Найти</button>
       </form>
 
-      <nav
-        class="site-header__mobile-navigation"
-        aria-label="Мобильная навигация"
-      >
-        <details
-          class="site-header__mobile-catalog"
-          data-header-details
-        >
-          <summary>
-            Продукция
-          </summary>
+      <nav class='site-header__mobile-navigation' aria-label='Мобильная навигация'>
+        <details class='site-header__mobile-catalog' data-header-details>
+          <summary>Продукция</summary>
 
-          <div class="site-header__mobile-submenu">
-            {{ productNavigation("mobile", false) }}
-          </div>
+          <div class='site-header__mobile-submenu'>{{ productNavigation("mobile", false) }}</div>
         </details>
 
-        <a
-          class="site-header__mobile-link"
-          href="/buyers/"
-        >
-          Покупателю
-        </a>
+        <a class='site-header__mobile-link' href='/buyers/'>Покупателю</a>
 
-        <a
-          class="site-header__mobile-link"
-          href="/order/"
-        >
+        <a class='site-header__mobile-link' href='/order/'>
           <span>Ваш заказ</span>
 
-          <span
-            class="site-header__mobile-count"
-            data-order-count
-          >
-            0
-          </span>
+          <span class='site-header__mobile-count' data-order-count>0</span>
         </a>
 
-        <a
-          class="site-header__mobile-link"
-          href="/industries/"
-        >
-          Отрасли
-        </a>
+        <a class='site-header__mobile-link' href='/industries/'>Отрасли</a>
 
-        <a
-          class="site-header__mobile-link"
-          href="/plant/"
-        >
-          Завод
-        </a>
+        <a class='site-header__mobile-link' href='/plant/'>Завод</a>
 
-        <a
-          class="site-header__mobile-link"
-          href="/production/"
-        >
-          Производство
-        </a>
+        <a class='site-header__mobile-link' href='/production/'>Производство</a>
 
-        <a
-          class="site-header__mobile-link"
-          href="/services/"
-        >
-          Услуги
-        </a>
+        <a class='site-header__mobile-link' href='/services/'>Услуги</a>
 
-        <a
-          class="site-header__mobile-link"
-          href="/purchases/"
-        >
-          Закупки
-        </a>
+        <a class='site-header__mobile-link' href='/purchases/'>Закупки</a>
 
-        <a
-          class="site-header__mobile-link"
-          href="/career/"
-        >
-          Карьера
-        </a>
+        <a class='site-header__mobile-link' href='/career/'>Карьера</a>
 
-        <a
-          class="site-header__mobile-link"
-          href="/contacts/"
-        >
-          Контакты
-        </a>
+        <a class='site-header__mobile-link' href='/contacts/'>Контакты</a>
       </nav>
 
-      <div class="site-header__mobile-contacts">
-        <a href="mailto:info@redanchor.ru">
-          info@redanchor.ru
-        </a>
+      <div class='site-header__mobile-contacts'>
+        <a href='mailto:sales@redanchor.ru'>sales@redanchor.ru</a>
 
-        <a href="tel:+78312115511">
-          +7 831 211-55-11
-        </a>
+        <a href='tel:+78312115511'>+7 831 211-55-11</a>
 
         <button
-          class="site-header__callback"
-          type="button"
-          aria-controls="callback-dialog"
+          class='site-header__callback'
+          type='button'
+          aria-controls='callback-dialog'
           data-callback-open
         >
           Перезвоните мне

@@ -1,130 +1,91 @@
 {% macro productCard(
-  id,
-  title,
-  url = "#",
-  category = "",
-  unit = "",
-  quantity = "",
-  image = "",
-  imageAlt = "",
-  canOrder = true,
-  categoryCode = "",
-  caliber = ""
-) %}
+    id,
+    title,
+    url = "#",
+    category = "",
+    unit = "",
+    quantity = "",
+    image = "",
+    imageAlt = "",
+    canOrder = true,
+    categoryCode = "",
+    caliber = ""
+  )
+%}
   <article
-    class="product-card"
+    class='product-card'
     data-product-card
-    data-product-id="{{ id }}"
-    data-product-category="{{ categoryCode }}"
+    data-product-id='{{ id }}'
+    data-product-category='{{ categoryCode }}'
     {% if caliber != "" %}
       data-product-caliber="{{ caliber }}"
     {% endif %}
   >
-    <a
-      class="product-card__media"
-      href="{{ url }}"
-      tabindex="-1"
-      aria-hidden="true"
-    >
+    <a class='product-card__media' href='{{ url }}' tabindex='-1' aria-hidden='true'>
       {% if image %}
-        <img
-          class="product-card__image"
-          src="{{ image }}"
-          alt="{{ imageAlt }}"
-          loading="lazy"
-        >
+        <img class='product-card__image' src='{{ image }}' alt='{{ imageAlt }}' loading='lazy' />
       {% else %}
-        <span class="product-card__media-placeholder">
-          Изображение товара
-        </span>
+        <span class='product-card__media-placeholder'>Изображение товара</span>
       {% endif %}
     </a>
 
-    <div class="product-card__body">
-      <div class="product-card__heading">
+    <div class='product-card__body'>
+      <div class='product-card__heading'>
         {% if category %}
-          <p class="product-card__category">
+          <p class='product-card__category'>
             {{ category }}
           </p>
         {% endif %}
 
-        <h3 class="product-card__title">
-          <a
-            class="product-card__title-link"
-            href="{{ url }}"
-          >
-            {{ title }}
-          </a>
+        <h3 class='product-card__title'>
+          <a class='product-card__title-link' href='{{ url }}'>{{ title }}</a>
         </h3>
       </div>
 
       {% if caliber != "" or unit or quantity %}
-        <dl class="product-card__meta">
+        <dl class='product-card__meta'>
           {% if caliber != "" %}
-            <div class="product-card__meta-row">
-              <dt class="product-card__meta-label">
-                Калибр
-              </dt>
+            <div class='product-card__meta-row'>
+              <dt class='product-card__meta-label'>Калибр</dt>
 
-              <dd class="product-card__meta-value">
-                {{ caliber }} мм
-              </dd>
+              <dd class='product-card__meta-value'>{{ caliber }} мм</dd>
             </div>
           {% endif %}
 
           {% if unit %}
-            <div class="product-card__meta-row">
-              <dt class="product-card__meta-label">
-                Единица измерения
-              </dt>
+            <div class='product-card__meta-row'>
+              <dt class='product-card__meta-label'>Единица измерения</dt>
 
-              <dd class="product-card__meta-value">
-                {{ unit }}
-              </dd>
+              <dd class='product-card__meta-value'>{{ unit }}</dd>
             </div>
           {% endif %}
 
           {% if quantity %}
-            <div class="product-card__meta-row">
-              <dt class="product-card__meta-label">
-                Минимальный заказ
-              </dt>
+            <div class='product-card__meta-row'>
+              <dt class='product-card__meta-label'>Минимальный заказ</dt>
 
-              <dd class="product-card__meta-value">
-                {{ quantity }}
-              </dd>
+              <dd class='product-card__meta-value'>{{ quantity }}</dd>
             </div>
           {% endif %}
         </dl>
       {% endif %}
 
-      <div class="product-card__actions">
-        <a
-          class="button button--secondary product-card__action"
-          href="{{ url }}"
-        >
-          Подробнее
-        </a>
+      <div class='product-card__actions'>
+        <a class='button button--secondary product-card__action' href='{{ url }}'>Подробнее</a>
 
         {% if canOrder %}
           <button
-            class="button button--primary product-card__action"
-            type="button"
-            aria-label="Добавить «{{ title }}» в заказ"
-            aria-pressed="false"
+            class='button button--primary product-card__action'
+            type='button'
+            aria-label='Добавить «{{ title }}» в заказ'
+            aria-pressed='false'
             data-add-to-order
-            data-product-id="{{ id }}"
+            data-product-id='{{ id }}'
           >
-            <span data-order-button-text>
-              Добавить в заказ
-            </span>
+            <span data-order-button-text>Добавить в заказ</span>
           </button>
         {% else %}
-          <button
-            class="button button--primary product-card__action"
-            type="button"
-            disabled
-          >
+          <button class='button button--primary product-card__action' type='button' disabled>
             Недоступно для заказа
           </button>
         {% endif %}

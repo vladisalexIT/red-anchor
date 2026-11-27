@@ -1,0 +1,15 @@
+{% extends "templates/layouts/base.njk" %}
+{% block content %}
+  <article class='container content-page'>
+    <h1>Карта сайта</h1>
+    <nav aria-label='Карта сайта'>
+      <div class='content-page__grid'>
+        {% for item in page.links %}
+          <a class='content-page__card' href='{{ item.href }}'>
+            {{ item.title }}
+          </a>
+        {% endfor %}
+      </div>
+    </nav>
+  </article>
+{% endblock %}

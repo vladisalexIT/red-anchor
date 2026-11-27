@@ -152,7 +152,9 @@ const initRequestForm = (form: HTMLFormElement): void => {
       resetFormState();
 
       setStatus(
-        `Заявка № ${result.requestId} принята. Мы свяжемся с вами после её обработки.`,
+        result.demo
+          ? 'Демонстрационный режим: данные проверены, но никуда не отправлены.'
+          : `Заявка № ${result.requestId} принята. Мы свяжемся с вами после её обработки.`,
         'success',
       );
 
@@ -164,8 +166,11 @@ const initRequestForm = (form: HTMLFormElement): void => {
           },
         }),
       );
-    } catch {
-      setStatus('Не удалось отправить заявку. Попробуйте ещё раз.', 'error');
+    } catch (error) {
+      setStatus(
+        error instanceof Error ? error.message : 'Не удалось отправить заявку. Попробуйте ещё раз.',
+        'error',
+      );
     } finally {
       submitButton.disabled = false;
       submitButton.textContent = defaultButtonText;

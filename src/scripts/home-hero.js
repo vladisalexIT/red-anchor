@@ -1,3 +1,5 @@
+import { getOpeningState } from './lib/hero-timeline.js';
+
 function initHomeHero() {
   const scene = document.querySelector('[data-home-scene]');
   const hero = scene?.querySelector('[data-home-hero]');
@@ -17,14 +19,14 @@ function initHomeHero() {
   const FRAME_COUNT = 385;
   const FIRST_SCROLL_FRAME = 20;
 
-  const OPENING_SCROLL_DISTANCE = 1650;
+  const OPENING_SCROLL_DISTANCE = 2200;
 
   const FRAME_HOLD_DISTANCE = 160;
 
-  const PRELOAD_AHEAD = 32;
-  const PRELOAD_BEHIND = 8;
-  const KEEP_RADIUS = 48;
-  const MAX_PARALLEL_LOADS = 6;
+  const PRELOAD_AHEAD = 8;
+  const PRELOAD_BEHIND = 2;
+  const KEEP_RADIUS = 8;
+  const MAX_PARALLEL_LOADS = 2;
   const MAX_FRAME_ATTEMPTS = 2;
   const FRAME_RETRY_DELAY = 600;
   const ACTIVE_CLASS = 'home-hero__chain--active';
@@ -64,8 +66,6 @@ function initHomeHero() {
   let loadWarningShown = false;
 
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
-
-  const smoothStep = (value) => value * value * (3 - 2 * value);
 
   const getFrameUrl = (frameNumber) => `/images/home/hero/chain/${frameNumber}.webp`;
 
@@ -324,25 +324,18 @@ function initHomeHero() {
   }
 
   function updateFirstPhase() {
-    const linearProgress = clamp(
-      renderedScroll / (OPENING_SCROLL_DISTANCE * firstPhaseScale),
-      0,
-      1,
+    const state = getOpeningState(
+      renderedScroll,
+      OPENING_SCROLL_DISTANCE * firstPhaseScale,
+      media.clientWidth,
+      maximumShift,
     );
-    const progress = smoothStep(linearProgress);
-    const width = Math.max(1, media.clientWidth);
-    const shift = maximumShift * progress;
-
-    const remainingWidth = Math.max(0, width / 2 - maximumShift);
-    const coverWidth = shift + remainingWidth * progress ** 3;
-    const coverProgress = clamp(coverWidth / (width / 2), 0, 1);
-
-    scene.style.setProperty('--home-chain-shift', `${shift.toFixed(2)}px`);
-    scene.style.setProperty('--home-left-shadow-opacity', progress.toFixed(4));
-    scene.style.setProperty('--home-right-cover-width', `${(50 * coverProgress).toFixed(3)}%`);
-    scene.style.setProperty('--home-right-cover-progress', coverProgress.toFixed(6));
-    scene.dataset.chainOpeningProgress = linearProgress.toFixed(6);
-    scene.dataset.chainCoverLead = (coverWidth - shift).toFixed(2);
+    scene.style.setProperty('--home-chain-shift', `${state.shift.toFixed(2)}px`);
+    scene.style.setProperty('--home-left-shadow-opacity', state.progress.toFixed(4));
+    scene.style.setProperty('--home-right-cover-width', `${(50 * state.cover).toFixed(3)}%`);
+    scene.style.setProperty('--home-right-cover-progress', state.cover.toFixed(6));
+    scene.dataset.chainOpeningProgress = state.linear.toFixed(6);
+    scene.dataset.chainCoverLead = state.lead.toFixed(2);
   }
 
   function tick() {

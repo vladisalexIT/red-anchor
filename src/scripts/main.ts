@@ -1,4 +1,6 @@
-import '../styles/main.scss';
+import { initNavigation } from './components/navigation';
+import { initQuestionDialog } from './components/question-dialog';
+import { initFormValidation } from './components/form-validation';
 
 import { initPageLayout } from './components/page-layout';
 import { initFileUploads } from './components/file-upload';
@@ -26,6 +28,9 @@ function initApp(): void {
   initDocumentLists();
   initCallbackDialogs();
   initHomeCatalog();
+  initNavigation();
+  initQuestionDialog();
+  initFormValidation();
 }
 
 if (document.readyState === 'loading') {

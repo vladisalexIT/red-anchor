@@ -1,114 +1,105 @@
 {% macro filter(
-  action = "/catalog/",
-  selectedCategory = ""
-) %}
-  <form
-    class="filter"
-    action="{{ action }}"
-    method="get"
-    data-filter
-  >
-    <div class="filter__header">
-      <h2 class="filter__title">
-        Фильтр
-      </h2>
+    action = "/catalog/",
+    selectedCategory = ""
+  )
+%}
+  <form class='filter' action='{{ action }}' method='get' data-filter>
+    <div class='filter__header'>
+      <h2 class='filter__title'>Фильтр</h2>
 
-      <button class="filter__reset" type="reset">
-        Сбросить
-      </button>
+      <button class='filter__reset' type='reset'>Сбросить</button>
     </div>
 
-    <div class="filter__body">
-      <div class="filter__group">
-        <label class="filter__label" for="caliber-from">
-          Калибр цепи, мм
-        </label>
+    <div class='filter__body'>
+      <div class='filter__group'>
+        <label class='filter__label' for='caliber-from'>Калибр цепи, мм</label>
 
-        <div class="filter__range">
+        <div class='filter__range'>
           <input
-            class="filter__control"
-            id="caliber-from"
-            name="caliberFrom"
-            type="number"
-            min="1"
-            max="200"
-            step="1"
-            placeholder="От"
-            inputmode="numeric"
-          >
+            id='caliber-from'
+            class='filter__control'
+            name='caliberFrom'
+            type='number'
+            min='1'
+            max='200'
+            step='1'
+            placeholder='От'
+            inputmode='numeric'
+          />
 
-          <span
-            class="filter__range-separator"
-            aria-hidden="true"
-          >
-            —
-          </span>
+          <span class='filter__range-separator' aria-hidden='true'>—</span>
 
           <input
-            class="filter__control"
-            id="caliber-to"
-            name="caliberTo"
-            type="number"
-            min="1"
-            max="200"
-            step="1"
-            placeholder="До"
-            inputmode="numeric"
-          >
+            id='caliber-to'
+            class='filter__control'
+            name='caliberTo'
+            type='number'
+            min='1'
+            max='200'
+            step='1'
+            placeholder='До'
+            inputmode='numeric'
+          />
         </div>
       </div>
 
-      <div class="filter__group">
-        <label class="filter__label" for="chain-category">
-          Раздел продукции
-        </label>
+      <div class='filter__group'>
+        <label class='filter__label' for='chain-category'>Раздел продукции</label>
 
-        <div class="filter__select-wrapper">
-          <select
-            class="filter__control filter__select"
-            id="chain-category"
-            name="category"
-          >
-            <option value="">Все разделы</option>
+        <div class='filter__select-wrapper'>
+          <select id='chain-category' class='filter__control filter__select' name='category'>
+            <option value=''>Все разделы</option>
 
             <option
-              value="anchor-chains"
-              {% if selectedCategory == "anchor-chains" %}selected{% endif %}
+              value='anchor-chains'
+              {% if selectedCategory == "anchor-chains" %}
+                selected
+              {% endif %}
             >
               Якорные цепи и комплектующие
             </option>
 
             <option
-              value="mining"
-              {% if selectedCategory == "mining" %}selected{% endif %}
+              value='mining'
+              {% if selectedCategory == "mining" %}
+                selected
+              {% endif %}
             >
               Для горно-шахтного оборудования
             </option>
 
             <option
-              value="lifting"
-              {% if selectedCategory == "lifting" %}selected{% endif %}
+              value='lifting'
+              {% if selectedCategory == "lifting" %}
+                selected
+              {% endif %}
             >
               Грузоподъёмные цепи
             </option>
 
             <option
-              value="cement"
-              {% if selectedCategory == "cement" %}selected{% endif %}
+              value='cement'
+              {% if selectedCategory == "cement" %}
+                selected
+              {% endif %}
             >
               Для цементной промышленности
             </option>
 
             <option
-              value="general-purpose"
-              {% if selectedCategory == "general-purpose" %}selected{% endif %}
+              value='general-purpose'
+              {% if selectedCategory == "general-purpose" %}
+                selected
+              {% endif %}
             >
               Цепи общего назначения
             </option>
 
             <option
-              value="nonstandard"
-              {% if selectedCategory == "nonstandard" %}selected{% endif %}
+              value='nonstandard'
+              {% if selectedCategory == "nonstandard" %}
+                selected
+              {% endif %}
             >
               Несерийная продукция
             </option>
@@ -116,12 +107,7 @@
         </div>
       </div>
 
-      <button
-        class="button button--primary filter__submit"
-        type="submit"
-      >
-        Применить фильтр
-      </button>
+      <button class='button button--primary filter__submit' type='submit'>Применить фильтр</button>
     </div>
   </form>
 {% endmacro %}

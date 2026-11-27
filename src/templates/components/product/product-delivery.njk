@@ -1,70 +1,54 @@
 {% macro productDelivery(
-  title = "Как приобрести продукцию",
-  orderUrl = "/request/#nonstandard-request"
-) %}
-  <section class="product-delivery" aria-labelledby="product-delivery-title">
-    <div class="product-delivery__header">
-      <p class="product-delivery__eyebrow">Поставка и заказ</p>
+    title = "Как приобрести продукцию",
+    orderUrl = "/request/#nonstandard-request"
+  )
+%}
+  <section class='product-delivery' aria-labelledby='product-delivery-title'>
+    <div class='product-delivery__header'>
+      <p class='product-delivery__eyebrow'>Поставка и заказ</p>
 
-      <h2
-        class="product-delivery__title"
-        id="product-delivery-title"
-      >
-        {{ title }}
-      </h2>
+      <h2 id='product-delivery-title' class='product-delivery__title'>{{ title }}</h2>
     </div>
 
-    <ol class="product-delivery__steps">
-      <li class="product-delivery__step">
-        <span class="product-delivery__number">1</span>
+    <ol class='product-delivery__steps'>
+      <li class='product-delivery__step'>
+        <span class='product-delivery__number'>1</span>
 
         <div>
-          <h3 class="product-delivery__step-title">
-            Отправьте заявку
-          </h3>
+          <h3 class='product-delivery__step-title'>Отправьте заявку</h3>
 
-          <p class="product-delivery__step-text">
-            Укажите необходимую продукцию, количество и приложите
-            техническую документацию при её наличии.
+          <p class='product-delivery__step-text'>
+            Укажите необходимую продукцию, количество и приложите техническую документацию при её наличии.
           </p>
         </div>
       </li>
 
-      <li class="product-delivery__step">
-        <span class="product-delivery__number">2</span>
+      <li class='product-delivery__step'>
+        <span class='product-delivery__number'>2</span>
 
         <div>
-          <h3 class="product-delivery__step-title">
-            Согласуйте параметры
-          </h3>
+          <h3 class='product-delivery__step-title'>Согласуйте параметры</h3>
 
-          <p class="product-delivery__step-text">
-            Специалист уточнит характеристики, условия эксплуатации
-            и требования к поставке.
+          <p class='product-delivery__step-text'>
+            Специалист уточнит характеристики, условия эксплуатации и требования к поставке.
           </p>
         </div>
       </li>
 
-      <li class="product-delivery__step">
-        <span class="product-delivery__number">3</span>
+      <li class='product-delivery__step'>
+        <span class='product-delivery__number'>3</span>
 
         <div>
-          <h3 class="product-delivery__step-title">
-            Получите предложение
-          </h3>
+          <h3 class='product-delivery__step-title'>Получите предложение</h3>
 
-          <p class="product-delivery__step-text">
-            Стоимость, сроки изготовления, оплата и доставка
-            фиксируются в коммерческом предложении.
+          <p class='product-delivery__step-text'>
+            Стоимость, сроки изготовления, оплата и доставка фиксируются в коммерческом предложении.
           </p>
         </div>
       </li>
     </ol>
 
-    <a
-      class="button button--primary product-delivery__action"
-      href="{{ orderUrl }}"
-    >
+    <a class='button button--primary product-delivery__action' href='{{ orderUrl }}'>
       Оставить заявку
     </a>
   </section>

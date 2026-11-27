@@ -1,15 +1,17 @@
 {% macro breadcrumb(items) %}
-  <nav class="breadcrumbs" aria-label="Хлебные крошки">
-    <ol class="breadcrumbs__list">
+  <nav class='breadcrumbs' aria-label='Хлебные крошки'>
+    <ol class='breadcrumbs__list'>
       {% for item in items %}
         <li
-          class="breadcrumbs__item"
-          {% if item.current %}aria-current="page"{% endif %}
+          class='breadcrumbs__item'
+          {% if item.current %}
+            aria-current="page"
+          {% endif %}
         >
           {% if item.current %}
             {{ item.label }}
           {% else %}
-            <a class="breadcrumbs__link" href="{{ item.href }}">
+            <a class='breadcrumbs__link' href='{{ item.href }}'>
               {{ item.label }}
             </a>
           {% endif %}

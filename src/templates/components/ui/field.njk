@@ -1,21 +1,32 @@
 {% macro field(label, id, required = false, hint = "", error = "") %}
-  <div class="field{% if error %} is-invalid{% endif %}">
-    <label class="field__label" for="{{ id }}">
+  <div
+    class='
+      field
+      {% if error %}
+        is-invalid
+      {% endif %}
+    '
+  >
+    <label class='field__label' for='{{ id }}'>
       {{ label }}
 
       {% if required %}
-        <span class="field__required" aria-hidden="true">*</span>
+        <span class='field__required' aria-hidden='true'>*</span>
       {% endif %}
     </label>
 
     {{ caller() }}
 
     {% if hint %}
-      <p class="field__hint">{{ hint }}</p>
+      <p class='field__hint'>
+        {{ hint }}
+      </p>
     {% endif %}
 
     {% if error %}
-      <p class="field__error">{{ error }}</p>
+      <p class='field__error'>
+        {{ error }}
+      </p>
     {% endif %}
   </div>
 {% endmacro %}
